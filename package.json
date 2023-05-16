@@ -4,7 +4,7 @@
   "description": "int_commit",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js .env.dev",
+    "dev": "nodemon index.js .env.dev",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

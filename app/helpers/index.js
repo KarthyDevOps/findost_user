@@ -71,6 +71,7 @@ const getCustomerDetailsById = async (params) => {
   //get customer details by id
   const data = await Customers.findOne({
     $or: [{ _id: params?._id }, { _id: params?.customerId }],
+    isDeleted:false
   });
   console.log("data", data);
   //return object based on customer already exist or not
@@ -81,110 +82,19 @@ const getCustomerDetailsById = async (params) => {
   }
 };
 
-const getCustomerList = async (params) => {
-  let data;
-
-  //get customer list
-  if (params.all) {
-    if (params?.search) {
-      data = await Customers.aggregate([
-        {
-          $match: {
-            isDeleted: false,
-            $or: [
-              { name: { $regex: `${params?.search}`, $options: "i" } },
-              { mobileNumber: { $regex: `${params?.search}`, $options: "i" } },
-              { email: { $regex: `${params?.search}`, $options: "i" } },
-            ],
-          },
-        },
-        {
-          $lookup: {
-            from: "customersaddresses",
-            as: "customerAddress",
-            let: { id: "$_id" },
-            pipeline: [
-              {
-                $match: {
-                  $expr: { $eq: ["$$id", "$customerId"] },
-                  isDefault: true,
-                },
-              },
-            ],
-          },
-        },
-        { $sort: { createdAt: -1 } },
-      ]);
-    } else {
-      data = await Customers.find({
-        isDeleted: false,
-      });
+const getCustomerList = async () => {
+  const data = await Customers.find({
+    isDeleted:false
+  });
+  if(data.length > 0){
+    return {
+      status:true,
+      data:data
     }
-  } else if (params?.search) {
-    //get data by join with customers and customersaddress using lookup
-    data = await Customers.aggregate([
-      {
-        $match: {
-          isDeleted: false,
-          $or: [
-            { name: { $regex: `${params?.search}`, $options: "i" } },
-            { mobileNumber: { $regex: `${params?.search}`, $options: "i" } },
-            { email: { $regex: `${params?.search}`, $options: "i" } },
-          ],
-        },
-      },
-      {
-        $lookup: {
-          from: "customersaddresses",
-          as: "customerAddress",
-          let: { id: "$_id" },
-          pipeline: [
-            {
-              $match: {
-                $expr: { $eq: ["$$id", "$customerId"] },
-                isDefault: true,
-              },
-            },
-          ],
-        },
-      },
-      { $skip: Number((params?.page - 1) * params?.limit) },
-      { $limit: Number(params?.limit) },
-      { $sort: { createdAt: -1 } },
-    ]);
-  } else {
-    data = await Customers.aggregate([
-      {
-        $match: {
-          isDeleted: false,
-        },
-      },
-      {
-        $lookup: {
-          from: "customersaddresses",
-          as: "customerAddress",
-          let: { id: "$_id" },
-          pipeline: [
-            {
-              $match: {
-                $expr: { $eq: ["$$id", "$customerId"] },
-                isDefault: true,
-              },
-            },
-          ],
-        },
-      },
-      { $skip: Number((params?.page - 1) * params?.limit) },
-      { $limit: Number(params?.limit) },
-      { $sort: { createdAt: -1 } },
-    ]);
   }
-
-  //return object based on customer already exist or not
-  if (data && data.length) {
-    return { status: true, data: data };
-  } else {
-    return { status: false, data: {} };
+  return {
+    status:false,
+    data : {}
   }
 };
 

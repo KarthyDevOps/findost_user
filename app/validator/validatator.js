@@ -169,14 +169,15 @@ const addCustomerSchema = (req, res, next) => {
 
 const getCustomerProfileSchema = (req, res, next) => {
   const schema = joi.object({
-    customerId: joi.string().required().allow(null).allow("").optional(),
+    customerId: joi.string().required(),
   });
   return queryParamValidation(req, res, next, schema);
 };
 
 const updateCustomerProfileSchema = (req, res, next) => {
+  console.log("data-->")
   const querySchema = joi.object({
-    customerId: joi.string().allow(null).allow(""),
+    customerId: joi.string().required(),
   });
   req.bodyParam = true;
   queryParamValidation(req, res, next, querySchema);

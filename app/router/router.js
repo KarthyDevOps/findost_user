@@ -126,7 +126,7 @@ router.delete(
 );
 router.get(
   routes.v1.customers.list,
-  [verifyCustomerToken, customerListSchema],
+  [verifyAdminToken, customerListSchema],
   errHandle(customerList)
 );
 

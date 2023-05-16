@@ -188,6 +188,7 @@ const {
   
     //update customer details into customers table
     const result = await Customers.updateOne({ _id: customerId }, query);
+    console.log('result -->', result)
     if (!result.modifiedCount) {
       return {
         status: false,
@@ -235,12 +236,9 @@ const {
   
   const customerListService = async (params) => {
     //get all customer list
-    params.all = true;
-    const allList = await getCustomerList(params);
-    //get all customer list created by admin
-    params.all = false;
-    const result = await getCustomerList(params);
-  
+    const allList = await getCustomerList();
+    console.log('allList', allList)
+    
     //calculate pagemeta for pages and count
     const pageMeta = await pageMetaService(params, allList?.data?.length || 0);
     return {
