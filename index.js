@@ -11,6 +11,10 @@ const swaggerUi = require("swagger-ui-express");
 const app = express();
 const { instantiateAWSS3 } = require("./app/externalServices/awsService.js");
 
+
+//swagger setup
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 //load environment variable
 dotenv.config({ path: path.join(process.cwd(), `${process.argv[2]}`) });
 app.use(cors());

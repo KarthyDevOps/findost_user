@@ -1,0 +1,728 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "version": "1.0.0",
+      "title": "Findost Project",
+      "description": "Findost Project Api's",
+      "license": {
+        "name": "MIT",
+        "url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    "basePath": "/user/v1/",
+    "schemes": ["http", "https"],
+    "consumes": ["application/json"],
+    "produces": ["application/json"],
+    "securityDefinitions": {
+      "Bearer": {
+        "name": "Authorization",
+        "in": "header",
+        "type": "apiKey",
+        "description": "JWT Authorization header"
+      }
+    },
+    "paths": {
+      "/admin/addProfile": {
+            "post": {
+              "tags": ["Admin Module"],
+              "security": [{ "Bearer": [] }],
+              "summary": "Admin Profile Create",
+              "parameters": [
+                {
+                  "name": "AdminCreate",
+                  "in": "body",
+                  "schema": {
+                    "$ref": "#/definitions/adminLogin"
+                  }
+                }
+              ],
+              "responses": {
+                "200": {
+                  "description": "Return a JSON response with submitted Aman form details.",
+                  "schema": { "$ref": "#/definitions/response" }
+                },
+                "404": {
+                  "description": "Validation failure.",
+                  "schema": {
+                    "$ref": "#/definitions/validationError"
+                  }
+                },
+                "default": {
+                  "description": "Unexpected error.",
+                  "schema": {
+                    "$ref": "#/definitions/error"
+                  }
+                }
+              }
+            }
+          },
+      "/admin/login": {
+        "post": {
+          "tags": ["Admin Module"],
+          "security": [{ "Bearer": [] }],
+          "summary": "Admin Login Page",
+          "parameters": [
+            {
+              "name": "AdminLogin",
+              "in": "body",
+              "schema": {
+                "$ref": "#/definitions/adminLogin"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Return a JSON response with submitted Aman form details.",
+              "schema": { "$ref": "#/definitions/response" }
+            },
+            "404": {
+              "description": "Validation failure.",
+              "schema": {
+                "$ref": "#/definitions/validationError"
+              }
+            },
+            "default": {
+              "description": "Unexpected error.",
+              "schema": {
+                "$ref": "#/definitions/error"
+              }
+            }
+          }
+        }
+      },
+      "/admin/sendOTP": {
+        "post": {
+          "tags": ["Admin Module"],
+          "security": [{ "Bearer": [] }],
+          "summary": "Admin Login Page",
+          "parameters": [
+            {
+              "name": "AdminLogin",
+              "in": "body",
+              "schema": {
+                "$ref": "#/definitions/sendOTP"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Return a JSON response with submitted Aman form details.",
+              "schema": { "$ref": "#/definitions/response" }
+            },
+            "404": {
+              "description": "Validation failure.",
+              "schema": {
+                "$ref": "#/definitions/validationError"
+              }
+            },
+            "default": {
+              "description": "Unexpected error.",
+              "schema": {
+                "$ref": "#/definitions/error"
+              }
+            }
+          }
+        }
+      },
+      "/admin/verifyOTP": {
+        "post": {
+          "tags": ["Admin Module"],
+          "security": [{ "Bearer": [] }],
+          "summary": "Admin Login Page",
+          "parameters": [
+            {
+              "name": "AdminLogin",
+              "in": "body",
+              "schema": {
+                "$ref": "#/definitions/verifyOTP"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Return a JSON response with submitted Aman form details.",
+              "schema": { "$ref": "#/definitions/response" }
+            },
+            "404": {
+              "description": "Validation failure.",
+              "schema": {
+                "$ref": "#/definitions/validationError"
+              }
+            },
+            "default": {
+              "description": "Unexpected error.",
+              "schema": {
+                "$ref": "#/definitions/error"
+              }
+            }
+          }
+        }
+      },
+      "/admin/updateProfile": {
+        "put": {
+          "tags": ["Admin Module"],
+          "security": [{ "Bearer": [] }],
+          "summary": "update admin Details",
+          "parameters": [
+            {
+              "name": "adminId",
+              "in": "query",
+              "type": "string"
+            },
+            {
+              "name": "adminUpdate",
+              "in": "body",
+              "schema": {
+                "$ref": "#/definitions/adminUpdate"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Return a JSON response with submitted Aman form details.",
+              "schema": { "$ref": "#/definitions/response" }
+            },
+            "404": {
+              "description": "Validation failure.",
+              "schema": {
+                "$ref": "#/definitions/validationError"
+              }
+            },
+            "default": {
+              "description": "Unexpected error.",
+              "schema": {
+                "$ref": "#/definitions/error"
+              }
+            }
+          }
+        }
+      },
+      "/admin/getProfile": {
+        "get": {
+          "tags": ["Admin Module"],
+          "security": [{ "Bearer": [] }],
+          "summary": "get admin details",
+          "parameters": [
+            {
+              "name": "adminId",
+              "in": "query",
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Return a JSON response with submitted Aman form details.",
+              "schema": { "$ref": "#/definitions/response" }
+            },
+            "404": {
+              "description": "Validation failure.",
+              "schema": {
+                "$ref": "#/definitions/validationError"
+              }
+            },
+            "default": {
+              "description": "Unexpected error.",
+              "schema": {
+                "$ref": "#/definitions/error"
+              }
+            }
+          }
+        }
+      },
+      "/admin/list": {
+        "get": {
+          "tags": ["Admin Module"],
+          "security": [{ "Bearer": [] }],
+          "summary": "List all admin",
+          "parameters": [
+            {
+              "name": "limit",
+              "in": "query",
+              "type": "number"
+            },
+            {
+              "name": "page",
+              "in": "query",
+              "type": "number"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Return a JSON response with submitted Aman form details.",
+              "schema": { "$ref": "#/definitions/response" }
+            },
+            "404": {
+              "description": "Validation failure.",
+              "schema": {
+                "$ref": "#/definitions/validationError"
+              }
+            },
+            "default": {
+              "description": "Unexpected error.",
+              "schema": {
+                "$ref": "#/definitions/error"
+              }
+            }
+          }
+        }
+      },
+      "/admin/delete": {
+        "delete": {
+          "tags": ["Admin Module"],
+          "security": [{ "Bearer": [] }],
+          "summary": "delete Admin",
+          "parameters": [
+            {
+              "name": "adminId",
+              "in": "query",
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Return a JSON response with submitted Aman form details.",
+              "schema": { "$ref": "#/definitions/response" }
+            },
+            "404": {
+              "description": "Validation failure.",
+              "schema": {
+                "$ref": "#/definitions/validationError"
+              }
+            },
+            "default": {
+              "description": "Unexpected error.",
+              "schema": {
+                "$ref": "#/definitions/error"
+              }
+            }
+          }
+        }
+      },
+      "/customer/addProfile": {
+        "post": {
+          "tags": ["Admin Module"],
+          "security": [{ "Bearer": [] }],
+          "summary": "Admin Profile Create",
+          "parameters": [
+            {
+              "name": "AdminCreate",
+              "in": "body",
+              "schema": {
+                "$ref": "#/definitions/adminLogin"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Return a JSON response with submitted Aman form details.",
+              "schema": { "$ref": "#/definitions/response" }
+            },
+            "404": {
+              "description": "Validation failure.",
+              "schema": {
+                "$ref": "#/definitions/validationError"
+              }
+            },
+            "default": {
+              "description": "Unexpected error.",
+              "schema": {
+                "$ref": "#/definitions/error"
+              }
+            }
+          }
+        }
+      },
+      "/customer/login": {
+       "post": {
+      "tags": ["Admin Module"],
+      "security": [{ "Bearer": [] }],
+      "summary": "Admin Login Page",
+      "parameters": [
+        {
+          "name": "AdminLogin",
+          "in": "body",
+          "schema": {
+            "$ref": "#/definitions/customerLogin"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Return a JSON response with submitted Aman form details.",
+          "schema": { "$ref": "#/definitions/response" }
+        },
+        "404": {
+          "description": "Validation failure.",
+          "schema": {
+            "$ref": "#/definitions/validationError"
+          }
+        },
+        "default": {
+          "description": "Unexpected error.",
+          "schema": {
+            "$ref": "#/definitions/error"
+          }
+        }
+      }
+        }
+      },
+      "/customer/sendOTP": {
+       "post": {
+       "tags": ["Admin Module"],
+      "security": [{ "Bearer": [] }],
+      "summary": "Admin Login Page",
+      "parameters": [
+        {
+          "name": "AdminLogin",
+          "in": "body",
+          "schema": {
+            "$ref": "#/definitions/sendOTP"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Return a JSON response with submitted Aman form details.",
+          "schema": { "$ref": "#/definitions/response" }
+        },
+        "404": {
+          "description": "Validation failure.",
+          "schema": {
+            "$ref": "#/definitions/validationError"
+          }
+        },
+        "default": {
+          "description": "Unexpected error.",
+          "schema": {
+            "$ref": "#/definitions/error"
+          }
+        }
+      }
+    }
+      },
+      "/customer/verifyOTP": {
+    "post": {
+      "tags": ["Admin Module"],
+      "security": [{ "Bearer": [] }],
+      "summary": "Admin Login Page",
+      "parameters": [
+        {
+          "name": "AdminLogin",
+          "in": "body",
+          "schema": {
+            "$ref": "#/definitions/verifyOTP"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Return a JSON response with submitted Aman form details.",
+          "schema": { "$ref": "#/definitions/response" }
+        },
+        "404": {
+          "description": "Validation failure.",
+          "schema": {
+            "$ref": "#/definitions/validationError"
+          }
+        },
+        "default": {
+          "description": "Unexpected error.",
+          "schema": {
+            "$ref": "#/definitions/error"
+          }
+        }
+      }
+    }
+      },
+      "/customer/updateProfile": {
+    "put": {
+      "tags": ["Admin Module"],
+      "security": [{ "Bearer": [] }],
+      "summary": "update admin Details",
+      "parameters": [
+        {
+          "name": "adminId",
+          "in": "query",
+          "type": "string"
+        },
+        {
+          "name": "adminUpdate",
+          "in": "body",
+          "schema": {
+            "$ref": "#/definitions/customerUpdate"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Return a JSON response with submitted Aman form details.",
+          "schema": { "$ref": "#/definitions/response" }
+        },
+        "404": {
+          "description": "Validation failure.",
+          "schema": {
+            "$ref": "#/definitions/validationError"
+          }
+        },
+        "default": {
+          "description": "Unexpected error.",
+          "schema": {
+            "$ref": "#/definitions/error"
+          }
+        }
+      }
+    }
+      },
+      "/customer/getProfile": {
+    "get": {
+      "tags": ["Admin Module"],
+      "security": [{ "Bearer": [] }],
+      "summary": "get admin details",
+      "parameters": [
+        {
+          "name": "customerId",
+          "in": "query",
+          "type": "string"
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Return a JSON response with submitted Aman form details.",
+          "schema": { "$ref": "#/definitions/response" }
+        },
+        "404": {
+          "description": "Validation failure.",
+          "schema": {
+            "$ref": "#/definitions/validationError"
+          }
+        },
+        "default": {
+          "description": "Unexpected error.",
+          "schema": {
+            "$ref": "#/definitions/error"
+          }
+        }
+      }
+    }
+      },
+      "/customer/list": {
+    "get": {
+      "tags": ["Admin Module"],
+      "security": [{ "Bearer": [] }],
+      "summary": "List all admin",
+      "parameters": [
+        {
+          "name": "limit",
+          "in": "query",
+          "type": "number"
+        },
+        {
+          "name": "page",
+          "in": "query",
+          "type": "number"
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Return a JSON response with submitted Aman form details.",
+          "schema": { "$ref": "#/definitions/response" }
+        },
+        "404": {
+          "description": "Validation failure.",
+          "schema": {
+            "$ref": "#/definitions/validationError"
+          }
+        },
+        "default": {
+          "description": "Unexpected error.",
+          "schema": {
+            "$ref": "#/definitions/error"
+          }
+        }
+      }
+    }
+      },
+     "/customer/delete": {
+    "delete": {
+      "tags": ["Admin Module"],
+      "security": [{ "Bearer": [] }],
+      "summary": "delete Admin",
+      "parameters": [
+        {
+          "name": "customerId",
+          "in": "query",
+          "type": "string"
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Return a JSON response with submitted Aman form details.",
+          "schema": { "$ref": "#/definitions/response" }
+        },
+        "404": {
+          "description": "Validation failure.",
+          "schema": {
+            "$ref": "#/definitions/validationError"
+          }
+        },
+        "default": {
+          "description": "Unexpected error.",
+          "schema": {
+            "$ref": "#/definitions/error"
+          }
+        }
+      }
+    }
+     }
+}
+    ,
+    "definitions": {
+      "error": {
+        "type": "object",
+        "properties": {
+          "code": { "type": "string" },
+          "details": { "type": "string" },
+          "message": { "type": "string" }
+        }
+      },
+      "response": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string"
+          }
+        }
+      },
+      "validationError": {
+        "type": "object",
+        "properties": {
+          "code": { "type": "string" },
+          "message": { "type": "string" }
+        }
+      },
+      "adminCreate": {
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "mobileNumber": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          },
+          "isActive": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "adminUpdate": {
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "mobileNumber": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          },
+          "isActive": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "adminLogin": {
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "customerCreate": {
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "mobileNumber": {
+            "type": "string"
+          },
+          "isActive": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "customerUpdate": {
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "mobileNumber": {
+            "type": "string"
+          },
+          "isActive": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "customerLogin": {
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "verifyOTP": {
+        "properties": {
+          "mobileNumber": {
+            "type": "string"
+          },
+          "otp": {
+            "type": "string"
+          }
+        }
+      },
+      "sendOTP": {
+        "properties": {
+          "mobileNumber": {
+            "type": "string"
+          },
+          "otp": {
+            "type": "string"
+          }
+        }
+      }
+
+    }
+  }
+  
