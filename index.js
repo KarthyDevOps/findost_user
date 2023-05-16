@@ -39,15 +39,12 @@ app.use((req,res,next)=>{
 })
 
 //DB connection 
+const connectToMongo = async () => {
+  await mongoose.connect(process.env.MONGO_URL);
+  console.log("Connected to MongoDB");
+};
 
-const connectOptions = {
-    useNewUrlParser:true,
-    autoIndex:true
-}
-mongoose.connect(process.env.MONGO_URL, connectOptions,(e)=>{
-    e ? console.log(e) :  console.log("DB CONNECTED SUCESSFULLY!!....")
-})
-
+connectToMongo();
 //initiative aws s3 bucket
 instantiateAWSS3();
 
