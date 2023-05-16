@@ -17,6 +17,7 @@ const {
   updateAdminProfileByEmail,
   getAdminProfile,
 } = require("../helpers");
+const { InternalServices } = require("../apiServices");
 //const { Department } = require("../models/departments");
 
 // admin related api's
@@ -159,6 +160,15 @@ const resetPasswordService = async (params) => {
       data: [],
     };
   }
+  let token = await createToken(result.data, '3h');
+  let url = await process.env.FE_URL + process.env.ADMIN_RESET_PATH + token;
+
+  InternalServices.sendEmail({
+    to: params.email,
+    subject: "Reset Password",
+    template: "forgot_password",
+    url: url
+})
   const password = params?.password;
   if (adminDetails.status) {
     //encrypt given original password by bcrypt
@@ -190,6 +200,19 @@ const resetPasswordService = async (params) => {
     };
   }
 };
+
+
+const createToken = async (user, expiry) =>{
+  
+    try {
+    
+        }
+     catch (error) {
+        console.log("error", error);
+        throw new Error(error);
+    }
+}
+
 
 const addAdminService = async (params) => {
   //verify the given admin already exist or not
@@ -245,6 +268,7 @@ const updateAdminProfileService = async (params) => {
   var query = { $set: params };
 
   //update admin details into admins table
+  console.log('query-->', query)
   const result = await Admin.updateOne({ _id: adminId }, query);
   if (!result.modifiedCount) {
     return {

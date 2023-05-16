@@ -46,6 +46,10 @@ const adminSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
+    permissions: {
+      type: Object,
+      required: false,
+    },
     role: {
       type: String,
       required: false,

@@ -66,8 +66,12 @@ const verifyCustomerToken = async (req, res, next) => {
 
 const verifyAdminToken = async (req, res, next) => {
   try {
-    const a = req.header("Authorization") || req.header("token");
     if (req.header("Authorization")) {
+      console.log("timimh")
+      // const token = req.header("Authorization") || req.header("token");
+      // console.log('decode._id', first)
+
+      console.log("data -->");
       const token = req.header("Authorization").replace("Bearer ", "");
       let decode, user;
       try {
@@ -76,17 +80,17 @@ const verifyAdminToken = async (req, res, next) => {
           _id: decode._id,
           //token: token,
         });
+        console.log("user", user);
         req.user = user;
-      //  req.user.userType = "admin";
+        //  req.user.userType = "admin";
       } catch {
-          decode = jwt.verify(token, process.env.JWT_CUSTOMER_SECRET);
-          user = await Customers.findOne({
-            _id: decode._id,
-           // token: token,
-          });
-          req.user = user;
+        decode = jwt.verify(token, process.env.JWT_CUSTOMER_SECRET);
+        user = await Customers.findOne({
+          _id: decode._id,
+          // token: token,
+        });
+        req.user = user;
         //  req.user.userType = "customer";
-         
       }
 
       if (!user) {

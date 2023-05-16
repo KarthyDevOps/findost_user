@@ -149,6 +149,7 @@ const getAdminProfile = async (req, res) => {
 };
 
 const updateAdminProfile = async (req, res) => {
+ 
   const params = req.body;
   params.adminId = req?.query?.adminId || req.user._id.toString();
   params.updatedBy = req?.user?._id?.toString();
