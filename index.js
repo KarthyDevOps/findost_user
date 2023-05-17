@@ -11,7 +11,6 @@ const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./app/swagger/swagger.json");
 const app = express();
 const { instantiateAWSS3 } = require("./app/externalServices/awsService.js");
-const swaggerDocument = require("./app/swagger/swagger.json");
 
 
 //swagger setup
