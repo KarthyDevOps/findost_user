@@ -12,6 +12,7 @@ const swaggerDocument = require("./app/swagger/swagger.json");
 const app = express();
 const { instantiateAWSS3 } = require("./app/externalServices/awsService.js");
 
+
 //swagger setup
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
@@ -54,7 +55,7 @@ instantiateAWSS3();
 
 const port = process.env.PORT;
 
-app.use("user/api", routerService);
+app.use("/user/api", routerService);
 
 app.listen(port, () => {
   console.log(
