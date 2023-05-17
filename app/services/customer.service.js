@@ -141,7 +141,7 @@ const {
       return {
         status: false,
         statusCode: statusCodes?.HTTP_BAD_REQUEST,
-        message: messages?.truckerExists,
+        message: messages?.customerExists,
         data: [],
       };
     }

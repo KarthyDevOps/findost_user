@@ -101,8 +101,8 @@ const customerverifyOTP = async (req, res) => {
 
 const addCustomer = async (req, res) => {
   const params = req.body;
-  params.createdBy =  req?.user?._id?.toString() || mongoose.Types.ObjectId("64631448ebfae840423f4d16");
-  params.updatedBy = req?.user?._id?.toString() || mongoose.Types.ObjectId("64631448ebfae840423f4d16");
+  params.createdBy =  req?.user?._id?.toString() || new mongoose.Types.ObjectId("64631448ebfae840423f4d16");
+  params.updatedBy = req?.user?._id?.toString() || new mongoose.Types.ObjectId("64631448ebfae840423f4d16");
   params.lastUpdatedBy = req?.user?.userType;
   const result = await addCustomerService(req, params);
   if (!result.status) {
