@@ -7,31 +7,13 @@ const {
 const {
   addCustomerService,
   customerLoginService,
-  customerLogoutService,
   updateCustomerProfileService,
   customerVerifyOTPService,
   getCustomerProfileService,
   customerListService,
   deleteCustomerService,
-  addCustomerAddressService,
-  updateCustomerAddressService,
-  customerAddressListService,
-  getCustomerAddressService,
-  deleteCustomerAddressService,
-  setDefaultCustomerAddressService,
-  exportCustomerService,
-  premiumCustomerListService,
-  feedbackListService,
-  addContactUsService,
-  updateContactUsService,
-  ContactUsListService,
-  getContactUsService,
   customerLoginByIdService,
-  deleteContactUsService,
-  addCustomerFeedbackService,
-  updateCustomerFeedbackService,
-  getCustomerFeedbackService,
-  deleteCustomerFeedbackService,
+
 } = require("../services/customer.service");
 
 //customer profile related api's
