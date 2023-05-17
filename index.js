@@ -8,6 +8,7 @@ const bodyParser = require("body-parser");
 const routerService = require("./app/router/router");
 const { errHandle } = require("./app/middlewares/errorHandler");
 const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("./app/swagger/swagger.json");
 const app = express();
 const { instantiateAWSS3 } = require("./app/externalServices/awsService.js");
 
