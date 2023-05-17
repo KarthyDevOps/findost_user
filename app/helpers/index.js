@@ -140,6 +140,20 @@ const getAdminProfile = async (params) => {
   }
 };
 
+const getProfileById = async (params) => {
+
+  //get admin details
+  const data = await Admin.find( {$or: [{ _id: params?.id }, { adminId: params?.adminId }],isDeleted:false}).lean();
+
+  //return object based on admin already exist or not
+  if (data && Object.keys(data).length) {
+    return { status: true, data: data };
+  } else {
+    return { status: false, data: {} };
+  }
+};
+
+
 const getAdminList = async (params) => {
   let data,
     payload = { isDeleted: false };
@@ -299,6 +313,7 @@ module.exports = {
   getAdminDetailsById,
   getAdminProfile,
   getAdminList,
+  getProfileById,
   updateAdminProfileByEmail,
   customerbyId,
   getCustomerList,

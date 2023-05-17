@@ -35,7 +35,7 @@ const {
   addAdmin,
   deleteAdmin,
   adminList,
-
+  getProfile,
   verifyOTP,
   sendOTP,
   resetPassword,
@@ -65,11 +65,8 @@ router.post(
   errHandle(resetPassword)
 );
 router.post(routes.v1.admin.addProfile, [addAdminSchema], errHandle(addAdmin));
-router.get(
-  routes.v1.admin.getProfile,
-  [verifyAdminToken, getAdminProfileSchema],
-  errHandle(getAdminProfile)
-);
+router.get(routes.v1.admin.getProfile,[verifyAdminToken, getAdminProfileSchema],  errHandle(getAdminProfile));
+router.get(routes.v1.admin.getAdmin,errHandle(getProfile));
 router.put(
   routes.v1.admin.updateProfile,
   [verifyAdminToken, updateAdminProfileSchema],

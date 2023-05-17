@@ -4,6 +4,7 @@ const routes = {
       login: "/v1/admin/login",
       addProfile: "/v1/admin/addProfile",
       getProfile: "/v1/admin/getProfile",
+      getAdmin: "/v1/admin/getAdmin",
       updateProfile: "/v1/admin/updateProfile",
       delete: "/v1/admin/delete",
       list: "/v1/admin/list",

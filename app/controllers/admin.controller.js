@@ -10,7 +10,7 @@ const {
   deleteAdminService,
   updateAdminProfileService,
   getAdminProfileService,
-
+  getAdminProfileByIdService,
   resetPasswordService,
   sendOTPService,
   verifyOTPService,
@@ -148,6 +148,31 @@ const getAdminProfile = async (req, res) => {
   );
 };
 
+const getProfile = async (req, res) => {
+  let params = {};
+  params.adminId = req?.query?.adminId;
+  params.id = req?.query?.id
+  const result = await getAdminProfileByIdService(params);
+  if (!result.status) {
+    return sendErrorResponse(
+      req,
+      res,
+      result?.statusCode,
+      result?.message,
+      result?.data
+    );
+  }
+  return sendSuccessResponse(
+    req,
+    res,
+    result?.statusCode,
+    result?.message,
+    result?.data
+  );
+};
+
+
+
 const updateAdminProfile = async (req, res) => {
  
   const params = req.body;
@@ -225,6 +250,7 @@ module.exports = {
   resetPassword,
   addAdmin,
   getAdminProfile,
+  getProfile,
   updateAdminProfile,
   adminList,
   deleteAdmin,
