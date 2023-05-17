@@ -66,12 +66,10 @@ router.get(routes.v1.admin.list,[verifyAdminToken, adminListSchema],errHandle(ad
 
 // authorizedPerson related api's
 router.post(routes.v1.customers.login,[customersloginSchema],errHandle(customerLogin)); //authorizedPerson login using mobileNumber
-router.post(routes.v1.customers.sendOTP,[customersforgotPasswordSchema], errHandle(customerLogin));
-router.post(routes.v1.customers.verifyOTP,[customersVerifyOTPSchema],errHandle(customerverifyOTP));
-
-//authorized person login via id and password
-router.post(routes.v1.customers.loginById,[customersloginbyIdSchema], errHandle(customerLoginById));
-router.post(routes.v1.customers.forgotPasswordverifyOTP,[forgotPasswordVerifyOTPSchema],errHandle(customerverifyOTP));
+router.post(routes.v1.customers.verifyOTP,[customersVerifyOTPSchema],errHandle(customerverifyOTP));//authorized person verify Otp through mobileNumber
+router.post(routes.v1.customers.sendOTP,[customersforgotPasswordSchema], errHandle(customerLogin)); //authorized person send Otp through customerID
+router.post(routes.v1.customers.forgotPasswordverifyOTP,[forgotPasswordVerifyOTPSchema],errHandle(customerverifyOTP)); //authorized person verify Otp through customerID
+router.post(routes.v1.customers.loginById,[customersloginbyIdSchema], errHandle(customerLoginById));//authorized person login via id and password
 router.post(routes.v1.customers.addProfile,[addCustomerSchema], errHandle(addCustomer));
 router.get(routes.v1.customers.getProfile,  [verifyCustomerToken, getCustomerProfileSchema],errHandle(getCustomerProfile));
 router.put(routes.v1.customers.updateProfile,[verifyCustomerToken, updateCustomerProfileSchema],errHandle(updateCustomerProfile));
