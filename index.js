@@ -10,6 +10,7 @@ const { errHandle } = require("./app/middlewares/errorHandler");
 const swaggerUi = require("swagger-ui-express");
 const app = express();
 const { instantiateAWSS3 } = require("./app/externalServices/awsService.js");
+const swaggerDocument = require("./app/swagger/swagger.json");
 
 
 //swagger setup
