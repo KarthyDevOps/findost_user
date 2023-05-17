@@ -54,7 +54,7 @@ instantiateAWSS3();
 
 const port = process.env.PORT;
 
-app.use("/api", routerService);
+app.use("user/api", routerService);
 
 app.listen(port, () => {
   console.log(

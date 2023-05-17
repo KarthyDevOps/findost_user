@@ -96,7 +96,7 @@ adminSchema.methods.generateAuthToken = async function (department) {
       profileURL: admin.profileURL ? admin.profileURL.toString() : "",
     },
     process.env.JWT_ADMIN_SECRET,
-    { expiresIn: process.env.TOKEN_EXPIRATION }
+  //  { expiresIn: process.env.TOKEN_EXPIRATION }
   );
   admin.token = token;
   await admin.save();

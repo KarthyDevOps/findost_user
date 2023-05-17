@@ -75,7 +75,9 @@ const verifyAdminToken = async (req, res, next) => {
       const token = req.header("Authorization").replace("Bearer ", "");
       let decode, user;
       try {
+
         decode = jwt.verify(token, process.env.JWT_ADMIN_SECRET);
+        console.log('decode._id', decode)
         user = await Admin.findOne({
           _id: decode._id,
           //token: token,
