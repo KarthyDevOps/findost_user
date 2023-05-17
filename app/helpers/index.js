@@ -1,5 +1,5 @@
 const { Admin } = require("../models/admin");
-const { Customers } = require("../models/customers");
+const { authorizedPersons } = require("../models/authorizedPersons");
 
 const json2csv = require("json2csv").parse;
 
@@ -20,7 +20,10 @@ const pageMetaService = async (params, count) => {
   }
 };
 
-const sendOTP_to_mobileNumber = async (mobileNumber, type = "customer") => {
+const sendOTP_to_mobileNumber = async (
+  mobileNumber,
+  type = "authorizedPerson"
+) => {
   if (mobileNumber) {
     return 1234;
   }
@@ -38,15 +41,19 @@ const errHandle = (fn) => (req, res, next) => {
   Promise.resolve(fn(req, res, next)).catch(next);
 };
 
-//customer related functions
+//authorizedPerson related functions
 
-const getCustomerDetailsByEmail_or_MobileNumber = async (params) => {
-  //get customer details by email or mobileNumber
-  const data = await Customers.findOne({
-    $or: [{ email: params?.email }, { mobileNumber: params?.mobileNumber },{customerId:params?.customerId}],
+const getauthorizedPersonDetailsByEmail_or_MobileNumber = async (params) => {
+  //get authorizedPerson details by email or mobileNumber
+  const data = await authorizedPersons.findOne({
+    $or: [
+      { email: params?.email },
+      { mobileNumber: params?.mobileNumber },
+      { authorizedPersonId: params?.authorizedPersonId },
+    ],
   });
 
-  //return object based on customer already exist or not
+  //return object based on authorizedPerson already exist or not
   if (data && Object.keys(data).length) {
     return { status: true, data: data };
   } else {
@@ -54,11 +61,13 @@ const getCustomerDetailsByEmail_or_MobileNumber = async (params) => {
   }
 };
 
-const customerbyId = async (params) => {
-  //get customer details by email or mobileNumber
-  const data = await Customers.findOne({ customerId: params?.customerId });
+const authorizedPersonbyId = async (params) => {
+  //get authorizedPerson details by email or mobileNumber
+  const data = await authorizedPersons.findOne({
+    authorizedPersonId: params?.authorizedPersonId,
+  });
 
-  //return object based on customer already exist or not
+  //return object based on authorizedPerson already exist or not
   if (data && Object.keys(data).length) {
     return { status: true, data: data };
   } else {
@@ -66,15 +75,15 @@ const customerbyId = async (params) => {
   }
 };
 
-const getCustomerDetailsById = async (params) => {
+const getauthorizedPersonDetailsById = async (params) => {
   console.log("params");
-  //get customer details by id
-  const data = await Customers.findOne({
-    $or: [{ _id: params?._id }, { _id: params?.customerId }],
-    isDeleted:false
+  //get authorizedPerson details by id
+  const data = await authorizedPersons.findOne({
+    $or: [{ _id: params?._id }, { _id: params?.authorizedPersonId }],
+    isDeleted: false,
   });
   console.log("data", data);
-  //return object based on customer already exist or not
+  //return object based on authorizedPerson already exist or not
   if (data && Object.keys(data).length) {
     return { status: true, data: data };
   } else {
@@ -82,20 +91,20 @@ const getCustomerDetailsById = async (params) => {
   }
 };
 
-const getCustomerList = async () => {
-  const data = await Customers.find({
-    isDeleted:false
+const getauthorizedPersonList = async () => {
+  const data = await authorizedPersons.find({
+    isDeleted: false,
   });
-  if(data.length > 0){
+  if (data.length > 0) {
     return {
-      status:true,
-      data:data
-    }
+      status: true,
+      data: data,
+    };
   }
   return {
-    status:false,
-    data : {}
-  }
+    status: false,
+    data: {},
+  };
 };
 
 // admin related functions
@@ -141,9 +150,11 @@ const getAdminProfile = async (params) => {
 };
 
 const getProfileById = async (params) => {
-
   //get admin details
-  const data = await Admin.findOne( {$or: [{ _id: params?.id }, { adminId: params?.adminId }],isDeleted:false}).lean();
+  const data = await Admin.findOne({
+    $or: [{ _id: params?.id }, { adminId: params?.adminId }],
+    isDeleted: false,
+  }).lean();
 
   //return object based on admin already exist or not
   if (data && Object.keys(data).length) {
@@ -152,7 +163,6 @@ const getProfileById = async (params) => {
     return { status: false, data: {} };
   }
 };
-
 
 const getAdminList = async (params) => {
   let data,
@@ -286,10 +296,10 @@ const convert_JSON_to_file = async (res, data, params) => {
   let type = params?.type;
   //json data into csv file
   const csvString = json2csv(data?.data);
-  if (type == "customer") {
+  if (type == "authorizedPerson") {
     res.setHeader(
       "Content-disposition",
-      "attachment; filename=Customer Export.csv"
+      "attachment; filename=authorizedPerson Export.csv"
     );
   } else if (type == "trucker") {
     res.setHeader(
@@ -307,15 +317,15 @@ module.exports = {
   sendOTP_to_mobileNumber,
   sendOTP_to_email,
   errHandle,
-  getCustomerDetailsByEmail_or_MobileNumber,
-  getCustomerDetailsById,
+  getauthorizedPersonDetailsByEmail_or_MobileNumber,
+  getauthorizedPersonDetailsById,
   getAdminDetailsByEmail_or_MobileNumber,
   getAdminDetailsById,
   getAdminProfile,
   getAdminList,
   getProfileById,
   updateAdminProfileByEmail,
-  customerbyId,
-  getCustomerList,
+  authorizedPersonbyId,
+  getauthorizedPersonList,
   convert_JSON_to_file,
 };

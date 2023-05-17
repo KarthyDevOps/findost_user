@@ -3,26 +3,26 @@ const { Admin } = require("../models/admin");
 const { sendErrorResponse } = require("../response/response");
 const { statusCodes } = require("../response/httpStatusCodes");
 const { messages } = require("../response/customMessages");
-const { Customers } = require("../models/customers");
+const { authorizedPersons } = require("../models/authorizedPersons");
 
-
-
-const verifyCustomerToken = async (req, res, next) => {
+const verifyauthorizedPersonToken = async (req, res, next) => {
   try {
     if (req.header("Authorization")) {
       const token = req.header("Authorization").replace("Bearer ", "");
       let decode, user;
 
-      //custtomer profile can access by both customer and admin. So we should allow both users
+      //custtomer profile can access by both authorizedPerson and admin. So we should allow both users
       try {
-        //token authorization by customer
-        decode = jwt.verify(token, process.env.JWT_CUSTOMER_SECRET);
-        user = await Customers.findOne({
-          _id: decode._id,
-          //token: token,
-        }).lean();
+        //token authorization by authorizedPerson
+        decode = jwt.verify(token, process.env.JWT_authorizedPerson_SECRET);
+        user = await authorizedPersons
+          .findOne({
+            _id: decode._id,
+            //token: token,
+          })
+          .lean();
         req.user = user;
-        req.user.userType = "customer";
+        req.user.userType = "authorizedPerson";
       } catch (e) {
         //token authorization by admin
         decode = jwt.verify(token, process.env.JWT_ADMIN_SECRET);
@@ -67,7 +67,7 @@ const verifyCustomerToken = async (req, res, next) => {
 const verifyAdminToken = async (req, res, next) => {
   try {
     if (req.header("Authorization")) {
-      console.log("timimh")
+      console.log("timimh");
       // const token = req.header("Authorization") || req.header("token");
       // console.log('decode._id', first)
 
@@ -75,9 +75,8 @@ const verifyAdminToken = async (req, res, next) => {
       const token = req.header("Authorization").replace("Bearer ", "");
       let decode, user;
       try {
-
         decode = jwt.verify(token, process.env.JWT_ADMIN_SECRET);
-        console.log('decode._id', decode)
+        console.log("decode._id", decode);
         user = await Admin.findOne({
           _id: decode._id,
           //token: token,
@@ -86,13 +85,13 @@ const verifyAdminToken = async (req, res, next) => {
         req.user = user;
         //  req.user.userType = "admin";
       } catch {
-        decode = jwt.verify(token, process.env.JWT_CUSTOMER_SECRET);
-        user = await Customers.findOne({
+        decode = jwt.verify(token, process.env.JWT_authorizedPerson_SECRET);
+        user = await authorizedPersons.findOne({
           _id: decode._id,
           // token: token,
         });
         req.user = user;
-        //  req.user.userType = "customer";
+        //  req.user.userType = "authorizedPerson";
       }
 
       if (!user) {
@@ -125,5 +124,4 @@ const verifyAdminToken = async (req, res, next) => {
   }
 };
 
-
-module.exports = { verifyAdminToken, verifyCustomerToken };
+module.exports = { verifyAdminToken, verifyauthorizedPersonToken };

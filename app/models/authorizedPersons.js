@@ -3,16 +3,16 @@ var Schema = mongoose.Schema;
 const jwt = require("jsonwebtoken");
 const { string } = require("joi");
 
-const customersSchema = new mongoose.Schema(
+const authorizedPersonsSchema = new mongoose.Schema(
   {
-    customerId: {
+    authorizedPersonId: {
       type: String,
       required: true,
       unique: true,
       trim: true,
       default: () => {
         const now = Date.now().toString();
-        return  now.slice(0, 3) + now.slice(10, 13);
+        return now.slice(0, 3) + now.slice(10, 13);
       },
     },
     mobileNumber: {
@@ -70,57 +70,62 @@ const customersSchema = new mongoose.Schema(
   }
 );
 
-customersSchema.methods.toJSON = function () {
-  const customers = this;
-  const customersObject = customers.toObject();
-  delete customersObject.otp;
-  //delete customersObject.token;
-  return customersObject;
+authorizedPersonsSchema.methods.toJSON = function () {
+  const authorizedPersons = this;
+  const authorizedPersonsObject = authorizedPersons.toObject();
+  delete authorizedPersonsObject.otp;
+  //delete authorizedPersonsObject.token;
+  return authorizedPersonsObject;
 };
-customersSchema.methods.generateAuthToken = async function () {
-  const customers = this;
+authorizedPersonsSchema.methods.generateAuthToken = async function () {
+  const authorizedPersons = this;
   const token = jwt.sign(
     {
-      _id: customers._id ? customers._id.toString() : "",
-      name: customers.name ? customers.name.toString() : "",
-      email: customers.email ? customers.email.toString() : "",
-      mobileNumber: customers.mobileNumber
-        ? customers.mobileNumber.toString()
+      _id: authorizedPersons._id ? authorizedPersons._id.toString() : "",
+      name: authorizedPersons.name ? authorizedPersons.name.toString() : "",
+      email: authorizedPersons.email ? authorizedPersons.email.toString() : "",
+      mobileNumber: authorizedPersons.mobileNumber
+        ? authorizedPersons.mobileNumber.toString()
         : "",
-      profileURL: customers.profileURL ? customers.profileURL.toString() : "",
+      profileURL: authorizedPersons.profileURL
+        ? authorizedPersons.profileURL.toString()
+        : "",
     },
-    process.env.JWT_CUSTOMER_SECRET,
+    process.env.JWT_authorizedPerson_SECRET,
 
     { expiresIn: process.env.TOKEN_EXPIRATION }
   );
-  customers.token = token;
-  await customers.save();
+  authorizedPersons.token = token;
+  await authorizedPersons.save();
   return token;
 };
 
 /*
-customersSchema.statics.findByCredentials = async (
+authorizedPersonsSchema.statics.findByCredentials = async (
     mobileNumber,
     otp = undefined
 ) => {
-    const customers = await Customers.findOne({
+    const authorizedPersons = await authorizedPersons.findOne({
         mobileNumber
     });
     if (otp) {
-        const isMatch = await bcrypt.compare(otp, customers.otp);
+        const isMatch = await bcrypt.compare(otp, authorizedPersons.otp);
         if (!isMatch) {
             throw invalidOtp;
         }
-        return customers;
+        return authorizedPersons;
     } else {
-        if (!customers) {
+        if (!authorizedPersons) {
             throw invalidMobileNumber;
         }
-        return customers;
+        return authorizedPersons;
     }
 };
 */
 
-const Customers = mongoose.model("customers", customersSchema);
-// export default Customers;
-module.exports = { Customers };
+const authorizedPersons = mongoose.model(
+  "authorizedPersons",
+  authorizedPersonsSchema
+);
+// export default authorizedPersons;
+module.exports = { authorizedPersons };

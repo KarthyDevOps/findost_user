@@ -5,22 +5,21 @@ const {
 } = require("../response/response");
 
 const {
-  addCustomerService,
-  customerLoginService,
-  updateCustomerProfileService,
-  customerVerifyOTPService,
-  getCustomerProfileService,
-  customerListService,
-  deleteCustomerService,
-  customerLoginByIdService,
+  addauthorizedPersonService,
+  authorizedPersonLoginService,
+  updateauthorizedPersonProfileService,
+  authorizedPersonVerifyOTPService,
+  getauthorizedPersonProfileService,
+  authorizedPersonListService,
+  deleteauthorizedPersonService,
+  authorizedPersonLoginByIdService,
+} = require("../services/authorizedPerson.service");
 
-} = require("../services/customer.service");
+//authorizedPerson profile related api's
 
-//customer profile related api's
-
-const customerLogin = async (req, res) => {
+const authorizedPersonLogin = async (req, res) => {
   const params = req.body;
-  const result = await customerLoginService(params);
+  const result = await authorizedPersonLoginService(params);
   if (!result.status) {
     return sendErrorResponse(
       req,
@@ -39,9 +38,9 @@ const customerLogin = async (req, res) => {
   );
 };
 
-const customerLoginById = async (req, res) => {
+const authorizedPersonLoginById = async (req, res) => {
   const params = req.body;
-  const result = await customerLoginByIdService(params);
+  const result = await authorizedPersonLoginByIdService(params);
   if (!result.status) {
     return sendErrorResponse(
       req,
@@ -60,9 +59,9 @@ const customerLoginById = async (req, res) => {
   );
 };
 
-const customerverifyOTP = async (req, res) => {
+const authorizedPersonverifyOTP = async (req, res) => {
   const params = req.body;
-  const result = await customerVerifyOTPService(params);
+  const result = await authorizedPersonVerifyOTPService(params);
   if (!result.status) {
     return sendErrorResponse(
       req,
@@ -81,12 +80,16 @@ const customerverifyOTP = async (req, res) => {
   );
 };
 
-const addCustomer = async (req, res) => {
+const addauthorizedPerson = async (req, res) => {
   const params = req.body;
-  params.createdBy =  req?.user?._id?.toString() || new mongoose.Types.ObjectId("64631448ebfae840423f4d16");
-  params.updatedBy = req?.user?._id?.toString() || new mongoose.Types.ObjectId("64631448ebfae840423f4d16");
+  params.createdBy =
+    req?.user?._id?.toString() ||
+    new mongoose.Types.ObjectId("64631448ebfae840423f4d16");
+  params.updatedBy =
+    req?.user?._id?.toString() ||
+    new mongoose.Types.ObjectId("64631448ebfae840423f4d16");
   params.lastUpdatedBy = req?.user?.userType;
-  const result = await addCustomerService(req, params);
+  const result = await addauthorizedPersonService(req, params);
   if (!result.status) {
     return sendErrorResponse(
       req,
@@ -105,12 +108,13 @@ const addCustomer = async (req, res) => {
   );
 };
 
-const getCustomerProfile = async (req, res) => {
+const getauthorizedPersonProfile = async (req, res) => {
   console.log("data");
   let params = {};
-  params.customerId = req?.query?.customerId || req.user._id.toString();
+  params.authorizedPersonId =
+    req?.query?.authorizedPersonId || req.user._id.toString();
   console.log("enter");
-  const result = await getCustomerProfileService(params);
+  const result = await getauthorizedPersonProfileService(params);
   if (!result.status) {
     return sendErrorResponse(
       req,
@@ -129,12 +133,13 @@ const getCustomerProfile = async (req, res) => {
   );
 };
 
-const updateCustomerProfile = async (req, res) => {
+const updateauthorizedPersonProfile = async (req, res) => {
   const params = req.body;
-  params.customerId = req?.query?.customerId || req.user._id.toString();
+  params.authorizedPersonId =
+    req?.query?.authorizedPersonId || req.user._id.toString();
   params.updatedBy = req?.user?._id?.toString();
   params.lastUpdatedBy = req?.user?.userType;
-  const result = await updateCustomerProfileService(params);
+  const result = await updateauthorizedPersonProfileService(params);
   if (!result.status) {
     return sendErrorResponse(
       req,
@@ -153,9 +158,9 @@ const updateCustomerProfile = async (req, res) => {
   );
 };
 
-const customerList = async (req, res) => {
+const authorizedPersonList = async (req, res) => {
   const params = req?.query;
-  const result = await customerListService(params);
+  const result = await authorizedPersonListService(params);
   if (!result.status) {
     return sendErrorResponse(
       req,
@@ -174,12 +179,13 @@ const customerList = async (req, res) => {
   );
 };
 
-const deleteCustomer = async (req, res) => {
+const deleteauthorizedPerson = async (req, res) => {
   const params = req.body;
-  params.customerId = req?.query?.customerId || req.user._id.toString();
+  params.authorizedPersonId =
+    req?.query?.authorizedPersonId || req.user._id.toString();
   params.updatedBy = req?.user?._id?.toString();
   params.lastUpdatedBy = req?.user?.userType;
-  const result = await deleteCustomerService(params);
+  const result = await deleteauthorizedPersonService(params);
   if (!result.status) {
     return sendErrorResponse(
       req,
@@ -199,13 +205,13 @@ const deleteCustomer = async (req, res) => {
 };
 
 module.exports = {
-  customerLogin,
-  customerverifyOTP,
-  addCustomer,
-  customerLoginById,
-  getCustomerProfile,
-  updateCustomerProfile,
-  customerList,
+  authorizedPersonLogin,
+  authorizedPersonverifyOTP,
+  addauthorizedPerson,
+  authorizedPersonLoginById,
+  getauthorizedPersonProfile,
+  updateauthorizedPersonProfile,
+  authorizedPersonList,
 
-  deleteCustomer,
+  deleteauthorizedPerson,
 };

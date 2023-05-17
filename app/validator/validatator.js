@@ -134,28 +134,28 @@ const resetPasswordSchema = (req, res, next) => {
   return bodyParamValidation(req, res, next, schema);
 };
 
-const customersloginSchema = (req, res, next) => {
+const authorizedPersonloginSchema = (req, res, next) => {
   const schema = joi.object({
     mobileNumber: joi.string().min(10).max(10).required(),
   });
   return bodyParamValidation(req, res, next, schema);
 };
-const customersloginbyIdSchema = (req, res, next) => {
+const authorizedPersonloginbyIdSchema = (req, res, next) => {
   const schema = joi.object({
-    customerId: joi.string().min(6).max(6).required(),
+    authorizedPersonId: joi.string().min(6).max(6).required(),
     password: joi.string().min(8).max(10).required(),
   });
   return bodyParamValidation(req, res, next, schema);
 };
 
-const customersforgotPasswordSchema = (req, res, next) => {
+const authorizedPersonforgotPasswordSchema = (req, res, next) => {
   const schema = joi.object({
-    customerId: joi.string().min(6).max(8).required(),
+    authorizedPersonId: joi.string().min(6).max(8).required(),
   });
   return bodyParamValidation(req, res, next, schema);
 };
 
-const customersVerifyOTPSchema = (req, res, next) => {
+const authorizedPersonVerifyOTPSchema = (req, res, next) => {
   const schema = joi.object({
     mobileNumber: joi.string().required().min(10).max(10),
     otp: joi.number().required(),
@@ -165,14 +165,13 @@ const customersVerifyOTPSchema = (req, res, next) => {
 
 const forgotPasswordVerifyOTPSchema = (req, res, next) => {
   const schema = joi.object({
-    customerId:joi.string().required().min(6).max(10),
+    authorizedPersonId: joi.string().required().min(6).max(10),
     otp: joi.number().required(),
   });
   return bodyParamValidation(req, res, next, schema);
 };
 
-
-const addCustomerSchema = (req, res, next) => {
+const addAuthorizedPersonSchema = (req, res, next) => {
   const schema = joi.object({
     name: joi.string().required(),
     // gender: joi.string().required(),
@@ -183,17 +182,17 @@ const addCustomerSchema = (req, res, next) => {
   return bodyParamValidation(req, res, next, schema);
 };
 
-const getCustomerProfileSchema = (req, res, next) => {
+const getAuthorizedPersonProfileSchema = (req, res, next) => {
   const schema = joi.object({
-    customerId: joi.string().required(),
+    authorizedPersonId: joi.string().required(),
   });
   return queryParamValidation(req, res, next, schema);
 };
 
-const updateCustomerProfileSchema = (req, res, next) => {
-  console.log("data-->")
+const updateAuthorizedPersonProfileSchema = (req, res, next) => {
+  console.log("data-->");
   const querySchema = joi.object({
-    customerId: joi.string().required(),
+    authorizedPersonId: joi.string().required(),
   });
   req.bodyParam = true;
   queryParamValidation(req, res, next, querySchema);
@@ -208,7 +207,7 @@ const updateCustomerProfileSchema = (req, res, next) => {
   return bodyParamValidation(req, res, next, schema);
 };
 
-const customerListSchema = (req, res, next) => {
+const authorizedPersonListSchema = (req, res, next) => {
   const schema = joi.object({
     search: joi.allow(null).allow(""),
     limit: joi.number().required(),
@@ -217,16 +216,8 @@ const customerListSchema = (req, res, next) => {
   return queryParamValidation(req, res, next, schema);
 };
 
-const getCustomerAddressSchema = (req, res, next) => {
-  const schema = joi.object({
-    addressId: joi.string().required(),
-  });
-  return queryParamValidation(req, res, next, schema);
-};
-
 module.exports = {
   adminloginSchema,
-
   addAdminSchema,
   getAdminProfileSchema,
   updateAdminProfileSchema,
@@ -234,14 +225,13 @@ module.exports = {
   sendOTPSchema,
   verifyOTPSchema,
   resetPasswordSchema,
-  customersloginSchema,
-  customersVerifyOTPSchema,
-  addCustomerSchema,
-  customersforgotPasswordSchema,
-  getCustomerProfileSchema,
+  authorizedPersonloginSchema,
+  authorizedPersonVerifyOTPSchema,
+  addAuthorizedPersonSchema,
+  authorizedPersonforgotPasswordSchema,
+  getAuthorizedPersonProfileSchema,
   forgotPasswordVerifyOTPSchema,
-  updateCustomerProfileSchema,
-  customerListSchema,
-  getCustomerAddressSchema,
-  customersloginbyIdSchema,
+  updateAuthorizedPersonProfileSchema,
+  authorizedPersonListSchema,
+  authorizedPersonloginbyIdSchema,
 };

@@ -13,20 +13,20 @@ const routes = {
       verifyOTP: "/v1/admin/verifyOTP",
       resetPassword: "/v1/admin/resetPassword",
     },
-    customers: {
-      login: "/v1/customer/login",
-      loginById: "/v1/customer/loginbyId",
-      sendOTP: "/v1/customer/sendOtp",
-      verifyOTP: "/v1/customer/verifyOTP",
-      forgotPasswordverifyOTP: "/v1/customer/forgotPassword/verifyOTP",
-      addProfile: "/v1/customer/addProfile",
-      getProfile: "/v1/customer/getProfile",
-      updateProfile: "/v1/customer/updateProfile",
-      delete: "/v1/customer/delete",
-      list: "/v1/customer/list",
-      logout: "/v1/customer/logout",
+    authorizedPerson: {
+      login: "/v1/authorizedPerson/login",
+      loginById: "/v1/authorizedPerson/loginbyId",
+      sendOTP: "/v1/authorizedPerson/sendOtp",
+      verifyOTP: "/v1/authorizedPerson/verifyOTP",
+      forgotPasswordverifyOTP: "/v1/authorizedPerson/forgotPassword/verifyOTP",
+      addProfile: "/v1/authorizedPerson/addProfile",
+      getProfile: "/v1/authorizedPerson/getProfile",
+      updateProfile: "/v1/authorizedPerson/updateProfile",
+      delete: "/v1/authorizedPerson/delete",
+      list: "/v1/authorizedPerson/list",
+      logout: "/v1/authorizedPerson/logout",
 
-      export: "/v1/customer/export",
+      export: "/v1/authorizedPerson/export",
     },
 
     aws: {
