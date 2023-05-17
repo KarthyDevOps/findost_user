@@ -4,6 +4,8 @@ const jwt = require("jsonwebtoken");
 
 const {ROLE_TYPE} = require('../constants')
 
+const {getImageURL} = require("../utils/s3Utils")
+
 const adminSchema = new mongoose.Schema(
   {
     adminId: {
@@ -45,6 +47,9 @@ const adminSchema = new mongoose.Schema(
     profileURL: {
       type: String,
       required: false,
+      get(value) {
+        return getImageURL(value);
+      }
     },
     permissions: {
       type: Object,
