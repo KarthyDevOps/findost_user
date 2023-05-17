@@ -39,8 +39,6 @@ const messages = {
   departmentAdded: "Department Added Successfully",
   addressAdded: "Address Added Successfully",
   addressNotExist: "Address Not Exists",
-  truckerAdded: "Trucker Added Successfully",
-  truckerExists: "Trucker Already Exists",
   dataNotFound: "Data not found",
 };
 module.exports = { customMessages, messages };

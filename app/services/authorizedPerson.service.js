@@ -140,7 +140,7 @@ const authorizedPersonVerifyOTPService = async (params) => {
 };
 
 const addauthorizedPersonService = async (req, params) => {
-  //verify the given trucker already exist or not
+  //verify the given person already exist or not
   const result = await getauthorizedPersonDetailsByEmail_or_MobileNumber(
     params
   );

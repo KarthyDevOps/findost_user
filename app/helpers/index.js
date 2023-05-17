@@ -267,7 +267,7 @@ const getAdminList = async (params) => {
   //   ]);
   // }
 
-  //return object based on trucker already exist or not
+  //return object based on person already exist or not
   if (data && data.length) {
     return { status: true, data: data };
   } else {
@@ -301,12 +301,13 @@ const convert_JSON_to_file = async (res, data, params) => {
       "Content-disposition",
       "attachment; filename=authorizedPerson Export.csv"
     );
-  } else if (type == "trucker") {
-    res.setHeader(
-      "Content-disposition",
-      "attachment; filename=Trucker Export.csv"
-    );
-  }
+  } 
+  // else if (type == "") { //need to change type
+  //   res.setHeader(
+  //     "Content-disposition",
+  //     "attachment; filename=Trucker Export.csv"
+  //   );
+  // }
   res.set("Content-Type", "text/csv");
   res.status(200).send(csvString);
   return;
