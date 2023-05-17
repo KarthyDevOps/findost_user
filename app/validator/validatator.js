@@ -148,6 +148,13 @@ const customersloginbyIdSchema = (req, res, next) => {
   return bodyParamValidation(req, res, next, schema);
 };
 
+const customersforgotPasswordSchema = (req, res, next) => {
+  const schema = joi.object({
+    customerId: joi.string().min(6).max(8).required(),
+  });
+  return bodyParamValidation(req, res, next, schema);
+};
+
 const customersVerifyOTPSchema = (req, res, next) => {
   const schema = joi.object({
     mobileNumber: joi.string().required().min(10).max(10),
@@ -155,6 +162,15 @@ const customersVerifyOTPSchema = (req, res, next) => {
   });
   return bodyParamValidation(req, res, next, schema);
 };
+
+const forgotPasswordVerifyOTPSchema = (req, res, next) => {
+  const schema = joi.object({
+    customerId:joi.string().required().min(6).max(10),
+    otp: joi.number().required(),
+  });
+  return bodyParamValidation(req, res, next, schema);
+};
+
 
 const addCustomerSchema = (req, res, next) => {
   const schema = joi.object({
@@ -221,7 +237,9 @@ module.exports = {
   customersloginSchema,
   customersVerifyOTPSchema,
   addCustomerSchema,
+  customersforgotPasswordSchema,
   getCustomerProfileSchema,
+  forgotPasswordVerifyOTPSchema,
   updateCustomerProfileSchema,
   customerListSchema,
   getCustomerAddressSchema,

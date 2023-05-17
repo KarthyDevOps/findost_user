@@ -16,7 +16,9 @@ const routes = {
     customers: {
       login: "/v1/customer/login",
       loginById: "/v1/customer/loginbyId",
+      sendOTP: "/v1/customer/sendOtp",
       verifyOTP: "/v1/customer/verifyOTP",
+      forgotPasswordverifyOTP: "/v1/customer/forgotPassword/verifyOTP",
       addProfile: "/v1/customer/addProfile",
       getProfile: "/v1/customer/getProfile",
       updateProfile: "/v1/customer/updateProfile",

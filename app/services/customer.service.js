@@ -51,6 +51,7 @@ const {
   const customerLoginByIdService = async (params) => {
     // get admin details by email
     let result = await customerbyId(params);
+    console.log('result', result)
     if (result.status) {
    //   console.log('result-->', result)
       if (!result.data.isActive) {
@@ -244,7 +245,7 @@ const {
     return {
       status: true,
       statusCode: statusCodes?.HTTP_OK,
-      data: { list: result?.data, pageMeta },
+      data: { list: allList?.data, pageMeta },
     };
   };
   

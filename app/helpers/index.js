@@ -43,7 +43,7 @@ const errHandle = (fn) => (req, res, next) => {
 const getCustomerDetailsByEmail_or_MobileNumber = async (params) => {
   //get customer details by email or mobileNumber
   const data = await Customers.findOne({
-    $or: [{ email: params?.email }, { mobileNumber: params?.mobileNumber }],
+    $or: [{ email: params?.email }, { mobileNumber: params?.mobileNumber },{customerId:params?.customerId}],
   });
 
   //return object based on customer already exist or not
