@@ -10,6 +10,7 @@ const {
   getAdminDetailsById,
   getAdminList,
   pageMetaService,
+  getProfileById,
 //   getDepartmentList,
 //   getdropDownDepartmentList,
 //   getDepartmentDetailsById,
@@ -262,6 +263,27 @@ const getAdminProfileService = async (params) => {
   }
 };
 
+const getAdminProfileByIdService = async (params) => {
+  //get admin details by admin id
+  const result = await getProfileById(params);
+  if (result.status) {
+    return {
+      status: true,
+      statusCode: statusCodes?.HTTP_OK,
+      message: statusMessage.success,
+      data: result.data,
+    };
+  } else {
+    return {
+      status: false,
+      statusCode: statusCodes?.HTTP_BAD_REQUEST,
+      message: messages?.userNotExist,
+      data: [],
+    };
+  }
+};
+
+
 const updateAdminProfileService = async (params) => {
   const adminId = params?.adminId;
   delete params["adminId"];
@@ -365,5 +387,6 @@ module.exports = {
     deleteAdminService,
     adminListService,
     adminLogoutService,
+    getAdminProfileByIdService
   };
   
