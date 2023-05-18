@@ -25,8 +25,15 @@ const routes = {
       delete: "/v1/authorizedPerson/delete",
       list: "/v1/authorizedPerson/list",
       logout: "/v1/authorizedPerson/logout",
-
       export: "/v1/authorizedPerson/export",
+    },
+    clientFamily: {
+      addProfile: "/v1/clientFamily/addProfile",
+      getProfile: "/v1/clientFamily/getProfile",
+      updateProfile: "/v1/clientFamily/updateProfile",
+      delete: "/v1/clientFamily/delete",
+      list: "/v1/clientFamily/list",
+      export: "/v1/clientFamily/export",
     },
 
     aws: {

@@ -24,6 +24,10 @@ const {
   resetPasswordSchema,
   verifyOTPSchema,
   authorizedPersonloginbyIdSchema,
+  addClientFamilySchema ,
+  clientFamilyProfileSchema,
+  clientFamilyListSchema,  
+  updateClientFamilyProfileSchema
 } = require("../validator/validatator");
 const {
   adminLogin,
@@ -47,6 +51,8 @@ const {
   deleteauthorizedPerson,
   authorizedPersonLoginById,
 } = require("../controllers/authorizedPerson.controller");
+
+const  {addClientFamilyPerson, getClientPersonProfile,clientFamilyList,updateClientFamilyProfile,deleteClientFamily} = require("../controllers/clientFamily.controller")
 const { errHandle } = require("../helpers/index");
 const { routes } = require("../routes/routes");
 const router = Router();
@@ -75,5 +81,13 @@ router.get( routes.v1.authorizedPerson.getProfile,[verifyauthorizedPersonToken, 
 router.delete( routes.v1.authorizedPerson.delete,[verifyauthorizedPersonToken, updateAuthorizedPersonProfileSchema], errHandle(deleteauthorizedPerson));
 router.put(routes.v1.authorizedPerson.updateProfile,[verifyauthorizedPersonToken, updateAuthorizedPersonProfileSchema],errHandle(updateauthorizedPersonProfile));
 router.get(routes.v1.authorizedPerson.list,[verifyAdminToken, authorizedPersonListSchema],errHandle(authorizedPersonList));
+
+
+//client family related api
+router.post(routes.v1.clientFamily.addProfile,[verifyauthorizedPersonToken,addClientFamilySchema],addClientFamilyPerson)
+router.put(routes.v1.clientFamily.updateProfile,[updateClientFamilyProfileSchema],updateClientFamilyProfile)
+ router.get(routes.v1.clientFamily.getProfile,[clientFamilyProfileSchema],getClientPersonProfile)
+ router.get(routes.v1.clientFamily.list,[clientFamilyListSchema],clientFamilyList)
+  router.delete(routes.v1.clientFamily.delete,[clientFamilyProfileSchema],deleteClientFamily)
 
 module.exports = router;

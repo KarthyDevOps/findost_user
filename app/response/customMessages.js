@@ -33,6 +33,8 @@ const messages = {
   outOfStock: "Product is Out of Stock",
   authorizedPersonExists: "authorizedPerson Already Exists",
   authorizedPersonAdded: "authorizedPerson Added Successfully",
+  clientFamilyExists: "client family Already Exists",
+  clientFamilyAdded: "client family Added Successfully",
   adminExists: "Admin Already Exists",
   adminAdded: "Admin Added Successfully",
   departmentExists: "Department Already Exists",

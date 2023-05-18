@@ -216,6 +216,63 @@ const authorizedPersonListSchema = (req, res, next) => {
   return queryParamValidation(req, res, next, schema);
 };
 
+
+//client family api
+
+const addClientFamilySchema = (req, res, next) => {
+  const schema = joi.object({
+    clientName: joi.string().required(),
+    gender: joi.string().optional(),
+    mobileNumber: joi.string().min(10).max(10).required(),
+    email: joi.string().email(),
+    dateOfBirth: joi.string().required(),
+    relativeName: joi.string().required(),
+    relationShip: joi.string().required(),
+    isActive: joi.boolean().required(),
+  });
+  return bodyParamValidation(req, res, next, schema);
+};
+
+const updateClientFamilyProfileSchema = (req, res, next) => {
+  console.log("data-->");
+  const querySchema = joi.object({
+    clientId: joi.string().optional(),
+    id:joi.string().required()
+  });
+  req.bodyParam = true;
+  queryParamValidation(req, res, next, querySchema);
+
+  const schema = joi.object({
+    clientName: joi.string().optional(),
+    gender: joi.string().optional(),
+    mobileNumber: joi.string().min(10).max(10).optional(),
+    email: joi.string().email(),
+    dateOfBirth: joi.string().optional(),
+    relativeName: joi.string().optional(),
+    relationShip: joi.string().optional(),
+    isActive: joi.boolean().optional(),
+  });
+  return bodyParamValidation(req, res, next, schema);
+};
+
+
+const clientFamilyProfileSchema = (req, res, next) => {
+  const schema = joi.object({
+    id: joi.string().required(),
+  });
+  return queryParamValidation(req, res, next, schema);
+};
+
+const clientFamilyListSchema = (req, res, next) => {
+  const schema = joi.object({
+    search: joi.allow(null).allow(""),
+    limit: joi.number().required(),
+    page: joi.number().required(),
+  });
+  return queryParamValidation(req, res, next, schema);
+};
+
+
 module.exports = {
   adminloginSchema,
   addAdminSchema,
@@ -225,7 +282,7 @@ module.exports = {
   sendOTPSchema,
   verifyOTPSchema,
   resetPasswordSchema,
-  authorizedPersonloginSchema,
+  authorizedPersonloginSchema, //<---- authorized person 
   authorizedPersonVerifyOTPSchema,
   addAuthorizedPersonSchema,
   authorizedPersonforgotPasswordSchema,
@@ -234,4 +291,8 @@ module.exports = {
   updateAuthorizedPersonProfileSchema,
   authorizedPersonListSchema,
   authorizedPersonloginbyIdSchema,
+  addClientFamilySchema , //<----client family
+  clientFamilyProfileSchema,
+  clientFamilyListSchema,  
+  updateClientFamilyProfileSchema
 };

@@ -1,5 +1,6 @@
 const { Admin } = require("../models/admin");
 const { authorizedPersons } = require("../models/authorizedPersons");
+const { clientFamily } = require("../models/clientFamily");
 
 const json2csv = require("json2csv").parse;
 
@@ -313,6 +314,61 @@ const convert_JSON_to_file = async (res, data, params) => {
   return;
 };
 
+
+//client family related functions
+
+const getClientFamilyByEmail_or_MobileNumber = async (params) => {
+  //get client family details by email or mobileNumber
+  const data = await clientFamily.findOne({
+    $or: [
+      { email: params?.email },
+      { mobileNumber: params?.mobileNumber },
+      { clientId: params?.clientId },
+    ],
+  });
+
+  //return object based on client family already exist or not
+  if (data && Object.keys(data).length) {
+    return { status: true, data: data };
+  } else {
+    return { status: false, data: {} };
+  }
+};
+
+const getClientFamilyDetailsById = async (params) => {
+  console.log("params");
+  //get authorizedPerson details by id
+  const data = await clientFamily.findOne({
+    $or: [{ _id: params?.id }, { clientId: params?.clientId }],
+    isDeleted: false,
+  });
+  console.log("data", data);
+  //return object based on authorizedPerson already exist or not
+  if (data && Object.keys(data).length) {
+    return { status: true, data: data };
+  } else {
+    return { status: false, data: {} };
+  }
+};
+
+const getClientPersonList = async () => {
+  const data = await clientFamily.find({
+    isDeleted: false,
+  });
+  if (data.length > 0) {
+    return {
+      status: true,
+      data: data,
+    };
+  }
+  return {
+    status: false,
+    data: {},
+  };
+};
+
+
+
 module.exports = {
   pageMetaService,
   sendOTP_to_mobileNumber,
@@ -329,4 +385,7 @@ module.exports = {
   authorizedPersonbyId,
   getauthorizedPersonList,
   convert_JSON_to_file,
+  getClientPersonList,
+  getClientFamilyByEmail_or_MobileNumber,
+  getClientFamilyDetailsById
 };
