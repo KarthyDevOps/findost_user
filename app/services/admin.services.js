@@ -285,13 +285,13 @@ const getAdminProfileByIdService = async (params) => {
 
 
 const updateAdminProfileService = async (params) => {
-  const adminId = params?.adminId;
+  const Id = params?.id;
   delete params["adminId"];
   var query = { $set: params };
 
   //update admin details into admins table
   console.log('query-->', query)
-  const result = await Admin.updateOne({ _id: adminId }, query);
+  const result = await Admin.updateOne({ _id: Id }, query);
   if (!result.modifiedCount) {
     return {
       status: false,
@@ -309,7 +309,7 @@ const updateAdminProfileService = async (params) => {
 };
 
 const deleteAdminService = async (params) => {
-  const adminId = params?.adminId;
+  const id = params?.id;
   delete params["adminId"];
   var query = {
     $set: {
@@ -320,7 +320,7 @@ const deleteAdminService = async (params) => {
   };
 
   //update admin details into admins table
-  const result = await Admin.updateOne({ _id: adminId }, query);
+  const result = await Admin.updateOne({ _id: id }, query);
   if (!result.modifiedCount) {
     return {
       status: false,

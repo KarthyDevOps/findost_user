@@ -73,7 +73,7 @@ router.get(routes.v1.admin.list,[verifyAdminToken, adminListSchema],errHandle(ad
 // authorizedPerson related api's
 router.post(routes.v1.authorizedPerson.login,[authorizedPersonloginSchema],errHandle(authorizedPersonLogin)); //authorizedPerson login using mobileNumber
 router.post(routes.v1.authorizedPerson.verifyOTP, [authorizedPersonVerifyOTPSchema], errHandle(authorizedPersonverifyOTP)); //authorized person verify Otp through mobileNumber
-router.post( routes.v1.authorizedPerson.sendOTP,[authorizedPersonforgotPasswordSchema], errHandle(authorizedPersonLogin)); //authorized person send Otp through authorizedPersonID
+router.post( routes.v1.authorizedPerson.sendOTP,[sendOTPSchema], errHandle(authorizedPersonLogin)); //authorized person send Otp through authorizedPersonID
 router.post(routes.v1.authorizedPerson.forgotPasswordverifyOTP,[forgotPasswordVerifyOTPSchema],errHandle(authorizedPersonverifyOTP)); //authorized person verify Otp through authorizedPersonID
 router.post(routes.v1.authorizedPerson.loginById,[authorizedPersonloginbyIdSchema],errHandle(authorizedPersonLoginById)); //authorized person login via id and password
 router.post(routes.v1.authorizedPerson.addProfile, [addAuthorizedPersonSchema], errHandle(addauthorizedPerson));

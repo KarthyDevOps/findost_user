@@ -171,7 +171,7 @@ const getAdminList = async (params) => {
 
   if (params?.search) {
     payload.$or = [
-      { empId: { $regex: `${params?.search}`, $options: "i" } },
+      { adminId: { $regex: `${params?.search}`, $options: "i" } },
       { name: { $regex: `${params?.search}`, $options: "i" } },
       { mobileNumber: { $regex: `${params?.search}`, $options: "i" } },
       { email: { $regex: `${params?.search}`, $options: "i" } },
@@ -181,12 +181,10 @@ const getAdminList = async (params) => {
 
   if (params?.all) {
     data = await Admin.find(payload)
-      .populate("departmentId")
       .sort({ createdAt: -1 })
       .lean();
   } else {
     data = await Admin.find(payload)
-      .populate("departmentId")
       .skip(Number(params?.page - 1) * Number(params?.limit))
       .limit(Number(params?.limit))
       .sort({ createdAt: -1 })
@@ -336,7 +334,7 @@ const getClientFamilyByEmail_or_MobileNumber = async (params) => {
 };
 
 const getClientFamilyDetailsById = async (params) => {
-  console.log("params");
+  console.log("params",params?.id);
   //get authorizedPerson details by id
   const data = await clientFamily.findOne({
     $or: [{ _id: params?.id }, { clientId: params?.clientId }],

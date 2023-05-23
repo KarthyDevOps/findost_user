@@ -135,6 +135,7 @@ const getauthorizedPersonProfile = async (req, res) => {
 
 const updateauthorizedPersonProfile = async (req, res) => {
   const params = req.body;
+  params.id = req?.query?.id;
   params.authorizedPersonId =
     req?.query?.authorizedPersonId || req.user._id.toString();
   params.updatedBy = req?.user?._id?.toString();

@@ -40,10 +40,10 @@ const addClientFamilyPerson = async (req, res) => {
 };
 
 const getClientPersonProfile = async (req, res) => {
-  console.log("data");
+  console.log("data",req.user);
   let params = {};
-  params.clientId =
-    req?.query?.clientId || req.user._id.toString();
+  params.id = req.query.id
+  params.clientId = req?.query?.clientId;
   console.log("enter");
   const result = await getClientProfileService(params);
   if (!result.status) {

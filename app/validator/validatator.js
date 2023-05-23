@@ -79,7 +79,8 @@ const addAdminSchema = (req, res, next) => {
 
 const getAdminProfileSchema = (req, res, next) => {
   const schema = joi.object({
-    adminId: joi.string().required().allow(null).allow(""),
+    adminId: joi.string().optional().allow(null).allow(""),
+    id: joi.string().required().allow(null).allow("")
   });
   return queryParamValidation(req, res, next, schema);
 };
@@ -112,7 +113,8 @@ const adminListSchema = (req, res, next) => {
 
 const sendOTPSchema = (req, res, next) => {
   const schema = joi.object({
-    email: joi.string().required().email(),
+    mobileNumber: joi.string().required().min(10).max(10),
+
   });
   return bodyParamValidation(req, res, next, schema);
 };
@@ -184,7 +186,9 @@ const addAuthorizedPersonSchema = (req, res, next) => {
 
 const getAuthorizedPersonProfileSchema = (req, res, next) => {
   const schema = joi.object({
-    authorizedPersonId: joi.string().required(),
+    authorizedPersonId: joi.string().optional(),
+    id: joi.string().optional(),
+    
   });
   return queryParamValidation(req, res, next, schema);
 };
@@ -192,7 +196,7 @@ const getAuthorizedPersonProfileSchema = (req, res, next) => {
 const updateAuthorizedPersonProfileSchema = (req, res, next) => {
   console.log("data-->");
   const querySchema = joi.object({
-    authorizedPersonId: joi.string().required(),
+    id: joi.string().required(),
   });
   req.bodyParam = true;
   queryParamValidation(req, res, next, querySchema);
