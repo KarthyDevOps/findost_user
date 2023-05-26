@@ -1,6 +1,6 @@
 module.exports = function (env) {
   const DEV_CONSTANTS = {
-    PORT: 2278,
+    PORT: 2277,
     MONGO_URI: "mongodb+srv://findoc_user:nQKMemhPm0N4maIJ@cluster0.kr4lh0f.mongodb.net/findoc_users",
     NODE_ENV: "development",
     SERVICE_NAME : "Findost-USER-Service",
@@ -9,7 +9,7 @@ module.exports = function (env) {
   };
 
   const LOCAL_CONSTANTS = {
-    PORT: 2278,
+    PORT: 2277,
     MONGO_URI: "mongodb+srv://findoc_user:nQKMemhPm0N4maIJ@cluster0.kr4lh0f.mongodb.net/findoc_users",
     NODE_ENV: "development",
     SERVICE_NAME : "Findost-USER-Service",
