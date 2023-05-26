@@ -1,4 +1,4 @@
-let { InternalAPIs } = require("../config");
+let { InternalAPIs } = require("../configs");
 let { Rest } = require("../restCalls");
 
 class InternalServices {}
