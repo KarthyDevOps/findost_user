@@ -15,9 +15,14 @@ const { instantiateAWSS3 } = require("./app/externalServices/awsService.js");
 
 //swagger setup
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+// Load environment variable
+require("dotenv").config({ path: path.join(process.cwd(), `.env`) });
+const args = process.argv.slice(2)[0];
+process.env.CONFIG_ARG = args;
+let CONFIG = require('./app/configs/config')(args)
+process.env = { ...process.env,...CONFIG}
+console.log('process.env',process.env)
 
-//load environment variable
-dotenv.config({ path: path.join(process.cwd(), `${process.argv[2]}`) });
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 
