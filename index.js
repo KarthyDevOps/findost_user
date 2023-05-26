@@ -69,7 +69,7 @@ app.listen(port, () => {
 });
 
 app.get("/", (req, res) => {
-  res.send("successfully connnected");
+  res.send("successfully connnected  - findoc - USER");
 });
 
 app.use(errHandle);
