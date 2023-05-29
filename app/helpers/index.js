@@ -80,7 +80,7 @@ const getauthorizedPersonDetailsById = async (params) => {
   console.log("params");
   //get authorizedPerson details by id
   const data = await authorizedPersons.findOne({
-    $or: [{ _id: params?._id }, { _id: params?.authorizedPersonId }],
+    $or: [{ _id: params?._id }, { _id: params?.authorizedPersonId },{ _id: params?.id }],
     isDeleted: false,
   });
   console.log("data", data);

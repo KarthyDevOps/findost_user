@@ -78,6 +78,7 @@ router.post(routes.v1.authorizedPerson.forgotPasswordverifyOTP,[forgotPasswordVe
 router.post(routes.v1.authorizedPerson.loginById,[authorizedPersonloginbyIdSchema],errHandle(authorizedPersonLoginById)); //authorized person login via id and password
 router.post(routes.v1.authorizedPerson.addProfile, [addAuthorizedPersonSchema], errHandle(addauthorizedPerson));
 router.get( routes.v1.authorizedPerson.getProfile,[verifyauthorizedPersonToken, getAuthorizedPersonProfileSchema], errHandle(getauthorizedPersonProfile));
+router.get( routes.v1.authorizedPerson.getProfileById,errHandle(getauthorizedPersonProfile));
 router.delete( routes.v1.authorizedPerson.delete,[verifyauthorizedPersonToken, updateAuthorizedPersonProfileSchema], errHandle(deleteauthorizedPerson));
 router.put(routes.v1.authorizedPerson.updateProfile,[verifyauthorizedPersonToken, updateAuthorizedPersonProfileSchema],errHandle(updateauthorizedPersonProfile));
 router.get(routes.v1.authorizedPerson.list,[verifyAdminToken, authorizedPersonListSchema],errHandle(authorizedPersonList));

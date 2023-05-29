@@ -69,7 +69,7 @@ const adminloginSchema = (req, res, next) => {
 const addAdminSchema = (req, res, next) => {
   const schema = joi.object({
     name: joi.string().required(),
-    mobileNumber: joi.string().required(),
+    mobileNumber: joi.string().optional(),
     email: joi.string().required().email(),
     departmentId: joi.string().optional(),
     password: joi.string().required(),

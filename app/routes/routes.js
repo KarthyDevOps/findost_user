@@ -21,6 +21,7 @@ const routes = {
       forgotPasswordverifyOTP: "/v1/authorizedPerson/forgotPassword/verifyOTP",
       addProfile: "/v1/authorizedPerson/addProfile",
       getProfile: "/v1/authorizedPerson/getProfile",
+      getProfileById: "/v1/authorizedPerson/getProfileById",
       updateProfile: "/v1/authorizedPerson/updateProfile",
       delete: "/v1/authorizedPerson/delete",
       list: "/v1/authorizedPerson/list",
