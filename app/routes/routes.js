@@ -36,6 +36,14 @@ const routes = {
       list: "/v1/clientFamily/list",
       export: "/v1/clientFamily/export",
     },
+    clientAdminFamily: {
+      addProfile: "/v1/admin/clientFamily/addProfile",
+      getProfile: "/v1/admin/clientFamily/getProfile",
+      updateProfile: "/v1/admin/clientFamily/updateProfile",
+      delete: "/v1/admin/clientFamily/delete",
+      list: "/v1/admin/clientFamily/list",
+      export: "/v1/admin/clientFamily/export",
+    },
 
     aws: {
       uploadImage: "/v1/upload/image",

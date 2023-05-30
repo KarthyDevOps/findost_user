@@ -92,4 +92,12 @@ router.put(routes.v1.clientFamily.updateProfile,[updateClientFamilyProfileSchema
  router.get(routes.v1.clientFamily.list,[clientFamilyListSchema],clientFamilyList)
   router.delete(routes.v1.clientFamily.delete,[clientFamilyProfileSchema],deleteClientFamily)
 
-module.exports = router;
+//client admin family related api
+router.post(routes.v1.clientAdminFamily.addProfile,[verifyauthorizedPersonToken,addClientFamilySchema],addClientFamilyPerson)
+router.put(routes.v1.clientAdminFamily.updateProfile,[updateClientFamilyProfileSchema],updateClientFamilyProfile)
+ router.get(routes.v1.clientAdminFamily.getProfile,[clientFamilyProfileSchema],getClientPersonProfile)
+ router.get(routes.v1.clientAdminFamily.list,[clientFamilyListSchema],clientFamilyList)
+  router.delete(routes.v1.clientAdminFamily.delete,[clientFamilyProfileSchema],deleteClientFamily)
+
+
+  module.exports = router;

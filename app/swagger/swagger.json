@@ -647,7 +647,183 @@
           }
         }
       }
+    },
+    "/admin/clientFamily/addProfile": {
+      "post": {
+        "tags": ["Client Family Module"],
+        "security": [{ "Bearer": [] }],
+        "summary": "clientFamily Profile Create",
+        "parameters": [
+          {
+            "name": "clientFamilyCreate",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/clientFamilyCreate"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return a JSON response with submitted Aman form details.",
+            "schema": { "$ref": "#/definitions/response" }
+          },
+          "404": {
+            "description": "Validation failure.",
+            "schema": {
+              "$ref": "#/definitions/validationError"
+            }
+          },
+          "default": {
+            "description": "Unexpected error.",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+   
+    "/admin/clientFamily/updateProfile": {
+      "put": {
+        "tags": ["Client Family Module"],
+        "security": [{ "Bearer": [] }],
+        "summary": "update clientFamily Details",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "clientFamilyUpdate",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/clientFamilyUpdate"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return a JSON response with submitted Aman form details.",
+            "schema": { "$ref": "#/definitions/response" }
+          },
+          "404": {
+            "description": "Validation failure.",
+            "schema": {
+              "$ref": "#/definitions/validationError"
+            }
+          },
+          "default": {
+            "description": "Unexpected error.",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/admin/clientFamily/getProfile": {
+      "get": {
+        "tags": ["Client Family Module"],
+        "security": [{ "Bearer": [] }],
+        "summary": "get clientFamily details",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return a JSON response with submitted Aman form details.",
+            "schema": { "$ref": "#/definitions/response" }
+          },
+          "404": {
+            "description": "Validation failure.",
+            "schema": {
+              "$ref": "#/definitions/validationError"
+            }
+          },
+          "default": {
+            "description": "Unexpected error.",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/admin/clientFamily/list": {
+      "get": {
+        "tags": ["Client Family Module"],
+        "security": [{ "Bearer": [] }],
+        "summary": "List all AuthorizedPerson",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "number"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return a JSON response with submitted Aman form details.",
+            "schema": { "$ref": "#/definitions/response" }
+          },
+          "404": {
+            "description": "Validation failure.",
+            "schema": {
+              "$ref": "#/definitions/validationError"
+            }
+          },
+          "default": {
+            "description": "Unexpected error.",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/admin/clientFamily/delete": {
+      "delete": {
+        "tags": ["Client Family Module"],
+        "security": [{ "Bearer": [] }],
+        "summary": "delete AuthorizedPerson",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return a JSON response with submitted Aman form details.",
+            "schema": { "$ref": "#/definitions/response" }
+          },
+          "404": {
+            "description": "Validation failure.",
+            "schema": {
+              "$ref": "#/definitions/validationError"
+            }
+          },
+          "default": {
+            "description": "Unexpected error.",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
     }
+
   },
   "definitions": {
     "error": {
