@@ -140,8 +140,12 @@ const getAdminDetailsById = async (params) => {
 
 const getAdminProfile = async (params) => {
   //get admin details
-  const data = await Admin.find({ _id: params?.adminId }).lean();
-
+  const data = await Admin.find(
+    {
+      $or:[{ adminId: params?.adminId }, {_id:params.id}]
+    }
+    ).lean();
+console.log("data -->",params)
   //return object based on admin already exist or not
   if (data && Object.keys(data).length) {
     return { status: true, data: data };

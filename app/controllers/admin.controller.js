@@ -128,7 +128,8 @@ const addAdmin = async (req, res) => {
 
 const getAdminProfile = async (req, res) => {
   let params = {};
-  params.adminId = req?.query?.adminId || req.user._id.toString();
+  params.id = req.query.id
+  params.adminId = req?.query?.adminId  //req.user._id.toString();
   const result = await getAdminProfileService(params);
   if (!result.status) {
     return sendErrorResponse(
