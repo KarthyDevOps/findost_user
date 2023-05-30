@@ -25,7 +25,7 @@ const adminSchema = new mongoose.Schema(
     },
     mobileNumber: {
       type: String,
-      required: true,
+      required: false,
       unique: true,
       trim: true,
     },
