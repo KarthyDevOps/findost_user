@@ -123,5 +123,29 @@ const verifyAdminToken = async (req, res, next) => {
     );
   }
 };
-
-module.exports = { verifyAdminToken, verifyauthorizedPersonToken };
+const verifyAdminRole = (roles, action) =>
+  async function (req, res, next) {
+    let isPermissionDenied = true;
+    if (req.user && req.user.permissions) {
+      if (req.user.permissions[roles]) {
+        if (
+          req.user.permissions[roles].indexOf(action.toString()) ||
+          req.user.permissions[roles].indexOf("ALL")
+        ) {
+          isPermissionDenied = false;
+        }
+      }
+    }
+    if (isPermissionDenied) {
+      return sendErrorResponse(
+        req,
+        res,
+        statusCodes.HTTP_NOT_FOUND,
+        messages.accessDenied,
+        []
+      );
+    } else {
+      next();
+    }
+  };
+module.exports = { verifyAdminToken, verifyauthorizedPersonToken,verifyAdminRole };

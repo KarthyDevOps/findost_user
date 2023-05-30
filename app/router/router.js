@@ -5,6 +5,7 @@ var upload = multer();
 const {
   verifyAdminToken,
   verifyauthorizedPersonToken,
+  verifyAdminRole
 } = require("../middlewares/authentication");
 const {
   adminloginSchema,
@@ -64,10 +65,10 @@ router.post(routes.v1.admin.sendOTP, [sendOTPSchema], errHandle(sendOTP));
 router.post(routes.v1.admin.verifyOTP, [verifyOTPSchema], errHandle(verifyOTP));
 router.post( routes.v1.admin.resetPassword, [resetPasswordSchema], errHandle(resetPassword));
 router.post(routes.v1.admin.addProfile, [addAdminSchema], errHandle(addAdmin));
-router.get( routes.v1.admin.getProfile,[verifyAdminToken, getAdminProfileSchema],errHandle(getAdminProfile));
+router.get( routes.v1.admin.getProfile,[verifyAdminToken,verifyAdminRole("staffManagement", "VIEW"), getAdminProfileSchema],errHandle(getAdminProfile));
 router.get(routes.v1.admin.getAdmin, errHandle(getProfile));
-router.put(routes.v1.admin.updateProfile,[verifyAdminToken, updateAdminProfileSchema],errHandle(updateAdminProfile));
-router.delete(routes.v1.admin.delete, [verifyAdminToken, getAdminProfileSchema],errHandle(deleteAdmin));
+router.put(routes.v1.admin.updateProfile,[verifyAdminToken,verifyAdminRole("staffManagement", "EDIT"), updateAdminProfileSchema],errHandle(updateAdminProfile));
+router.delete(routes.v1.admin.delete, [verifyAdminToken,verifyAdminRole("staffManagement", "DELETE"), getAdminProfileSchema],errHandle(deleteAdmin));
 router.get(routes.v1.admin.list,[verifyAdminToken, adminListSchema],errHandle(adminList));
 
 // authorizedPerson related api's
