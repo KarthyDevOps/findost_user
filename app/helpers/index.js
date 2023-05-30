@@ -113,7 +113,7 @@ const getauthorizedPersonList = async () => {
 const getAdminDetailsByEmail_or_MobileNumber = async (params) => {
   //get admin details by email or mobileNumber
   const data = await Admin.findOne({
-    $or: [{ email: params?.email }, { mobileNumber: params?.mobileNumber }],
+    email: params?.email,
   });
 
   //return object based on admin already exist or not

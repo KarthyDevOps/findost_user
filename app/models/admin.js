@@ -26,7 +26,6 @@ const adminSchema = new mongoose.Schema(
     mobileNumber: {
       type: String,
       required: false,
-      unique: true,
       trim: true,
     },
     email: {
@@ -64,6 +63,7 @@ const adminSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
+
     isDeleted: {
       type: Boolean,
       default: false,
