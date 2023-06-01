@@ -131,7 +131,7 @@ const resetPasswordSchema = (req, res, next) => {
   const schema = joi.object({
     email: joi.string().required().email(),
     mobileNumber: joi.string().allow(null).allow(""),
-    password: joi.string().required().min(8).max(20),
+    password: joi.string().optional().min(8).max(20),
   });
   return bodyParamValidation(req, res, next, schema);
 };

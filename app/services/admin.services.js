@@ -19,6 +19,8 @@ const {
   getAdminProfile,
 } = require("../helpers");
 const { InternalServices } = require("../apiServices");
+const { session } = require("../models/session");
+const { generateAccessToken } = require("../utils");
 //const { Department } = require("../models/departments");
 
 // admin related api's
@@ -151,7 +153,9 @@ const verifyOTPService = async (params) => {
 };
 
 const resetPasswordService = async (params) => {
-  //get admin details by email
+
+  try {
+     //get admin details by email
   const adminDetails = await getAdminDetailsByEmail_or_MobileNumber(params);
   if (!adminDetails.status) {
     return {
@@ -161,7 +165,8 @@ const resetPasswordService = async (params) => {
       data: [],
     };
   }
-  let token = await createToken(result.data, '3h');
+  let token = await createToken(adminDetails.data, '3h');
+  console.log('token-->', token)
   let url = await process.env.FE_URL + process.env.ADMIN_RESET_PATH + token;
 
   InternalServices.sendEmail({
@@ -170,43 +175,39 @@ const resetPasswordService = async (params) => {
     template: "forgot_password",
     url: url
 })
-  const password = params?.password;
-  if (adminDetails.status) {
-    //encrypt given original password by bcrypt
-    params.password = await bcrypt.hash(password.toString(), 10);
-
-    //update new password on admin table
-    const result = await updateAdminProfileByEmail(params);
-    if (!result.modifiedCount) {
-      return {
-        status: false,
-        statusCode: statusCodes?.HTTP_BAD_REQUEST,
-        message: messages?.userNotExist,
-        data: [],
-      };
-    }
-
-    return {
-      status: true,
-      statusCode: statusCodes?.HTTP_OK,
-      message: messages?.resetPassword,
-      data: [],
-    };
-  } else {
-    return {
-      status: false,
-      statusCode: statusCodes?.HTTP_BAD_REQUEST,
-      message: messages?.userNotExist,
-      data: [],
-    };
+return {
+  status: true,
+  statusCode: statusCodes?.HTTP_OK,
+  message: messages?.resetPassword,
+  data: [],
+};
+  } catch (error) {
+    console.log('error-->', error)
   }
+ 
+ 
 };
 
 
 const createToken = async (user, expiry) =>{
   
     try {
-    
+      const sessionData = await session.create({
+        userId: user._id,
+        userType:"Super Admin",
+        status: "ACTIVE",
+        loggedInAt: new Date(),
+        createdBy:"Super Admin",
+        updatedBy: "Super Admin"
+    });
+    return generateAccessToken({
+        id: user._id,
+        type: "ADMIN",
+        roleId: user.roleId,
+        role: user?.roleName || "",
+        hasAllAccess: user?.hasAllAccess || false,
+        sessionId: sessionData?._id?.toString()
+    })
         }
      catch (error) {
         console.log("error", error);
