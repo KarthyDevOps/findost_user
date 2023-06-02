@@ -11,6 +11,7 @@ const routes = {
       logout: "/v1/admin/logout",
       sendOTP: "/v1/admin/sendOTP",
       verifyOTP: "/v1/admin/verifyOTP",
+      forgotPassword: "/v1/admin/forgotPassword",
       resetPassword: "/v1/admin/resetPassword",
     },
     authorizedPerson: {

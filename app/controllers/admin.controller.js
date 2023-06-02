@@ -14,6 +14,7 @@ const {
   resetPasswordService,
   sendOTPService,
   verifyOTPService,
+  forgotPasswordService,
 } = require("../services/admin.services");
 
 // admin related api's
@@ -81,8 +82,31 @@ const verifyOTP = async (req, res) => {
   );
 };
 
+const forgot_password = async (req, res) => {
+  const params = req.body;
+  const result = await forgotPasswordService(params);
+  if (!result.status) {
+    return sendErrorResponse(
+      req,
+      res,
+      result?.statusCode,
+      result?.message,
+      result?.data
+    );
+  }
+  return sendSuccessResponse(
+    req,
+    res,
+    result?.statusCode,
+    result?.message,
+    result?.data
+  );
+};
+
 const resetPassword = async (req, res) => {
   const params = req.body;
+  params.id =  req?.user?._id
+  console.log('params-->', params)
   const result = await resetPasswordService(params);
   if (!result.status) {
     return sendErrorResponse(
@@ -101,6 +125,7 @@ const resetPassword = async (req, res) => {
     result?.data
   );
 };
+
 
 const addAdmin = async (req, res) => {
   const params = req.body;
@@ -248,6 +273,7 @@ module.exports = {
   adminLogin,
   sendOTP,
   verifyOTP,
+  forgot_password,
   resetPassword,
   addAdmin,
   getAdminProfile,

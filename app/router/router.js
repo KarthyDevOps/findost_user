@@ -41,6 +41,7 @@ const {
   verifyOTP,
   sendOTP,
   resetPassword,
+  forgot_password,
 } = require("../controllers/admin.controller");
 const {
   authorizedPersonLogin,
@@ -63,7 +64,8 @@ router.post(routes.v1.admin.login, [adminloginSchema], errHandle(adminLogin));
 //router.post(routes.v1.admin.logout, [verifyAdminToken], errHandle(adminLogout));
 router.post(routes.v1.admin.sendOTP, [sendOTPSchema], errHandle(sendOTP));
 router.post(routes.v1.admin.verifyOTP, [verifyOTPSchema], errHandle(verifyOTP));
-router.post( routes.v1.admin.resetPassword, [resetPasswordSchema], errHandle(resetPassword));
+router.post( routes.v1.admin.forgotPassword, [resetPasswordSchema], errHandle(forgot_password));
+router.post( routes.v1.admin.resetPassword, [verifyAdminToken], errHandle(resetPassword));
 router.post(routes.v1.admin.addProfile, [addAdminSchema], errHandle(addAdmin));
 router.get( routes.v1.admin.getProfile,[verifyAdminToken,verifyAdminRole("staffManagement", "VIEW"), getAdminProfileSchema],errHandle(getAdminProfile));
 router.get(routes.v1.admin.getAdmin, errHandle(getProfile));

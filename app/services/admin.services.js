@@ -152,7 +152,7 @@ const verifyOTPService = async (params) => {
   }
 };
 
-const resetPasswordService = async (params) => {
+const forgotPasswordService = async (params) => {
 
   try {
      //get admin details by email
@@ -187,6 +187,41 @@ return {
  
  
 };
+
+const resetPasswordService = async (params) => {
+
+  try {
+    console.log('params-->', params)
+    params.password = await bcrypt.hash(params?.password.toString(), 10);
+    let password = {
+      password : params.password
+    } 
+    let id = params.id
+    const result = await Admin.findByIdAndUpdate(id,password);
+    console.log('result--->', result)
+    if (!result) {
+      return {
+        status: false,
+        statusCode: statusCodes?.HTTP_BAD_REQUEST,
+        message: messages?.userNotExist,
+        data: [],
+      };
+    }
+    return {
+      status: true,
+      statusCode: statusCodes?.HTTP_OK,
+      message: messages?.updated,
+      data: [],
+    };
+     //get admin details by email
+
+  } catch (error) {
+    console.log('error-->', error)
+  }
+ 
+ 
+};
+
 
 
 const createToken = async (user, expiry) =>{
@@ -380,6 +415,7 @@ const adminLogoutService = async (params) => {
 module.exports = {
     adminLoginService,
     sendOTPService,
+    forgotPasswordService,
     verifyOTPService,
     resetPasswordService,
     addAdminService,
