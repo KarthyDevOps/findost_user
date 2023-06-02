@@ -173,6 +173,13 @@ const forgotPasswordVerifyOTPSchema = (req, res, next) => {
   return bodyParamValidation(req, res, next, schema);
 };
 
+const forgotPasswordLoginIdSchema = (req, res, next) => {
+  const schema = joi.object({
+    email: joi.string().required()
+  });
+  return bodyParamValidation(req, res, next, schema);
+};
+
 const addAuthorizedPersonSchema = (req, res, next) => {
   const schema = joi.object({
     name: joi.string().required(),
@@ -292,6 +299,7 @@ module.exports = {
   authorizedPersonforgotPasswordSchema,
   getAuthorizedPersonProfileSchema,
   forgotPasswordVerifyOTPSchema,
+  forgotPasswordLoginIdSchema,
   updateAuthorizedPersonProfileSchema,
   authorizedPersonListSchema,
   authorizedPersonloginbyIdSchema,

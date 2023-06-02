@@ -10,6 +10,7 @@ const customMessages = {
 const messages = {
   inserted: "Inserted Successfully",
   created: "Created Successfully",
+  mailSent: "Mail Sent Successfully",
   updated: "Updated Successfully",
   deleted: "Deleted Successfully",
   otpSendSuccessful: "OTP Sent Successfully",

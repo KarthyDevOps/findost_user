@@ -15,6 +15,7 @@ const bcrypt = require("bcryptjs");
 const { statusMessage } = require("../response/httpStatusMessages");
 //const { authorizedPersonsAddress } = require("../models/authorizedPerson-address");
 const moment = require("moment-timezone");
+const { InternalServices } = require("../apiServices");
 //authorizedPerson profile related api's
 
 const authorizedPersonLoginService = async (params) => {
@@ -49,9 +50,9 @@ const authorizedPersonLoginService = async (params) => {
   }
 };
 
-const authorizedPersonLoginByIdService = async (params) => {
+const authorizedPersonSendLoginIdService = async (params) => {
   // get admin details by email
-  let result = await authorizedPersonbyId(params);
+  let result = await getauthorizedPersonDetailsByEmail_or_MobileNumber(params);
   console.log("result", result);
   if (result.status) {
     //   console.log('result-->', result)
@@ -94,6 +95,58 @@ const authorizedPersonLoginByIdService = async (params) => {
       message: messages?.loginSuccessful,
       data: authorizedPerson,
     };
+  } else {
+    return {
+      status: false,
+      statusCode: statusCodes?.HTTP_BAD_REQUEST,
+      message: messages?.userNotExist,
+      data: [],
+    };
+  }
+};
+
+
+const authorizedPersonLoginByIdService = async (params) => {
+  // get admin details by email
+  let result = await getauthorizedPersonDetailsByEmail_or_MobileNumber(params);
+  console.log("result", result);
+  if (result.status) {
+    //   console.log('result-->', result)
+    if (!result.data.isActive) {
+      return {
+        status: false,
+        statusCode: statusCodes?.HTTP_BAD_REQUEST,
+        message: statusMessage.notActive,
+      };
+    }
+    if (result.data.isDeleted) {
+      return {
+        status: false,
+        statusCode: statusCodes?.HTTP_BAD_REQUEST,
+        message: "user not found",
+      };
+    }
+    let data = await InternalServices.sendEmail({
+      to: params.email,
+      subject: "Login Credentials",
+      template: "forgot_password",
+      url: result?.data?.authorizedPersonId,
+    });
+    if (data.status) {
+      return {
+        status: true,
+        statusCode: statusCodes?.HTTP_ACCEPTED,
+        message: messages?.mailSent,
+        data: [],
+      };
+    } else {
+      return {
+        status: false,
+        statusCode: statusCodes?.HTTP_INTERNAL_SERVER_ERROR,
+        message: messages?.serverError,
+        data: [],
+      };
+    }
   } else {
     return {
       status: false,
@@ -269,5 +322,6 @@ module.exports = {
   updateauthorizedPersonProfileService,
   deleteauthorizedPersonService,
   authorizedPersonListService,
+  authorizedPersonSendLoginIdService,
   authorizedPersonLoginByIdService,
 };

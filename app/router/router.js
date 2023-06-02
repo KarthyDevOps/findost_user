@@ -28,7 +28,8 @@ const {
   addClientFamilySchema ,
   clientFamilyProfileSchema,
   clientFamilyListSchema,  
-  updateClientFamilyProfileSchema
+  updateClientFamilyProfileSchema,
+  forgotPasswordLoginIdSchema
 } = require("../validator/validatator");
 const {
   adminLogin,
@@ -78,6 +79,7 @@ router.post(routes.v1.authorizedPerson.login,[authorizedPersonloginSchema],errHa
 router.post(routes.v1.authorizedPerson.verifyOTP, [authorizedPersonVerifyOTPSchema], errHandle(authorizedPersonverifyOTP)); //authorized person verify Otp through mobileNumber
 router.post( routes.v1.authorizedPerson.sendOTP,[sendOTPSchema], errHandle(authorizedPersonLogin)); //authorized person send Otp through authorizedPersonID
 router.post(routes.v1.authorizedPerson.forgotPasswordverifyOTP,[forgotPasswordVerifyOTPSchema],errHandle(authorizedPersonverifyOTP)); //authorized person verify Otp through authorizedPersonID
+router.post(routes.v1.authorizedPerson.forgotPasswordLoginIdMail,[forgotPasswordLoginIdSchema],errHandle(authorizedPersonLoginById)); //authorized person verify Otp through authorizedPersonID
 router.post(routes.v1.authorizedPerson.loginById,[authorizedPersonloginbyIdSchema],errHandle(authorizedPersonLoginById)); //authorized person login via id and password
 router.post(routes.v1.authorizedPerson.addProfile, [addAuthorizedPersonSchema], errHandle(addauthorizedPerson));
 router.get( routes.v1.authorizedPerson.getProfile,[verifyauthorizedPersonToken, getAuthorizedPersonProfileSchema], errHandle(getauthorizedPersonProfile));
