@@ -12,6 +12,7 @@ const {
   getauthorizedPersonProfileService,
   authorizedPersonListService,
   deleteauthorizedPersonService,
+  authorizedPersonSendLoginIdService,
   authorizedPersonLoginByIdService,
 } = require("../services/authorizedPerson.service");
 
@@ -38,9 +39,10 @@ const authorizedPersonLogin = async (req, res) => {
   );
 };
 
-const authorizedPersonLoginById = async (req, res) => {
+const authorizedPersonMailLoginById = async (req, res) => {
   const params = req.body;
   const result = await authorizedPersonLoginByIdService(params);
+  console.log('result111--->', result)
   if (!result.status) {
     return sendErrorResponse(
       req,
@@ -58,6 +60,30 @@ const authorizedPersonLoginById = async (req, res) => {
     result?.data
   );
 };
+
+const authorizedPersonLoginById = async (req, res) => {
+  const params = req.body;
+  const result = await authorizedPersonSendLoginIdService(params);
+  console.log('result111--->', result)
+  if (!result.status) {
+    return sendErrorResponse(
+      req,
+      res,
+      result?.statusCode,
+      result?.message,
+      result?.data
+    );
+  }
+  return sendSuccessResponse(
+    req,
+    res,
+    result?.statusCode,
+    result?.message,
+    result?.data
+  );
+};
+
+
 
 const authorizedPersonverifyOTP = async (req, res) => {
   const params = req.body;
@@ -79,6 +105,28 @@ const authorizedPersonverifyOTP = async (req, res) => {
     result?.data
   );
 };
+
+const authorizedPersonSendLoginId = async (req, res) => {
+  const params = req.body;
+  const result = await authorizedPersonVerifyOTPService(params);
+  if (!result.status) {
+    return sendErrorResponse(
+      req,
+      res,
+      result?.statusCode,
+      result?.message,
+      result?.data
+    );
+  }
+  return sendSuccessResponse(
+    req,
+    res,
+    result?.statusCode,
+    result?.message,
+    result?.data
+  );
+};
+
 
 const addauthorizedPerson = async (req, res) => {
   const params = req.body;
@@ -213,6 +261,7 @@ module.exports = {
   getauthorizedPersonProfile,
   updateauthorizedPersonProfile,
   authorizedPersonList,
-
+  authorizedPersonMailLoginById,
+  authorizedPersonSendLoginId,
   deleteauthorizedPerson,
 };

@@ -167,7 +167,7 @@ const forgotPasswordService = async (params) => {
   }
   let token = await createToken(adminDetails.data, '3h');
   console.log('token-->', token)
-  let url = await process.env.FE_URL + process.env.ADMIN_RESET_PATH + token;
+  let url = await process.env.FE_URL +  token;
 
   InternalServices.sendEmail({
     to: params.email,
