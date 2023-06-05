@@ -378,7 +378,7 @@ const adminListService = async (params) => {
   params.all = true;
   const allList = await getAdminList(params);
   //get all admin list created by admin
-  params.all = false;
+  params.all = params.returnAll ==true ? true : false;
   const result = await getAdminList(params);
 
   //calculate pagemeta for pages and count
