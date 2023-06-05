@@ -1,6 +1,7 @@
 const { Admin } = require("../models/admin");
 const { authorizedPersons } = require("../models/authorizedPersons");
 const { clientFamily } = require("../models/clientFamily");
+const mongoose = require("mongoose");
 
 const json2csv = require("json2csv").parse;
 
@@ -51,6 +52,8 @@ const getauthorizedPersonDetailsByEmail_or_MobileNumber = async (params) => {
       { email: params?.email },
       { mobileNumber: params?.mobileNumber },
       { authorizedPersonId: params?.authorizedPersonId },
+     // { _id: mongoose.Types.ObjectId(params?.authorizedPersonId) },
+      
     ],
   });
 

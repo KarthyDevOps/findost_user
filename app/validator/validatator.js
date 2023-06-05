@@ -113,8 +113,8 @@ const adminListSchema = (req, res, next) => {
 
 const sendOTPSchema = (req, res, next) => {
   const schema = joi.object({
-    mobileNumber: joi.string().required().min(10).max(10),
-
+    mobileNumber: joi.string().optional().min(10).max(10),
+    authorizedPersonId : joi.string()
   });
   return bodyParamValidation(req, res, next, schema);
 };

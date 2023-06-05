@@ -959,7 +959,11 @@
       "properties": {
         "mobileNumber": {
           "type": "string"
+        },
+        "authorizedPersonId": {
+          "type": "string"
         }
+        
       }
     },
     "clientFamilyCreate": {

@@ -22,7 +22,7 @@ const verifyauthorizedPersonToken = async (req, res, next) => {
           })
           .lean();
         req.user = user;
-        req.user.userType = "authorizedPerson";
+        req.user.userType = "AP";
       } catch (e) {
         //token authorization by admin
         decode = jwt.verify(token, process.env.JWT_ADMIN_SECRET);
@@ -31,7 +31,7 @@ const verifyauthorizedPersonToken = async (req, res, next) => {
           //token: token,
         }).lean();
         req.user = user;
-        req.user.userType = "admin";
+        req.user.userType = "ADMIN";
       }
 
       if (!user) {

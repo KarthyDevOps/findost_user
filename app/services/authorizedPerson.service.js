@@ -38,7 +38,9 @@ const authorizedPersonLoginService = async (params) => {
       status: true,
       statusCode: statusCodes?.HTTP_OK,
       message: messages?.otpSendSuccessful,
-      data: [],
+      data: {
+        mobileNumber : authorizedPersons.mobileNumber
+      },
     };
   } else {
     return {
