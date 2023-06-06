@@ -421,7 +421,7 @@ const adminListService = async (params) => {
       { name: { $regex: `${params?.search}`, $options: "i" } },
       { email: { $regex: `${params?.search}`, $options: "i" } },
       { role: { $regex: `${params?.search}`, $options: "i" } },
-      { isActive: { $regex: `${params?.search}`, $options: "i" } },
+      { isActive: { $regex: `${params?.search}` } },
     ];
   }
   //get admin list
