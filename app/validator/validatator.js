@@ -86,6 +86,7 @@ const getAdminProfileSchema = (req, res, next) => {
 };
 
 const updateAdminProfileSchema = (req, res, next) => {
+  
   const querySchema = joi.object({
     adminId: joi.string().allow(null).allow(""),
   });

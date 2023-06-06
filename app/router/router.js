@@ -176,53 +176,28 @@ router.get(
 //client family related api
 router.post(
   routes.v1.clientFamily.addProfile,
-  [verifyToken(["AP"]), addClientFamilySchema],
+  [verifyToken(["AP", "ADMIN"]), verifyAdminRole("clientFamilyManagement", "ADD"),addClientFamilySchema],
   errHandle(addClientFamilyPerson)
 );
 router.put(
   routes.v1.clientFamily.updateProfile,
-  [updateClientFamilyProfileSchema],
+  [verifyToken(["AP", "ADMIN"]),verifyAdminRole("clientFamilyManagement", "EDIT"),updateClientFamilyProfileSchema],
   errHandle(updateClientFamilyProfile)
 );
 router.get(
   routes.v1.clientFamily.getProfile,
-  [clientFamilyProfileSchema],
+  [verifyToken(["AP", "ADMIN"]),verifyAdminRole("clientFamilyManagement", "VIEW"),clientFamilyProfileSchema],
   errHandle(getClientPersonProfile)
 );
 router.get(
   routes.v1.clientFamily.list,
-  [clientFamilyListSchema],
+  [verifyToken(["AP", "ADMIN"]),verifyAdminRole("clientFamilyManagement", "VIEW"),clientFamilyListSchema],
   errHandle(clientFamilyList)
 );
 router.delete(
   routes.v1.clientFamily.delete,
-  [clientFamilyProfileSchema],
+  [verifyToken(["AP", "ADMIN"]),verifyAdminRole("clientFamilyManagement", "DELETE"),clientFamilyProfileSchema],
   errHandle(deleteClientFamily)
 );
-//client admin family related api
-router.post(
-  routes.v1.clientAdminFamily.addProfile,
-  [verifyToken(["AP"]), addClientFamilySchema],
-  errHandle(addClientFamilyPerson)
-);
-router.put(
-  routes.v1.clientAdminFamily.updateProfile,
-  [updateClientFamilyProfileSchema],
-  errHandle(updateClientFamilyProfile)
-);
-router.get(
-  routes.v1.clientAdminFamily.getProfile,
-  [clientFamilyProfileSchema],
-  errHandle(getClientPersonProfile)
-);
-router.get(
-  routes.v1.clientAdminFamily.list,
-  [clientFamilyListSchema],
-  errHandle(clientFamilyList)
-);
-router.delete(
-  routes.v1.clientAdminFamily.delete,
-  [clientFamilyProfileSchema],
-  errHandle(deleteClientFamily)
-);
+
 module.exports = router;
