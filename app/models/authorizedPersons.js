@@ -1,8 +1,198 @@
 const mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 const jwt = require("jsonwebtoken");
-const { string } = require("joi");
 
+const addressSchema = new mongoose.Schema(
+  {
+    addressType: {
+      type: String,
+      trim: true,
+    },
+    residentialFlatNo: {
+      type: String,
+      trim: true,
+    },
+    residentialArea: {
+      type: String,
+      trim: true,
+    },
+    residentialCity: {
+      type: String,
+      trim: true,
+    },
+    residentialState: {
+      type: String,
+      trim: true,
+    },
+    residentialCountry: {
+      type: String,
+      trim: true,
+    },
+    residentialLandMark: {
+      type: String,
+      trim: true,
+    },
+    residentialPinCode: {
+      type: String,
+      trim: true,
+    },
+    isResidentialSameAsOffice: {
+      type: Boolean,
+      default: false,
+    },
+    officeFlatNo: {
+      type: String,
+      trim: true,
+    },
+    officeArea: {
+      type: String,
+      trim: true,
+    },
+    officeCity: {
+      type: String,
+      trim: true,
+    },
+    officeState: {
+      type: String,
+      trim: true,
+    },
+    officeCountry: {
+      type: String,
+      trim: true,
+    },
+    officeLandMark: {
+      type: String,
+      trim: true,
+    },
+    officePinCode: {
+      type: String,
+      trim: true,
+    },
+    isOfficeSameAsResident: {
+      type: Boolean,
+      default: false,
+    },
+  }
+)
+
+const documentSchema = new mongoose.Schema(
+  {
+    professionalDocument: {
+      type: String,
+      trim: true,
+
+    },
+    educationQualificationDocument: {
+      type: String,
+      trim: true,
+    },
+    isDifferentPanName: {
+      type: Boolean,
+      default: false,
+    },
+    residentialAddressProof: {
+      type: String,
+      trim: true,
+    },
+    officeAddressProof: {
+      type: String,
+      trim: true,
+    },
+    proofOfNameChange: {
+      type: String,
+      trim: true,
+    },
+  }
+)
+
+const businessSchema = new mongoose.Schema(
+  {
+    internetType: {
+      type: String,
+      trim: true,
+    },
+    internetQuality: {
+      type: String,
+      trim: true,
+    },
+    internetUsage: {
+      type: String,
+      trim: true,
+    },
+    businessForecast: {
+      type: Object,
+      trim: true,
+    },
+    businessRefference: {
+      type: Array,
+      trim: true,
+    },
+    segmentSelection: {
+      type: Array,
+      trim: true,
+    }
+
+  }
+)
+
+const bankDetailsSchema = new mongoose.Schema(
+  {
+    bankName: {
+      type: String,
+    },
+    accountNo: {
+      type: String,
+    },
+    ifscCode: {
+      type: String,
+      trim: true,
+    },
+    bankBranch: {
+      type: String,
+      trim: true,
+    },
+    uploadChequeLeaflet: {
+      type: String,
+      trim: true,
+    },
+
+
+  }
+)
+
+const nomineeDetailsSchema = new mongoose.Schema(
+  {
+    nomineeName: {
+      type: String,
+      trim: true,
+    },
+    nomineePan: {
+      type: String,
+      trim: true,
+    },
+    nomineeMobile: {
+      type: String,
+      trim: true,
+    },
+    nomineeDOB: {
+      type: String,
+      trim: true,
+    },
+    nomineeRelationship: {
+      type: String
+    },
+    isNomineeMinor: {
+      type: Boolean,
+      trim: true,
+    },
+    nomineeGuardian: {
+      type: Object,
+      trim: true
+    }
+
+
+  }
+)
 const authorizedPersonsSchema = new mongoose.Schema(
   {
     authorizedPersonId: {
@@ -15,25 +205,27 @@ const authorizedPersonsSchema = new mongoose.Schema(
         return now.slice(0, 3) + now.slice(10, 13);
       },
     },
-    mobileNumber: {
-      type: String,
-      required: true,
-      unique: true,
-      trim: true,
-    },
     profileURL: {
       type: String,
       required: false,
     },
-    email: {
-      type: String,
-      required: false,
-      unique: true,
-      trim: true,
-    },
+
     name: {
       type: String,
       required: true,
+      trim: true,
+    },
+    password: {
+      type: String,
+      required: false,
+      trim: true,
+    },
+    fatherName: {
+      type: String,
+      trim: true,
+    },
+    motherName: {
+      type: String,
       trim: true,
     },
     gender: {
@@ -41,10 +233,57 @@ const authorizedPersonsSchema = new mongoose.Schema(
       required: false,
       trim: true,
     },
-    password: {
+    mobileNumber: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+    },
+    email: {
       type: String,
       required: false,
+      unique: true,
       trim: true,
+    },
+    nationality: {
+      type: String,
+      trim: true,
+    },
+    tradeMember: {
+      type: String,
+      trim: true,
+    },
+    website: {
+      type: String,
+      trim: true,
+    },
+    occupationType: {
+      type: String,
+      trim: true,
+    },
+    role: {
+      type: String,
+      trim: true,
+    },
+    capitalMarketingExperience: {
+      type: Object,
+      default: true
+    },
+    isBrokerExperirnce: {
+      type: Boolean,
+      default: false,
+    },
+    brokerDetails: {
+      type: Object,
+      trim: false
+    },
+    address: addressSchema,
+    document: documentSchema,
+    business: businessSchema,
+    bankDetails: bankDetailsSchema,
+    nomineeDetails: nomineeDetailsSchema,
+    paymentDetails: {
+      type: Object
     },
     isActive: {
       type: Boolean,
@@ -99,29 +338,6 @@ authorizedPersonsSchema.methods.generateAuthToken = async function () {
   await authorizedPersons.save();
   return token;
 };
-
-/*
-authorizedPersonsSchema.statics.findByCredentials = async (
-    mobileNumber,
-    otp = undefined
-) => {
-    const authorizedPersons = await authorizedPersons.findOne({
-        mobileNumber
-    });
-    if (otp) {
-        const isMatch = await bcrypt.compare(otp, authorizedPersons.otp);
-        if (!isMatch) {
-            throw invalidOtp;
-        }
-        return authorizedPersons;
-    } else {
-        if (!authorizedPersons) {
-            throw invalidMobileNumber;
-        }
-        return authorizedPersons;
-    }
-};
-*/
 
 const authorizedPersons = mongoose.model(
   "authorizedPersons",
