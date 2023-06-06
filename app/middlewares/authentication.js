@@ -7,8 +7,9 @@ const { authorizedPersons } = require("../models/authorizedPersons");
 
 
 const verifyToken = (type = ["ADMIN"]) =>
-  async function (req, res, next) {
-    try {
+async function (req, res, next) {
+  try {
+     
       if (
         req.headers["x-access-token"] ||
         req.headers["authorization"] ||
@@ -25,9 +26,10 @@ const verifyToken = (type = ["ADMIN"]) =>
           try {
             decode = jwt.verify(token, process.env.JWT_ADMIN_SECRET);
             userData = await Admin.findOne({
-              _id: decode.id,
+              _id: decode._id,
               //token: token,
             });
+            console.log("data -->",decode)
             userType = "ADMIN";
           } catch (error) {
             if (type.includes("AP")) {
