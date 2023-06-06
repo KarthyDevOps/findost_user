@@ -111,4 +111,4 @@ const verifyAdminRole = (roles, action) =>
     }
   };
   
-module.exports = { verifyAdminToken, verifyauthorizedPersonToken,verifyAdminRole,verifyToken };
+module.exports = { verifyAdminRole,verifyToken };
