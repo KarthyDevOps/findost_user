@@ -38,11 +38,6 @@ const adminSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    // departmentId: {
-    //   type: Schema.Types.ObjectId,
-    //   required: true,
-    //   ref: Department,
-    // },
     profileURL: {
       type: String,
       required: false,
