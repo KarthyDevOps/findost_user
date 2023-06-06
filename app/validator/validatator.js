@@ -145,7 +145,7 @@ const authorizedPersonloginSchema = (req, res, next) => {
 const authorizedPersonloginbyIdSchema = (req, res, next) => {
   const schema = joi.object({
     authorizedPersonId: joi.string().min(6).max(6).required(),
-    password: joi.string().min(8).max(10).required(),
+    password: joi.string().min(8).max(10),
   });
   return bodyParamValidation(req, res, next, schema);
 };
