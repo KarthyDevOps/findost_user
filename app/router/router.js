@@ -3,8 +3,7 @@ const Router = express.Router;
 var multer = require("multer");
 var upload = multer();
 const {
-  verifyAdminToken,
-  verifyauthorizedPersonToken,
+  verifyToken,
   verifyAdminRole,
 } = require("../middlewares/authentication");
 const {
@@ -67,7 +66,7 @@ const { routes } = require("../routes/routes");
 const router = Router();
 //admin related api's
 router.post(routes.v1.admin.login, [adminloginSchema], errHandle(adminLogin));
-//router.post(routes.v1.admin.logout, [verifyAdminToken], errHandle(adminLogout));
+//router.post(routes.v1.admin.logout, [verifyToken(["ADMIN"])], errHandle(adminLogout));
 router.post(routes.v1.admin.sendOTP, [sendOTPSchema], errHandle(sendOTP));
 router.post(routes.v1.admin.verifyOTP, [verifyOTPSchema], errHandle(verifyOTP));
 router.post(
@@ -77,14 +76,14 @@ router.post(
 );
 router.post(
   routes.v1.admin.resetPassword,
-  [verifyAdminToken],
+  [verifyToken(["ADMIN"])],
   errHandle(resetPassword)
 );
 router.post(routes.v1.admin.addProfile, [addAdminSchema], errHandle(addAdmin));
 router.get(
   routes.v1.admin.getProfile,
   [
-    verifyAdminToken,
+    verifyToken(["ADMIN"]),
     verifyAdminRole("staffManagement", "VIEW"),
     getAdminProfileSchema,
   ],
@@ -94,7 +93,7 @@ router.get(routes.v1.admin.getAdmin, errHandle(getProfile));
 router.put(
   routes.v1.admin.updateProfile,
   [
-    verifyAdminToken,
+    verifyToken(["ADMIN"]),
     verifyAdminRole("staffManagement", "EDIT"),
     updateAdminProfileSchema,
   ],
@@ -103,7 +102,7 @@ router.put(
 router.delete(
   routes.v1.admin.delete,
   [
-    verifyAdminToken,
+    verifyToken(["ADMIN"]),
     verifyAdminRole("staffManagement", "DELETE"),
     getAdminProfileSchema,
   ],
@@ -111,7 +110,7 @@ router.delete(
 );
 router.get(
   routes.v1.admin.list,
-  [verifyAdminToken, adminListSchema],
+  [verifyToken(["ADMIN"]), adminListSchema],
   errHandle(adminList)
 );
 // authorizedPerson related api's
@@ -152,7 +151,7 @@ router.post(
 );
 router.get(
   routes.v1.authorizedPerson.getProfile,
-  [verifyauthorizedPersonToken, getAuthorizedPersonProfileSchema],
+  [verifyToken(["AP"]), getAuthorizedPersonProfileSchema],
   errHandle(getauthorizedPersonProfile)
 );
 router.get(
@@ -161,69 +160,69 @@ router.get(
 );
 router.delete(
   routes.v1.authorizedPerson.delete,
-  [verifyauthorizedPersonToken, updateAuthorizedPersonProfileSchema],
+  [verifyToken(["AP"]), updateAuthorizedPersonProfileSchema],
   errHandle(deleteauthorizedPerson)
 );
 router.put(
   routes.v1.authorizedPerson.updateProfile,
-  [verifyauthorizedPersonToken, updateAuthorizedPersonProfileSchema],
+  [verifyToken(["AP"]), updateAuthorizedPersonProfileSchema],
   errHandle(updateauthorizedPersonProfile)
 );
 router.get(
   routes.v1.authorizedPerson.list,
-  [verifyAdminToken, authorizedPersonListSchema],
+  [verifyToken(["ADMIN"]), authorizedPersonListSchema],
   errHandle(authorizedPersonList)
 );
 //client family related api
 router.post(
   routes.v1.clientFamily.addProfile,
-  [verifyauthorizedPersonToken, addClientFamilySchema],
-  addClientFamilyPerson
+  [verifyToken(["AP"]), addClientFamilySchema],
+  errHandle(addClientFamilyPerson)
 );
 router.put(
   routes.v1.clientFamily.updateProfile,
   [updateClientFamilyProfileSchema],
-  updateClientFamilyProfile
+  errHandle(updateClientFamilyProfile)
 );
 router.get(
   routes.v1.clientFamily.getProfile,
   [clientFamilyProfileSchema],
-  getClientPersonProfile
+  errHandle(getClientPersonProfile)
 );
 router.get(
   routes.v1.clientFamily.list,
   [clientFamilyListSchema],
-  clientFamilyList
+  errHandle(clientFamilyList)
 );
 router.delete(
   routes.v1.clientFamily.delete,
   [clientFamilyProfileSchema],
-  deleteClientFamily
+  errHandle(deleteClientFamily)
 );
 //client admin family related api
 router.post(
   routes.v1.clientAdminFamily.addProfile,
-  [verifyauthorizedPersonToken, addClientFamilySchema],
-  addClientFamilyPerson
+  [verifyToken(["AP"]), addClientFamilySchema],
+  errHandle(addClientFamilyPerson)
 );
 router.put(
   routes.v1.clientAdminFamily.updateProfile,
   [updateClientFamilyProfileSchema],
-  updateClientFamilyProfile
+  errHandle(updateClientFamilyProfile)
 );
 router.get(
   routes.v1.clientAdminFamily.getProfile,
   [clientFamilyProfileSchema],
-  getClientPersonProfile
+  errHandle(getClientPersonProfile)
 );
 router.get(
   routes.v1.clientAdminFamily.list,
   [clientFamilyListSchema],
-  clientFamilyList
+  errHandle(clientFamilyList)
 );
 router.delete(
   routes.v1.clientAdminFamily.delete,
   [clientFamilyProfileSchema],
-  deleteClientFamily
+  errHandle(deleteClientFamily)
 );
 module.exports = router;
