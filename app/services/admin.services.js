@@ -21,24 +21,28 @@ const {
 const { InternalServices } = require("../apiServices");
 const { session } = require("../models/session");
 const { generateAccessToken } = require("../utils");
+const { mongoose } = require("mongoose");
 //const { Department } = require("../models/departments");
 
 // admin related api's
 
 const adminLoginService = async (params) => {
   // get admin details by email
-  let result = await getAdminDetailsByEmail_or_MobileNumber(params);
-  if (result.status) {
+  let result = await Admin.findOne({
+    email: params?.email,
+  });
+  console.log("result-->",result)
+  if (result) {
  //   console.log('result-->', result)
-    if (!result.data.isActive) {
-      console.log('result 11-->', result)
+    if (!result.isActive) {
+      console.log('result-->', result)
       return {
         status: false,
         statusCode: statusCodes?.HTTP_BAD_REQUEST,
         message: statusMessage.notActive,
       };
     }
-    if (result.data.isDeleted) {
+    if (result.isDeleted) {
       console.log('result 11-->', result)
       return {
         status: false,
@@ -46,7 +50,8 @@ const adminLoginService = async (params) => {
         message:"user not found",
       };
     }
-    const admin = result.data;
+    const admin = result;
+    console.log("admin -->",admin)
     //compare given password and stored password by user
     const isMatch = await bcrypt.compare(params?.password, admin.password);
     if (!isMatch) {
@@ -78,8 +83,10 @@ const adminLoginService = async (params) => {
 
 const sendOTPService = async (params) => {
   //get admin details by email
-  const adminDetails = await getAdminDetailsByEmail_or_MobileNumber(params);
-  if (!adminDetails.status) {
+  const adminDetails = await Admin.findOne({
+    email: params?.email,
+  });
+  if (!adminDetails) {
     return {
       status: false,
       statusCode: statusCodes?.HTTP_BAD_REQUEST,
@@ -94,7 +101,18 @@ const sendOTPService = async (params) => {
   params.otp = await bcrypt.hash(otp.toString(), 4);
 
   //update new opt in table for relavent user
-  const result = await updateAdminProfileByEmail(params);
+   const email = params?.email;
+  delete params["email"];
+  const query = {
+    $set: params,
+  };
+  //get admin details by email or mobileNumber
+  const result = await Admin.updateOne(
+    {
+      email: email,
+    },
+    query
+  );
   if (!result.modifiedCount) {
     return {
       status: false,
@@ -114,8 +132,10 @@ const sendOTPService = async (params) => {
 
 const verifyOTPService = async (params) => {
   //get admin details by email
-  const adminDetails = await getAdminDetailsByEmail_or_MobileNumber(params);
-  if (!adminDetails.status) {
+  const adminDetails = await Admin.findOne({
+    email: params?.email,
+  });;
+  if (!adminDetails) {
     return {
       status: false,
       statusCode: statusCodes?.HTTP_BAD_REQUEST,
@@ -123,9 +143,9 @@ const verifyOTPService = async (params) => {
       data: [],
     };
   }
-  let admin = JSON.stringify(adminDetails?.data);
-  admin = JSON.parse(admin);
-  if (adminDetails.status && admin) {
+  let admin = adminDetails;
+  //admin = JSON.parse(admin);
+  if (admin) {
     //compare given otp by user and store otp
     const isMatch = await bcrypt.compare(params.otp, admin.otp);
     if (!isMatch) {
@@ -156,8 +176,10 @@ const forgotPasswordService = async (params) => {
 
   try {
      //get admin details by email
-  const adminDetails = await getAdminDetailsByEmail_or_MobileNumber(params);
-  if (!adminDetails.status) {
+  const adminDetails = await Admin.findOne({
+    email: params?.email,
+  });
+  if (!adminDetails) {
     return {
       status: false,
       statusCode: statusCodes?.HTTP_BAD_REQUEST,
@@ -165,7 +187,7 @@ const forgotPasswordService = async (params) => {
       data: [],
     };
   }
-  let token = await createToken(adminDetails.data, '3h');
+  let token = await createToken(adminDetails, '3h');
   console.log('token-->', token)
   let url = await process.env.FE_URL +  token;
 
@@ -227,6 +249,7 @@ const resetPasswordService = async (params) => {
 const createToken = async (user, expiry) =>{
   
     try {
+      console.log("user -->",user)
       const sessionData = await session.create({
         userId: user._id,
         userType:"Super Admin",
@@ -253,8 +276,10 @@ const createToken = async (user, expiry) =>{
 
 const addAdminService = async (params) => {
   //verify the given admin already exist or not
-  const result = await getAdminDetailsByEmail_or_MobileNumber(params);
-  if (result.status) {
+  const result = await Admin.findOne({
+    email: params?.email,
+  });
+  if (result) {
     return {
       status: false,
       statusCode: statusCodes?.HTTP_BAD_REQUEST,
@@ -281,7 +306,11 @@ const addAdminService = async (params) => {
 
 const getAdminProfileService = async (params) => {
   //get admin details by admin id
-  const result = await getAdminProfile(params);
+  const result = await Admin.find(
+    {
+      $or:[{ adminId: params?.adminId }, {_id:params.id}]
+    }
+    ).lean();
   if (result.status) {
     return {
       status: true,
@@ -301,13 +330,17 @@ const getAdminProfileService = async (params) => {
 
 const getAdminProfileByIdService = async (params) => {
   //get admin details by admin id
-  const result = await getProfileById(params);
-  if (result.status) {
+  const result = await Admin.findOne({
+    $or: [{ _id: params?.id }, { adminId: params?.adminId }],
+    isDeleted: false,
+  }).lean();
+
+  if (result) {
     return {
       status: true,
       statusCode: statusCodes?.HTTP_OK,
       message: statusMessage.success,
-      data: result.data,
+      data: result,
     };
   } else {
     return {
@@ -345,7 +378,8 @@ const updateAdminProfileService = async (params) => {
 };
 
 const deleteAdminService = async (params) => {
-  const id = params?.id;
+  const id = mongoose.Types.ObjectId(params?.id) ;
+  console.log("id -->",id)
   delete params["adminId"];
   var query = {
     $set: {
@@ -354,7 +388,7 @@ const deleteAdminService = async (params) => {
       lastUpdatedBy: params?.lastUpdatedBy,
     },
   };
-
+//console.log(pa)
   //update admin details into admins table
   const result = await Admin.updateOne({ _id: id }, query);
   if (!result.modifiedCount) {
@@ -376,17 +410,45 @@ const deleteAdminService = async (params) => {
 const adminListService = async (params) => {
   //get all admin list
   params.all = true;
-  const allList = await getAdminList(params);
-  //get all admin list created by admin
-  params.all = params.returnAll ==true ? true : false;
-  const result = await getAdminList(params);
+ // const allList = await getAdminList(params);
+
+ let data,
+    payload = { isDeleted: false };
+
+  if (params?.search) {
+    payload.$or = [
+      { adminId: { $regex: `${params?.search}`, $options: "i" } },
+      { name: { $regex: `${params?.search}`, $options: "i" } },
+      { mobileNumber: { $regex: `${params?.search}`, $options: "i" } },
+      { email: { $regex: `${params?.search}`, $options: "i" } },
+    ];
+  }
+  //get admin list
+
+  if (params?.all) {
+    data = await Admin.find(payload)
+      .sort({ createdAt: -1 })
+      .lean();
+  } else {
+    data = await Admin.find(payload)
+      .skip(Number(params?.page - 1) * Number(params?.limit))
+      .limit(Number(params?.limit))
+      .sort({ createdAt: -1 })
+      .lean();
+  }
+
+  // //get all admin list created by admin
+  // params.all = params.returnAll ==true ? true : false;
+  // const result = await getAdminList(params);
 
   //calculate pagemeta for pages and count
-  const pageMeta = await pageMetaService(params, allList?.data?.length || 0);
+    data = await Admin.find(payload)
+  const pageMeta = await pageMetaService(params, data.length || 0);
+  console.log("data -->",pageMeta.pageCount)
   return {
     status: true,
     statusCode: statusCodes?.HTTP_OK,
-    data: { list: result?.data, pageMeta },
+    data: { list: data, pageMeta },
   };
 };
 

@@ -13,45 +13,45 @@ const verifyToken = (type = ["ADMIN"]) =>
         req.headers["x-access-token"] ||
         req.headers["authorization"] ||
         req.headers["Authorization"]
-      ) {
-        let token =
+        ) {
+          let token =
           req.headers["x-access-token"] ||
           req.headers["authorization"] ||
           req.headers["Authorization"];
-        token = token.replace("Bearer ", "");
-        let decode, user;
-        var userData = null;
-        let userType = null;
-        try {
-          decode = jwt.verify(token, process.env.JWT_ADMIN_SECRET);
-          userData = await Admin.findOne({
-            _id: decode._id,
-            //token: token,
-          });
-          userType = "ADMIN";
-        } catch (error) {
-          if (type.includes("AP")) {
-            decode = jwt.verify(token, process.env.JWT_authorizedPerson_SECRET);
-            userData = await authorizedPersons.findOne({
-              _id: decode._id,
-              // token: token,
+          token = token.replace("Bearer ", "");
+          let decode, user;
+          var userData = null;
+          let userType = null;
+          try {
+            decode = jwt.verify(token, process.env.JWT_ADMIN_SECRET);
+            userData = await Admin.findOne({
+              _id: decode.id,
+              //token: token,
             });
-            userType = "AP";
+            userType = "ADMIN";
+          } catch (error) {
+            if (type.includes("AP")) {
+              decode = jwt.verify(token, process.env.JWT_authorizedPerson_SECRET);
+              userData = await authorizedPersons.findOne({
+                _id: decode._id,
+                // token: token,
+              });
+              userType = "AP";
+            }
           }
-        }
-        if (userData) {
-          if (!userData?.isActive) {
-            return sendErrorResponse(
-              req,
-              res,
-              statusCodes.HTTP_NOT_FOUND,
-              messages.adminInActive,
-              []
-            );
-          } else {
-            req.user = userData;
-            req.user.userType = userType;
-            next();
+          if (userData) {
+            if (!userData?.isActive) {
+              return sendErrorResponse(
+                req,
+                res,
+                statusCodes.HTTP_NOT_FOUND,
+                messages.adminInActive,
+                []
+                );
+              } else {
+                req.user = userData;
+                req.user.userType = userType;
+                next();
           }
         } else {
           return sendErrorResponse(
