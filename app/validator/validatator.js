@@ -139,8 +139,10 @@ const resetPasswordSchema = (req, res, next) => {
 
 const authorizedPersonloginSchema = (req, res, next) => {
   const schema = joi.object({
-    mobileNumber: joi.string().min(10).max(10).required(),
-  });
+    mobileNumber: joi.string().min(10).max(10),
+    authorizedPersonId: joi.string(),
+  }).or( 'mobileNumber', 'authorizedPersonId');
+
   return bodyParamValidation(req, res, next, schema);
 };
 const authorizedPersonloginbyIdSchema = (req, res, next) => {
