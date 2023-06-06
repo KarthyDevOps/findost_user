@@ -305,18 +305,19 @@ const addAdminService = async (params) => {
 };
 
 const getAdminProfileService = async (params) => {
+  console.log("params -->",params)
   //get admin details by admin id
   const result = await Admin.find(
     {
       $or:[{ adminId: params?.adminId }, {_id:params.id}]
     }
     ).lean();
-  if (result.status) {
+  if (result) {
     return {
       status: true,
       statusCode: statusCodes?.HTTP_OK,
       message: statusMessage.success,
-      data: result.data,
+      data: result,
     };
   } else {
     return {
