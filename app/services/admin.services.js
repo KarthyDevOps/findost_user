@@ -419,8 +419,9 @@ const adminListService = async (params) => {
     payload.$or = [
       { adminId: { $regex: `${params?.search}`, $options: "i" } },
       { name: { $regex: `${params?.search}`, $options: "i" } },
-      { mobileNumber: { $regex: `${params?.search}`, $options: "i" } },
       { email: { $regex: `${params?.search}`, $options: "i" } },
+      { role: { $regex: `${params?.search}`, $options: "i" } },
+      { isActive: { $regex: `${params?.search}`, $options: "i" } },
     ];
   }
   //get admin list
