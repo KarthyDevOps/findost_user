@@ -305,12 +305,12 @@ const getClientPersonList = async (param) => {
   if (data.length > 0) {
     return {
       status: true,
-      data: data,
+      data: data.length,
     };
   }
   return {
     status: false,
-    data: {},
+    data: [],
   };
 };
 
