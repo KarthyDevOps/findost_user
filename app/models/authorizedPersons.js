@@ -105,6 +105,48 @@ const documentSchema = new mongoose.Schema(
   }
 )
 
+const settingsSchema = new mongoose.Schema(
+  {
+    isDarkTheme: {
+      type: Boolean,
+      default: false,
+    },
+    isEnableBioMetricLogin: {
+      type: Boolean,
+      default: false,
+    },
+    isMyNotificationSettings: {
+      type: Boolean,
+      default: false,
+    },
+    isInsurenceNotification: {
+      type: Boolean,
+      default: false,
+    },
+    isMutualFundsNotification: {
+      type: Boolean,
+      default: false,
+    },
+    isEquityNotification: {
+      type: Boolean,
+      default: false,
+    },
+    isSIPNotification: {
+      type: Boolean,
+      default: false,
+    },
+    isIPONotification: {
+      type: Boolean,
+      default: false,
+    },
+    isLoanNotification: {
+      type: Boolean,
+      default: false,
+    },
+  }
+)
+
+
 const businessSchema = new mongoose.Schema(
   {
     internetType: {
@@ -282,6 +324,7 @@ const authorizedPersonsSchema = new mongoose.Schema(
     business: businessSchema,
     bankDetails: bankDetailsSchema,
     nomineeDetails: nomineeDetailsSchema,
+    settings: settingsSchema,
     paymentDetails: {
       type: Object
     },
