@@ -420,7 +420,7 @@ const adminListService = async (params) => {
     else {
       return {
         status:false,
-        statusCode: statusCodes?.HTTP_NOT_FOUND,
+        statusCode: statusCodes?.HTTP_OK,
         data: [],
       };
 
