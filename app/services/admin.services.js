@@ -398,8 +398,13 @@ const adminListService = async (params) => {
         { adminId: { $regex: `${params?.search}`, $options: "i" } },
         { name: { $regex: `${params?.search}`, $options: "i" } },
         { email: { $regex: `${params?.search}`, $options: "i" } },
-        { role: { $regex: `${params?.search}`, $options: "i" } },
       ];
+    }
+    if(params.role){
+      cond.role = params?.role  
+    }
+    if(params.isActive){
+      cond.isActive = params?.isActive  
     }
     let totalCount = await Admin.find(cond).countDocuments();
     let data = await Admin.find(cond).sort({ createdAt: -1}).skip(limit * (page - 1)).limit(limit);
@@ -421,12 +426,14 @@ const adminListService = async (params) => {
 
     }
      
-} catch (error) {
-    console.log("error", error);
-    throw new Error(error);
-}
 
-};
+
+}
+catch (error) {
+  console.log("error", error);
+  throw new Error(error);
+}
+}
 
 module.exports = {
     adminLoginService,
@@ -441,4 +448,3 @@ module.exports = {
     adminListService,
     getAdminProfileByIdService
   };
-  
