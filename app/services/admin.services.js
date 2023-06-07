@@ -384,69 +384,48 @@ const deleteAdminService = async (params) => {
 };
 
 const adminListService = async (params) => {
-  //get all admin list
-  params.all = true;
- // const allList = await getAdminList(params);
+  try {
+    
+    let cond = {};  
+    cond.isDeleted = false 
+    let page = params?.page || 1;
+    page = Number(page);
+    let limit = params?.size || 10;
+    limit = Number(limit);
 
- let data,
-    payload = { isDeleted: false };
+    if (params.search) {
+      cond.$or = [
+        { adminId: { $regex: `${params?.search}`, $options: "i" } },
+        { name: { $regex: `${params?.search}`, $options: "i" } },
+        { email: { $regex: `${params?.search}`, $options: "i" } },
+        { role: { $regex: `${params?.search}`, $options: "i" } },
+      ];
+    }
+    let totalCount = await Admin.find(cond).countDocuments();
+    let data = await Admin.find(cond).sort({ createdAt: -1}).skip(limit * (page - 1)).limit(limit);
+    const pageMeta = await pageMetaService(params,totalCount);
+    if (data.length > 0) {
+      return {
+        status: true,
+        statusCode: statusCodes?.HTTP_OK,
+        data: { list: data, pageMeta },
+      };
 
-  if (params?.search) {
-    payload.$or = [
-      { adminId: { $regex: `${params?.search}`, $options: "i" } },
-      { name: { $regex: `${params?.search}`, $options: "i" } },
-      { email: { $regex: `${params?.search}`, $options: "i" } },
-      { role: { $regex: `${params?.search}`, $options: "i" } },
-    ];
-  }
-  //get admin list
-  if (params?.all) {
-    data = await Admin.find(payload)
-      .sort({ createdAt: -1 })
-      .lean();
-  } else {
-    data = await Admin.find(payload)
-      .skip(Number(params?.page - 1) * Number(params?.limit))
-      .limit(Number(params?.limit))
-      .sort({ createdAt: -1 })
-      .lean();
-  }
+    }
+    else {
+      return {
+        status:false,
+        statusCode: statusCodes?.HTTP_NOT_FOUND,
+        data: [],
+      };
 
-  // //get all admin list created by admin
-  // params.all = params.returnAll ==true ? true : false;
-  // const result = await getAdminList(params);
+    }
+     
+} catch (error) {
+    console.log("error", error);
+    throw new Error(error);
+}
 
-  //calculate pagemeta for pages and count
-    data = await Admin.find(payload)
-  const pageMeta = await pageMetaService(params, data.length || 0);
-  console.log("data -->",pageMeta.pageCount)
-  return {
-    status: true,
-    statusCode: statusCodes?.HTTP_OK,
-    data: { list: data, pageMeta },
-  };
-};
-
-const adminLogoutService = async (params) => {
-  var data = {
-    token: null,
-  };
-  var newvalues = { $set: data };
-  const resp = await Admin.updateOne({ _id: params?.userId }, newvalues);
-  if (!resp.modifiedCount) {
-    return {
-      status: false,
-      statusCode: statusCodes?.HTTP_BAD_REQUEST,
-      message: messages?.userNotExist,
-      data: [],
-    };
-  }
-  return {
-    status: true,
-    statusCode: statusCodes?.HTTP_OK,
-    message: messages?.logoutSuccessful,
-    data: [],
-  };
 };
 
 module.exports = {
@@ -460,7 +439,6 @@ module.exports = {
     updateAdminProfileService,
     deleteAdminService,
     adminListService,
-    adminLogoutService,
     getAdminProfileByIdService
   };
   

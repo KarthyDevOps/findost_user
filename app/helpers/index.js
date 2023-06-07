@@ -1,7 +1,6 @@
 const { Admin } = require("../models/admin");
 const { authorizedPersons } = require("../models/authorizedPersons");
 const { clientFamily } = require("../models/clientFamily");
-const mongoose = require("mongoose");
 
 const json2csv = require("json2csv").parse;
 
@@ -44,7 +43,6 @@ const errHandle = (fn) => (req, res, next) => {
 };
 
 //authorizedPerson related functions
-
 const getauthorizedPersonDetailsByEmail_or_MobileNumber = async (params) => {
   //get authorizedPerson details by email or mobileNumber
   const data = await authorizedPersons.findOne({
@@ -109,119 +107,6 @@ const getauthorizedPersonList = async () => {
     status: false,
     data: {},
   };
-};
-
-// admin related functions
-
-const getAdminDetailsByEmail_or_MobileNumber = async (params) => {
-  //get admin details by email or mobileNumber
-  const data = await Admin.findOne({
-    email: params?.email,
-  });
-
-  //return object based on admin already exist or not
-  if (data && Object.keys(data).length) {
-    return { status: true, data: data };
-  } else {
-    return { status: false, data: {} };
-  }
-};
-
-const getAdminDetailsById = async (params) => {
-  //get admin details by id
-  const data = await Admin.findOne({
-    $or: [{ _id: params?._id }, { _id: params?.adminId }],
-  });
-
-  //return object based on admin already exist or not
-  if (data && Object.keys(data).length) {
-    return { status: true, data: data };
-  } else {
-    return { status: false, data: {} };
-  }
-};
-
-const getAdminProfile = async (params) => {
-
-  //get admin details
-  const data = await Admin.find(
-    {
-      $or: [{ adminId: params?.adminId }, { _id: params.id }]
-    }
-  ).lean();
-
-  //return object based on admin already exist or not
-  if (data && Object.keys(data).length) {
-    return { status: true, data: data };
-  } else {
-    return { status: false, data: {} };
-  }
-};
-
-const getProfileById = async (params) => {
-  //get admin details
-  const data = await Admin.findOne({
-    $or: [{ _id: params?.id }, { adminId: params?.adminId }],
-    isDeleted: false,
-  }).lean();
-
-  //return object based on admin already exist or not
-  if (data && Object.keys(data).length) {
-    return { status: true, data: data };
-  } else {
-    return { status: false, data: {} };
-  }
-};
-
-const getAdminList = async (params) => {
-  let data,
-    payload = { isDeleted: false };
-
-  if (params?.search) {
-    payload.$or = [
-      { adminId: { $regex: `${params?.search}`, $options: "i" } },
-      { name: { $regex: `${params?.search}`, $options: "i" } },
-      { mobileNumber: { $regex: `${params?.search}`, $options: "i" } },
-      { email: { $regex: `${params?.search}`, $options: "i" } },
-    ];
-  }
-  //get admin list
-
-  if (params?.all) {
-    data = await Admin.find(payload)
-      .sort({ createdAt: -1 })
-      .lean();
-  } else {
-    data = await Admin.find(payload)
-      .skip(Number(params?.page - 1) * Number(params?.limit))
-      .limit(Number(params?.limit))
-      .sort({ createdAt: -1 })
-      .lean();
-  }
- 
-  //return object based on person already exist or not
-  if (data && data.length) {
-    return { status: true, data: data };
-  } else {
-    return { status: false, data: {} };
-  }
-};
-
-const updateAdminProfileByEmail = async (params) => {
-  const email = params?.email;
-  delete params["email"];
-  const query = {
-    $set: params,
-  };
-  //get admin details by email or mobileNumber
-  const data = await Admin.updateOne(
-    {
-      email: email,
-    },
-    query
-  );
-
-  return data;
 };
 
 const convert_JSON_to_file = async (res, data, params) => {
@@ -307,12 +192,6 @@ module.exports = {
   errHandle,
   getauthorizedPersonDetailsByEmail_or_MobileNumber,
   getauthorizedPersonDetailsById,
-  getAdminDetailsByEmail_or_MobileNumber,
-  getAdminDetailsById,
-  getAdminProfile,
-  getAdminList,
-  getProfileById,
-  updateAdminProfileByEmail,
   authorizedPersonbyId,
   getauthorizedPersonList,
   convert_JSON_to_file,
