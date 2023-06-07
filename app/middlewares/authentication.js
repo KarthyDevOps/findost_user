@@ -46,7 +46,7 @@ async function (req, res, next) {
               return sendErrorResponse(
                 req,
                 res,
-                statusCodes.HTTP_NOT_FOUND,
+                statusCodes.HTTP_UNAUTHORIZED,
                 messages.adminInActive,
                 []
                 );
@@ -59,7 +59,7 @@ async function (req, res, next) {
           return sendErrorResponse(
             req,
             res,
-            statusCodes.HTTP_NOT_FOUND,
+            statusCodes.HTTP_UNAUTHORIZED,
             messages.tokenInvalid,
             []
           );
@@ -78,7 +78,7 @@ async function (req, res, next) {
       return sendErrorResponse(
         req,
         res,
-        statusCodes.HTTP_NOT_FOUND,
+        statusCodes.HTTP_UNAUTHORIZED,
         messages.tokenInvalid,
         []
       );
@@ -104,7 +104,7 @@ const verifyAdminRole = (roles, action) =>
       return sendErrorResponse(
         req,
         res,
-        statusCodes.HTTP_NOT_FOUND,
+        statusCodes.HTTP_UNAUTHORIZED,
         messages.accessDenied,
         []
       );
