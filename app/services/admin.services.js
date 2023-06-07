@@ -3,7 +3,6 @@ const { statusMessage } = require("../response/httpStatusMessages");
 const { messages } = require("../response/customMessages");
 const { Admin } = require("../models/admin");
 const bcrypt = require("bcryptjs");
-//const { PermissionModules } = require("../models/permission-modules");
 const {
   getDepartment_Details_By_Name,
   getAdminDetailsByEmail_or_MobileNumber,
@@ -11,9 +10,6 @@ const {
   getAdminList,
   pageMetaService,
   getProfileById,
-//   getDepartmentList,
-//   getdropDownDepartmentList,
-//   getDepartmentDetailsById,
   sendOTP_to_email,
   updateAdminProfileByEmail,
   getAdminProfile,
@@ -22,7 +18,7 @@ const { InternalServices } = require("../apiServices");
 const { session } = require("../models/session");
 const { generateAccessToken } = require("../utils");
 const { mongoose } = require("mongoose");
-//const { Department } = require("../models/departments");
+
 
 // admin related api's
 
@@ -33,7 +29,6 @@ const adminLoginService = async (params) => {
   });
   console.log("result-->",result)
   if (result) {
- //   console.log('result-->', result)
     if (!result.isActive) {
       console.log('result-->', result)
       return {
@@ -106,22 +101,6 @@ const sendOTPService = async (params) => {
   const query = {
     $set: params,
   };
-  //get admin details by email or mobileNumber
-  const result = await Admin.updateOne(
-    {
-      email: email,
-    },
-    query
-  );
-  if (!result.modifiedCount) {
-    return {
-      status: false,
-      statusCode: statusCodes?.HTTP_BAD_REQUEST,
-      message: messages?.userNotExist,
-      data: [],
-    };
-  }
-
   return {
     status: true,
     statusCode: statusCodes?.HTTP_OK,
@@ -144,7 +123,7 @@ const verifyOTPService = async (params) => {
     };
   }
   let admin = adminDetails;
-  //admin = JSON.parse(admin);
+  
   if (admin) {
     //compare given otp by user and store otp
     const isMatch = await bcrypt.compare(params.otp, admin.otp);
@@ -235,7 +214,6 @@ const resetPasswordService = async (params) => {
       message: messages?.updated,
       data: [],
     };
-     //get admin details by email
 
   } catch (error) {
     console.log('error-->', error)
@@ -356,10 +334,7 @@ const getAdminProfileByIdService = async (params) => {
 
 const updateAdminProfileService = async (params) => {
   const Id = params?.id;
-  delete params["adminId"];
   var query = { $set: params };
-
-  //update admin details into admins table
   console.log('query-->', query)
   const result = await Admin.updateOne({ _id: Id }, query);
   if (!result.modifiedCount) {
@@ -425,7 +400,6 @@ const adminListService = async (params) => {
     ];
   }
   //get admin list
-
   if (params?.all) {
     data = await Admin.find(payload)
       .sort({ createdAt: -1 })

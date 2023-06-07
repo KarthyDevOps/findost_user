@@ -142,13 +142,14 @@ const getAdminDetailsById = async (params) => {
 };
 
 const getAdminProfile = async (params) => {
+
   //get admin details
   const data = await Admin.find(
     {
-      $or:[{ adminId: params?.adminId }, {_id:params.id}]
+      $or: [{ adminId: params?.adminId }, { _id: params.id }]
     }
-    ).lean();
-console.log("data -->",params)
+  ).lean();
+
   //return object based on admin already exist or not
   if (data && Object.keys(data).length) {
     return { status: true, data: data };
@@ -197,82 +198,7 @@ const getAdminList = async (params) => {
       .sort({ createdAt: -1 })
       .lean();
   }
-  // if (params.all) {
-  //   if (params?.search) {
-  //     data = await Admin.aggregate([
-  //       {
-  //         $match: {
-  //           isDeleted: false,
-  //           $or: [
-  //             { empId: { $regex: `${params?.search}`, $options: "i" } },
-  //             { name: { $regex: `${params?.search}`, $options: "i" } },
-  //             { mobileNumber: { $regex: `${params?.search}`, $options: "i" } },
-  //             { email: { $regex: `${params?.search}`, $options: "i" } },
-  //           ],
-  //         },
-  //       },
-  //       {
-  //         $lookup: {
-  //           from: "departments",
-  //           localField: "departmentId",
-  //           foreignField: "_id",
-  //           as: "adminList",
-  //         },
-  //       },
-  //       { $sort: { createdAt: -1 } },
-  //     ]);
-  //   } else {
-  //     data = await Admin.find({
-  //       isDeleted: false,
-  //     });
-  //   }
-  // } else if (params?.search) {
-  //   //get data by join with admin and admin using lookup
-  //   data = await Admin.aggregate([
-  //     {
-  //       $match: {
-  //         isDeleted: false,
-  //         $or: [
-  //           { empId: { $regex: `${params?.search}`, $options: "i" } },
-  //           { name: { $regex: `${params?.search}`, $options: "i" } },
-  //           { mobileNumber: { $regex: `${params?.search}`, $options: "i" } },
-  //           { email: { $regex: `${params?.search}`, $options: "i" } },
-  //         ],
-  //       },
-  //     },
-  //     {
-  //       $lookup: {
-  //         from: "departments",
-  //         localField: "departmentId",
-  //         foreignField: "_id",
-  //         as: "adminList",
-  //       },
-  //     },
-  //     { $skip: Number((params?.page - 1) * params?.limit) },
-  //     { $limit: Number(params?.limit) },
-  //     { $sort: { createdAt: -1 } },
-  //   ]);
-  // } else {
-  //   data = await Admin.aggregate([
-  //     {
-  //       $match: {
-  //         isDeleted: false,
-  //       },
-  //     },
-  //     {
-  //       $lookup: {
-  //         from: "departments",
-  //         localField: "departmentId",
-  //         foreignField: "_id",
-  //         as: "adminList",
-  //       },
-  //     },
-  //     { $skip: Number((params?.page - 1) * params?.limit) },
-  //     { $limit: Number(params?.limit) },
-  //     { $sort: { createdAt: -1 } },
-  //   ]);
-  // }
-
+ 
   //return object based on person already exist or not
   if (data && data.length) {
     return { status: true, data: data };

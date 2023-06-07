@@ -12,6 +12,7 @@ const {
   getAdminProfileSchema,
   updateAdminProfileSchema,
   adminListSchema,
+  deleteAdminProfileSchema,
   authorizedPersonloginSchema,
   getAuthorizedPersonProfileSchema,
   authorizedPersonVerifyOTPSchema,
@@ -28,6 +29,7 @@ const {
   clientFamilyListSchema,
   updateClientFamilyProfileSchema,
   forgotPasswordLoginIdSchema,
+  forgotThroughMailSchema,
 } = require("../validator/validatator");
 const {
   adminLogin,
@@ -67,15 +69,15 @@ const router = Router();
 
 //admin related api's
 router.post(routes.v1.admin.login, [adminloginSchema], errHandle(adminLogin));
-router.post(routes.v1.admin.sendOTP, [sendOTPSchema], errHandle(sendOTP));
-router.post(routes.v1.admin.verifyOTP, [verifyOTPSchema], errHandle(verifyOTP));
-router.post(routes.v1.admin.forgotPassword,[resetPasswordSchema],errHandle(forgot_password));
-router.post(routes.v1.admin.resetPassword,[verifyToken(["ADMIN"])],errHandle(resetPassword));
+router.post(routes.v1.admin.sendOTP, errHandle(sendOTP)); //for future use
+router.post(routes.v1.admin.verifyOTP, [verifyOTPSchema], errHandle(verifyOTP)); //for future use
+router.post(routes.v1.admin.forgotPassword,[forgotThroughMailSchema],errHandle(forgot_password));
+router.post(routes.v1.admin.resetPassword,[resetPasswordSchema,verifyToken(["ADMIN"])],errHandle(resetPassword));
 router.post(routes.v1.admin.addProfile, [addAdminSchema], errHandle(addAdmin));
 router.get(routes.v1.admin.getProfile,[verifyToken(["ADMIN"]),  verifyAdminRole("staffManagement", "VIEW"), getAdminProfileSchema,],errHandle(getAdminProfile));
 router.get(routes.v1.admin.getAdmin, errHandle(getProfile));
 router.put(routes.v1.admin.updateProfile,[verifyToken(["ADMIN"]),verifyAdminRole("staffManagement", "EDIT"),updateAdminProfileSchema],errHandle(updateAdminProfile));
-router.delete(routes.v1.admin.delete,[ verifyToken(["ADMIN"]),  verifyAdminRole("staffManagement", "DELETE"),getAdminProfileSchema,],errHandle(deleteAdmin));
+router.delete(routes.v1.admin.delete,[ verifyToken(["ADMIN"]),  verifyAdminRole("staffManagement", "DELETE"),deleteAdminProfileSchema,],errHandle(deleteAdmin));
 router.get( routes.v1.admin.list,[verifyToken(["ADMIN"]), adminListSchema],errHandle(adminList));
 
 // authorizedPerson related api's

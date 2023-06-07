@@ -71,7 +71,6 @@ const addAdminSchema = (req, res, next) => {
     name: joi.string().required(),
     mobileNumber: joi.string().optional(),
     email: joi.string().required().email(),
-    departmentId: joi.string().optional(),
     password: joi.string().required(),
   });
   return bodyParamValidation(req, res, next, schema);
@@ -85,10 +84,19 @@ const getAdminProfileSchema = (req, res, next) => {
   return queryParamValidation(req, res, next, schema);
 };
 
+const deleteAdminProfileSchema = (req, res, next) => {
+  const schema = joi.object({
+  //  adminId: joi.string().optional().allow(null).allow(""),
+    id: joi.string().required().allow(null).allow("")
+  });
+  return queryParamValidation(req, res, next, schema);
+};
+
+
 const updateAdminProfileSchema = (req, res, next) => {
   
   const querySchema = joi.object({
-    adminId: joi.string().allow(null).allow(""),
+    id: joi.string().required(null).allow(""),
   });
   req.bodyParam = true;
   queryParamValidation(req, res, next, querySchema);
@@ -128,11 +136,17 @@ const verifyOTPSchema = (req, res, next) => {
   return bodyParamValidation(req, res, next, schema);
 };
 
-const resetPasswordSchema = (req, res, next) => {
+const forgotThroughMailSchema = (req,res,next) => {
   const schema = joi.object({
     email: joi.string().required().email(),
-    mobileNumber: joi.string().allow(null).allow(""),
-    password: joi.string().optional().min(8).max(20),
+  });
+  return bodyParamValidation(req, res, next, schema);
+}
+
+const resetPasswordSchema = (req, res, next) => {
+  const schema = joi.object({
+    password: joi.string().required(),
+    confirmPassword: joi.string().required(),
   });
   return bodyParamValidation(req, res, next, schema);
 };
@@ -292,9 +306,11 @@ module.exports = {
   addAdminSchema,
   getAdminProfileSchema,
   updateAdminProfileSchema,
+  deleteAdminProfileSchema,
   adminListSchema,
   sendOTPSchema,
   verifyOTPSchema,
+  forgotThroughMailSchema,
   resetPasswordSchema,
   authorizedPersonloginSchema, //<---- authorized person 
   authorizedPersonVerifyOTPSchema,
