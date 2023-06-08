@@ -145,7 +145,7 @@ const clientFamilyListService = async (params) => {
       return {
         status: false,
         statusCode: statusCodes?.HTTP_OK,
-        data: [],
+        data:  { list: data, pageMeta },
       };
 
     }

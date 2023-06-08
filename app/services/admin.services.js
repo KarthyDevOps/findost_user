@@ -410,7 +410,7 @@ const adminListService = async (params) => {
     let totalCount = await Admin.find(cond).countDocuments();
     let data = await Admin.find(cond).sort({ createdAt: -1}).skip(limit * (page - 1)).limit(limit);
     const pageMeta = await pageMetaService(params,totalCount);
-    if (data.length) {
+    if (data.length > 0) {
       return {
         status: true,
         statusCode: statusCodes?.HTTP_OK,
