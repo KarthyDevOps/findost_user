@@ -1,29 +1,23 @@
 const {
   convert_JSON_to_file,
-  getauthorizedPersonDetailsByEmail_or_MobileNumber,
-  getauthorizedPersonDetailsById,
-  getauthorizedPersonList,
   pageMetaService,
-  sendOTP_to_mobileNumber,
-  getClientFamilyByEmail_or_MobileNumber,
-  getClientFamilyDetailsById,
-  getClientPersonList,
-  authorizedPersonbyId,
 } = require("../helpers");
 const { clientFamily } = require("../models/clientFamily");
 const { messages } = require("../response/customMessages");
 const { statusCodes } = require("../response/httpStatusCodes");
-const bcrypt = require("bcryptjs");
 const { statusMessage } = require("../response/httpStatusMessages");
-//const { authorizedPersonsAddress } = require("../models/authorizedPerson-address");
-const moment = require("moment-timezone");
-//authorizedPerson profile related api's
 
 const addClientFamilyService = async (req, params) => {
   console.log("params-->", params);
   //verify the given person already exist or not
-  const result = await getClientFamilyByEmail_or_MobileNumber(params);
-  if (result.status) {
+  const data = await clientFamily.findOne({
+    $or: [
+      { email: params?.email },
+      { mobileNumber: params?.mobileNumber }
+    ],
+  });
+console.log("data -->",data)
+  if (data) {
     return {
       status: false,
       statusCode: statusCodes?.HTTP_BAD_REQUEST,
@@ -117,19 +111,53 @@ const deleteClientFamilyService = async (params) => {
 };
 
 const clientFamilyListService = async (params) => {
-  //get all authorizedPerson list
-  const allList = await getClientPersonList(params);
-  console.log("allList", allList);
+  try {
+    
+    let cond = {};  
+    cond.isDeleted = false 
+    let page = params?.page || 1;
+    page = Number(page);
+    let limit = params?.limit || 10;
+    limit = Number(limit);
 
-  //calculate pagemeta for pages and count
-  const pageMeta = await pageMetaService(params, allList?.data?.length || 0);
+    if (params.search) {
+      cond.$or = [
+        { clientId: { $regex: `${params?.search}`, $options: "i" } },
+        { clientName: { $regex: `${params?.search}`, $options: "i" } },
+        { email: { $regex: `${params?.search}`, $options: "i" } },
+      ];
+    }
+    if(params.isActive){
+      cond.isActive = params?.isActive  
+    }
+    let totalCount = await clientFamily.find(cond).countDocuments();
+    let data = await clientFamily.find(cond).sort({ createdAt: -1}).skip(limit * (page - 1)).limit(limit);
+    const pageMeta = await pageMetaService(params,totalCount);
+    if (data.length > 0) {
+      return {
+        status: true,
+        statusCode: statusCodes?.HTTP_OK,
+        data: { list: data, pageMeta },
+      };
 
-  return {
-    status: true,
-    statusCode: statusCodes?.HTTP_OK,
-    data: { list: allList?.data, pageMeta },
-  };
-};
+    }
+    else {
+      return {
+        status:false,
+        statusCode: statusCodes?.HTTP_OK,
+        data: [],
+      };
+
+    }
+     
+
+
+}
+catch (error) {
+  console.log("error", error);
+  throw new Error(error);
+}
+}
 
 module.exports = {
   addClientFamilyService,

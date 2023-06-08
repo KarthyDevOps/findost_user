@@ -63,84 +63,10 @@ const convert_JSON_to_file = async (res, data, params) => {
   return;
 };
 
-//client family related functions
-
-const getClientFamilyByEmail_or_MobileNumber = async (params) => {
-  //get client family details by email or mobileNumber
-  const data = await clientFamily.findOne({
-    $or: [
-      { email: params?.email },
-      { mobileNumber: params?.mobileNumber },
-      { clientId: params?.clientId },
-    ],
-  });
-
-  //return object based on client family already exist or not
-  if (data && Object.keys(data).length) {
-    return { status: true, data: data };
-  } else {
-    return { status: false, data: {} };
-  }
-};
-
-const getClientFamilyDetailsById = async (params) => {
-  console.log("params", params?.id);
-  //get authorizedPerson details by id
-  const data = await clientFamily.findOne({
-    $or: [{ _id: params?.id }, { clientId: params?.clientId }],
-    isDeleted: false,
-  });
-  console.log("data", data);
-  //return object based on authorizedPerson already exist or not
-  if (data && Object.keys(data).length) {
-    return { status: true, data: data };
-  } else {
-    return { status: false, data: {} };
-  }
-};
-
-const getClientPersonList = async (param) => {
-  let filter = {
-    isDeleted: false,
-  };
-
-  if (param.search) {
-    filter.$or = [
-      { clientName: { $regex: `${param.search}`, $options: "i" } },
-      { clientId: { $regex: `${param.search}`, $options: "i" } },
-      { email: { $regex: `${param.search}`, $options: "i" } },
-    ];
-  }
-
-  if (param.isActive) {
-    filter.$or = [{ isActive: param.isActive }];
-  }
-
-  const data = await clientFamily
-    .find(filter)
-    .skip(Number(param?.page - 1) * Number(param?.limit))
-    .limit(Number(param?.limit))
-    .sort({ createdAt: -1 });
-
-  if (data.length > 0) {
-    return {
-      status: true,
-      data: data.length,
-    };
-  }
-  return {
-    status: false,
-    data: [],
-  };
-};
-
 module.exports = {
   pageMetaService,
   sendOTP_to_mobileNumber,
   sendOTP_to_email,
   errHandle,
   convert_JSON_to_file,
-  getClientPersonList,
-  getClientFamilyByEmail_or_MobileNumber,
-  getClientFamilyDetailsById,
 };
