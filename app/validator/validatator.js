@@ -200,64 +200,86 @@ const forgotPasswordLoginIdSchema = (req, res, next) => {
 
 const addAuthorizedPersonSchema = (req, res, next) => {
   const schema = joi.object({
-    // name: joi.string().required(),
-    // password: joi.string().required(),
-    // fatherName: joi.string().required(),
-    // motherName: joi.string().required(),
-    // gender: joi.string().required(),
-    // mobileNumber: joi.string().min(10).max(10).required(),
-    // email: joi.string().email(),
-    // nationality: joi.string().allow(null).allow(""),
-    // tradeMember: Joi.string().required(),
-    // website: Joi.string().optional(),
-    // occupationType: Joi.string().required(),
-    // role: Joi.string().required(),
-    // address: Joi.object().items(Joi.object({
-    //   addressType: Joi.string().required(),
-    //   residentialFlatNo: Joi.string().optional(),
-    //   residentialArea: Joi.string().optional(),
-    //   residentialCity: Joi.string().optional(),
-    //   residentialState: Joi.string().optional(),
-    //   residentialCountry: Joi.string().optional(),
-    //   residentialLandMark: Joi.string().optional(),
-    //   residentialPinCode: Joi.string().optional(),
-    //   isResidentialSameAsOffice: Joi.boolean().required(),
-    //   officeFlatNo: Joi.string().optional(),
-    //   officeArea: Joi.string().optional(),
-    //   officeCity: Joi.string().optional(),
-    //   officeState: Joi.string().optional(),
-    //   officeCountry: Joi.string().optional(),
-    //   officeLandMark: Joi.string().optional(),
-    //   officePinCode: Joi.string().optional(),
-    //   isOfficeSameAsResident: Joi.string().optional() 
-    // })),
-    // document: Joi.object().items(Joi.object({
-    //   professionalDocument: Joi.string().required(),
-    //   educationQualificationDocument: Joi.string().optional(),
-    //   isDifferentPanName: Joi.string().optional(),
-    //   residentialAddressProof: Joi.string().optional(),
-    //   officeAddressProof: Joi.string().optional(),
-    //   proofOfNameChange: Joi.string().optional()
-    // })),
-    // bankDetails: Joi.object().items(Joi.object({
-    //   bankName: Joi.string().required(),
-    //   accountNo: Joi.string().optional(),
-    //   ifscCode: Joi.string().optional(),
-    //   bankBranch: Joi.string().optional(),
-    //   uploadChequeLeaflet: Joi.string().optional(),
-    // })),
-    // nomineeDetails: Joi.object().items(Joi.object({
-    //   nomineeName: Joi.string().required(),
-    //   nomineePan: Joi.string().optional(),
-    //   nomineeMobile: Joi.string().optional(),
-    //   nomineeDOB : Joi.string().optional(),
-    //   nomineeRelationship: Joi.string().optional(),
-    //   isNomineeMinor : Joi.string().optional(),
-    //   nomineeRelationship: Joi.string().optional(),
+    name: joi.string().required(),
+    password: joi.string().required(),
+    fatherName: joi.string().required(),
+    motherName: joi.string().required(),
+    gender: joi.string().required(),
+    mobileNumber: joi.string().min(10).max(10).required(),
+    email: joi.string().email(),
+    nationality: joi.string().allow(null).allow(""),
+    tradeMember: joi.string().required(),
+    website: joi.string().optional(),
+    occupationType: joi.string().required(),
+    role: joi.string().required(),
+    address: joi.object({
+      addressType: joi.string().required(),
+      residentialFlatNo: joi.string().optional(),
+      residentialArea: joi.string().optional(),
+      residentialCity: joi.string().optional(),
+      residentialState: joi.string().optional(),
+      residentialCountry: joi.string().optional(),
+      residentialLandMark: joi.string().optional(),
+      residentialPinCode: joi.string().optional(),
+      isResidentialSameAsOffice: joi.boolean().required(),
+      officeFlatNo: joi.string().optional(),
+      officeArea: joi.string().optional(),
+      officeCity: joi.string().optional(),
+      officeState: joi.string().optional(),
+      officeCountry: joi.string().optional(),
+      officeLandMark: joi.string().optional(),
+      officePinCode: joi.string().optional(),
+      isOfficeSameAsResident: joi.boolean().required() 
+    }),
+    document:joi.object({
+      professionalDocument: joi.string().required(),
+      educationQualificationDocument: joi.string().optional(),
+      isDifferentPanName: joi.boolean().required(),
+      residentialAddressProof: joi.string().optional(),
+      officeAddressProof: joi.string().optional(),
+      proofOfNameChange: joi.string().optional()
+    }),
+    bankDetails: joi.object({
+      bankName: joi.string().required(),
+      accountNo: joi.string().required(),
+      ifscCode: joi.string().optional(),
+      bankBranch: joi.string().optional(),
+      uploadChequeLeaflet: joi.string().optional(),
+    }),
+    nomineeDetails:joi.object({
+      nomineeName: joi.string().required(),
+      nomineePan: joi.string().optional(),
+      nomineeMobile: joi.string().optional(),
+      nomineeDOB : joi.string().optional(),
+      nomineeRelationship: joi.string().optional(),
+      isNomineeMinor : joi.boolean().required(),
+      nomineeRelationship: joi.string().optional(), 
+      nomineeGuardian: joi.object({
+        guardianName: joi.string().required(),
+        guardianPAN: joi.string().required(),
+        guardianMobile: joi.string().required(),
+        guardianDOB : joi.string().required()
+      }),   
+    }),
+    paymentDetails:joi.required({
+      applicationFee: joi.string().required(),
+      securityDeposit: joi.string().required(),
+      couponCode: joi.string().required(),
+      totalcharges : joi.string().required()
+    }),
+    settings: joi.object({
+      isDarkTheme: joi.string().required(),
+      isEnableBioMetricLogin: joi.string().required(),
+      isMyNotificationSettings: joi.string().required(),
+      isInsurenceNotification: joi.string().required(),
+      isMutualFundsNotification: joi.string().required(),
+      isEquityNotification: joi.string().required(),
+      isSIPNotification: joi.string().required(),
+      isIPONotification: joi.string().required(),
+      isLoanNotification: joi.string().required()
 
-    // })),
+    }),
 
-  
   });
   return bodyParamValidation(req, res, next, schema);
 };
