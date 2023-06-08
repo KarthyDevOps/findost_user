@@ -200,11 +200,64 @@ const forgotPasswordLoginIdSchema = (req, res, next) => {
 
 const addAuthorizedPersonSchema = (req, res, next) => {
   const schema = joi.object({
-    name: joi.string().required(),
+    // name: joi.string().required(),
+    // password: joi.string().required(),
+    // fatherName: joi.string().required(),
+    // motherName: joi.string().required(),
     // gender: joi.string().required(),
-    mobileNumber: joi.string().min(10).max(10).required(),
-    email: joi.string().email(),
-    profileURL: joi.string().allow(null).allow(""),
+    // mobileNumber: joi.string().min(10).max(10).required(),
+    // email: joi.string().email(),
+    // nationality: joi.string().allow(null).allow(""),
+    // tradeMember: Joi.string().required(),
+    // website: Joi.string().optional(),
+    // occupationType: Joi.string().required(),
+    // role: Joi.string().required(),
+    // address: Joi.object().items(Joi.object({
+    //   addressType: Joi.string().required(),
+    //   residentialFlatNo: Joi.string().optional(),
+    //   residentialArea: Joi.string().optional(),
+    //   residentialCity: Joi.string().optional(),
+    //   residentialState: Joi.string().optional(),
+    //   residentialCountry: Joi.string().optional(),
+    //   residentialLandMark: Joi.string().optional(),
+    //   residentialPinCode: Joi.string().optional(),
+    //   isResidentialSameAsOffice: Joi.boolean().required(),
+    //   officeFlatNo: Joi.string().optional(),
+    //   officeArea: Joi.string().optional(),
+    //   officeCity: Joi.string().optional(),
+    //   officeState: Joi.string().optional(),
+    //   officeCountry: Joi.string().optional(),
+    //   officeLandMark: Joi.string().optional(),
+    //   officePinCode: Joi.string().optional(),
+    //   isOfficeSameAsResident: Joi.string().optional() 
+    // })),
+    // document: Joi.object().items(Joi.object({
+    //   professionalDocument: Joi.string().required(),
+    //   educationQualificationDocument: Joi.string().optional(),
+    //   isDifferentPanName: Joi.string().optional(),
+    //   residentialAddressProof: Joi.string().optional(),
+    //   officeAddressProof: Joi.string().optional(),
+    //   proofOfNameChange: Joi.string().optional()
+    // })),
+    // bankDetails: Joi.object().items(Joi.object({
+    //   bankName: Joi.string().required(),
+    //   accountNo: Joi.string().optional(),
+    //   ifscCode: Joi.string().optional(),
+    //   bankBranch: Joi.string().optional(),
+    //   uploadChequeLeaflet: Joi.string().optional(),
+    // })),
+    // nomineeDetails: Joi.object().items(Joi.object({
+    //   nomineeName: Joi.string().required(),
+    //   nomineePan: Joi.string().optional(),
+    //   nomineeMobile: Joi.string().optional(),
+    //   nomineeDOB : Joi.string().optional(),
+    //   nomineeRelationship: Joi.string().optional(),
+    //   isNomineeMinor : Joi.string().optional(),
+    //   nomineeRelationship: Joi.string().optional(),
+
+    // })),
+
+  
   });
   return bodyParamValidation(req, res, next, schema);
 };
