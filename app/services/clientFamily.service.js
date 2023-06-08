@@ -82,8 +82,11 @@ const updateClientProfileService = async (params) => {
 };
 
 const deleteClientFamilyService = async (params) => {
-  const id = params?.id;
-  //  delete params["authorizedPersonId"];
+
+  let ids = [];
+  if (params.id) ids.push(params?.id); else if (params.ids) {
+    ids = params.ids
+  }
   var query = {
     $set: {
       isDeleted: true,
@@ -91,9 +94,8 @@ const deleteClientFamilyService = async (params) => {
       lastUpdatedBy: params?.lastUpdatedBy,
     },
   };
-
-  //update authorizedPerson details into authorizedPersons table
-  const result = await clientFamily.updateOne({ _id: id }, query);
+  console.log("ids-->",ids)
+  const result = await clientFamily.updateMany({ _id: ids }, query);
   if (!result.modifiedCount) {
     return {
       status: false,

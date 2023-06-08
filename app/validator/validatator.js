@@ -362,7 +362,7 @@ const updateClientFamilyProfileSchema = (req, res, next) => {
 
 const clientFamilyProfileSchema = (req, res, next) => {
   const schema = joi.object({
-    id: joi.string().required(),
+    id: joi.string().optional(),
   });
   return queryParamValidation(req, res, next, schema);
 };

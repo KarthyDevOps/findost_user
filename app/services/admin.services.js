@@ -353,7 +353,6 @@ ids = params.ids
   }
   const id = mongoose.Types.ObjectId(params?.id) ;
   console.log("id -->",id)
-  delete params["adminId"];
   var query = {
     $set: {
       isDeleted: true,
