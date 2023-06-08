@@ -4,15 +4,8 @@ const { messages } = require("../response/customMessages");
 const { Admin } = require("../models/admin");
 const bcrypt = require("bcryptjs");
 const {
-  getDepartment_Details_By_Name,
-  getAdminDetailsByEmail_or_MobileNumber,
-  getAdminDetailsById,
-  getAdminList,
   pageMetaService,
-  getProfileById,
   sendOTP_to_email,
-  updateAdminProfileByEmail,
-  getAdminProfile,
 } = require("../helpers");
 const { InternalServices } = require("../apiServices");
 const { session } = require("../models/session");

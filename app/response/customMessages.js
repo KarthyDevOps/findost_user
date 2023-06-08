@@ -38,8 +38,6 @@ const messages = {
   clientFamilyAdded: "client family Added Successfully",
   adminExists: "Admin Already Exists",
   adminAdded: "Admin Added Successfully",
-  departmentExists: "Department Already Exists",
-  departmentAdded: "Department Added Successfully",
   addressAdded: "Address Added Successfully",
   addressNotExist: "Address Not Exists",
   dataNotFound: "Data not found",
