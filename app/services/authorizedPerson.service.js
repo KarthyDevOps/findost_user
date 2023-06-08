@@ -20,12 +20,16 @@ const { InternalServices } = require("../apiServices");
 
 const authorizedPersonLoginService = async (params) => {
   //get authorizedPerson details by given email or mobileNumber
-  const result = await getauthorizedPersonDetailsByEmail_or_MobileNumber(
-    params
-  );
-  if (result.status) {
-    const authorizedPersons = result.data;
-
+  const data = await authorizedPersons.findOne({
+    $or: [
+      { email: params?.email },
+      { mobileNumber: params?.mobileNumber },
+      { authorizedPersonId: params?.authorizedPersonId },
+      // { _id: mongoose.Types.ObjectId(params?.authorizedPersonId) },
+    ],
+  });  
+  if (data) {
+    const authorizedPersons = data;
     //send OTP to given mobile number for verification
     const otp = await sendOTP_to_mobileNumber(authorizedPersons);
     console.log(otp.toString());
@@ -52,13 +56,61 @@ const authorizedPersonLoginService = async (params) => {
   }
 };
 
+const authorizedPersonVerifyOTPService = async (params) => {
+  //get authorizedPerson details by given email or mobileNumber
+  const data = await authorizedPersons.findOne({
+    $or: [
+      { email: params?.email },
+      { mobileNumber: params?.mobileNumber },
+      { authorizedPersonId: params?.authorizedPersonId },
+      // { _id: mongoose.Types.ObjectId(params?.authorizedPersonId) },
+    ],
+  });
+  var authorizedPerson = data;
+  if (data) {
+    const isMatch = await bcrypt.compare(params.otp, authorizedPerson.otp);
+    if (!isMatch) {
+      return {
+        status: false,
+        statusCode: statusCodes?.HTTP_BAD_REQUEST,
+        message: messages?.invalidOTP,
+        data: [],
+      };
+    }
+    //generate token with authorizedPerson details
+    const token = await authorizedPerson.generateAuthToken();
+    authorizedPerson.token = token;
+    return {
+      status: true,
+      statusCode: statusCodes?.HTTP_OK,
+      message: messages?.otpVerifySuccessful,
+      data: { _id: authorizedPerson._id, token: authorizedPerson.token },
+    };
+  } else {
+    return {
+      status: false,
+      statusCode: statusCodes?.HTTP_BAD_REQUEST,
+      message: messages?.userNotExist,
+      data: [],
+    };
+  }
+};
+
+
 const authorizedPersonSendLoginIdService = async (params) => {
   // get admin details by email
-  let result = await getauthorizedPersonDetailsByEmail_or_MobileNumber(params);
-  console.log("result", result);
-  if (result.status) {
+  const data = await authorizedPersons.findOne({
+    $or: [
+      { email: params?.email },
+      { mobileNumber: params?.mobileNumber },
+      { authorizedPersonId: params?.authorizedPersonId },
+      // { _id: mongoose.Types.ObjectId(params?.authorizedPersonId) },
+    ],
+  });
+  console.log("result", data);
+  if (data) {
     //   console.log('result-->', result)
-    if (!result.data.isActive) {
+    if (!data.isActive) {
       console.log("result 11-->", result);
       return {
         status: false,
@@ -66,15 +118,14 @@ const authorizedPersonSendLoginIdService = async (params) => {
         message: statusMessage.notActive,
       };
     }
-    if (result.data.isDeleted) {
-      console.log("result 11-->", result);
+    if (data.isDeleted) {
       return {
         status: false,
         statusCode: statusCodes?.HTTP_BAD_REQUEST,
         message: "user not found",
       };
     }
-    const authorizedPerson = result.data;
+    const authorizedPerson = data;
     //compare given password and stored password by user
     const isMatch = await bcrypt.compare(
       params?.password,
@@ -89,7 +140,7 @@ const authorizedPersonSendLoginIdService = async (params) => {
       };
     }
     //generate token with user details
-    const token = await authorizedPerson.generateAuthToken(result?.data);
+    const token = await authorizedPerson.generateAuthToken(data);
     authorizedPerson.token = token;
     return {
       status: true,
@@ -108,33 +159,34 @@ const authorizedPersonSendLoginIdService = async (params) => {
 };
 
 
-const authorizedPersonLoginByIdService = async (params) => {
+const authorizedPersonSendMailIdService = async (params) => {
   // get admin details by email
-  let result = await getauthorizedPersonDetailsByEmail_or_MobileNumber(params);
-  console.log("result", result);
-  if (result.status) {
-    //   console.log('result-->', result)
-    if (!result.data.isActive) {
+  const data = await authorizedPersons.findOne({
+    email: params?.email
+  });
+  if (data) {
+    console.log("data -->",data)
+    if (!data.isActive) {
       return {
         status: false,
         statusCode: statusCodes?.HTTP_BAD_REQUEST,
         message: statusMessage.notActive,
       };
     }
-    if (result.data.isDeleted) {
+    if (data.isDeleted) {
       return {
         status: false,
         statusCode: statusCodes?.HTTP_BAD_REQUEST,
         message: "user not found",
       };
     }
-    let data = await InternalServices.sendEmail({
+    let sendMail = await InternalServices.sendEmail({
       to: params.email,
       subject: "Login Credentials",
       template: "forgot_password",
-      url: result?.data?.authorizedPersonId,
+      url:data?.authorizedPersonId,
     });
-    if (data.status) {
+    if (sendMail.status) {
       return {
         status: true,
         statusCode: statusCodes?.HTTP_ACCEPTED,
@@ -159,47 +211,17 @@ const authorizedPersonLoginByIdService = async (params) => {
   }
 };
 
-const authorizedPersonVerifyOTPService = async (params) => {
-  //get authorizedPerson details by given email or mobileNumber
-  const result = await getauthorizedPersonDetailsByEmail_or_MobileNumber(
-    params
-  );
-  var authorizedPersons = result.data;
-  if (result.status) {
-    const isMatch = await bcrypt.compare(params.otp, authorizedPersons.otp);
-    if (!isMatch) {
-      return {
-        status: false,
-        statusCode: statusCodes?.HTTP_BAD_REQUEST,
-        message: messages?.invalidOTP,
-        data: [],
-      };
-    }
-    //generate token with authorizedPerson details
-    const token = await authorizedPersons.generateAuthToken();
-    authorizedPersons.token = token;
-    return {
-      status: true,
-      statusCode: statusCodes?.HTTP_OK,
-      message: messages?.otpVerifySuccessful,
-      data: { _id: authorizedPersons._id, token: authorizedPersons.token },
-    };
-  } else {
-    return {
-      status: false,
-      statusCode: statusCodes?.HTTP_BAD_REQUEST,
-      message: messages?.userNotExist,
-      data: [],
-    };
-  }
-};
 
 const addauthorizedPersonService = async (req, params) => {
   //verify the given person already exist or not
-  const result = await getauthorizedPersonDetailsByEmail_or_MobileNumber(
-    params
-  );
-  if (result.status) {
+  const data = await authorizedPersons.findOne({
+    $or: [
+      { email: params?.email },
+      { mobileNumber: params?.mobileNumber },
+    ],
+  });
+
+  if (data) {
     return {
       status: false,
       statusCode: statusCodes?.HTTP_BAD_REQUEST,
@@ -225,6 +247,14 @@ const addauthorizedPersonService = async (req, params) => {
 const getauthorizedPersonProfileService = async (params) => {
   console.log("params1");
   //get authorizedPerson details by authorizedPerson id
+
+  const data = await authorizedPersons.findOne({
+    $or: [
+      { _id: params?._id },
+      { _id: params?.id },
+    ],
+    isDeleted: false,
+  });
   const result = await getauthorizedPersonDetailsById(params);
   if (result.status) {
     return {
@@ -303,18 +333,53 @@ const deleteauthorizedPersonService = async (params) => {
 };
 
 const authorizedPersonListService = async (params) => {
-  //get all authorizedPerson list
-  const allList = await getauthorizedPersonList();
-  console.log("allList", allList);
+  try {
+    
+    let cond = {};  
+    cond.isDeleted = false 
+    let page = params?.page || 1;
+    page = Number(page);
+    let limit = params?.limit || 10;
+    limit = Number(limit);
 
-  //calculate pagemeta for pages and count
-  const pageMeta = await pageMetaService(params, allList?.data?.length || 0);
-  return {
-    status: true,
-    statusCode: statusCodes?.HTTP_OK,
-    data: { list: allList?.data, pageMeta },
-  };
-};
+    if (params.search) {
+      cond.$or = [
+        { authorizedPersonId: { $regex: `${params?.search}`, $options: "i" } },
+        { name: { $regex: `${params?.search}`, $options: "i" } },
+        { email: { $regex: `${params?.search}`, $options: "i" } },
+      ];
+    }
+    if(params.role){
+      cond.role = params?.role  
+    }
+    if(params.isActive){
+      cond.isActive = params?.isActive  
+    }
+    let totalCount = await authorizedPersons.find(cond).countDocuments();
+    let data = await authorizedPersons.find(cond).sort({ createdAt: -1}).skip(limit * (page - 1)).limit(limit);
+    const pageMeta = await pageMetaService(params,totalCount);
+    if (data.length > 0) {
+      return {
+        status: true,
+        statusCode: statusCodes?.HTTP_OK,
+        data: { list: data, pageMeta },
+      };
+
+    }
+    else {
+      return {
+        status:false,
+        statusCode: statusCodes?.HTTP_OK,
+        data: [],
+      };
+
+    }
+}
+catch (error) {
+  console.log("error", error);
+  throw new Error(error);
+}
+}
 
 module.exports = {
   authorizedPersonLoginService,
@@ -325,5 +390,5 @@ module.exports = {
   deleteauthorizedPersonService,
   authorizedPersonListService,
   authorizedPersonSendLoginIdService,
-  authorizedPersonLoginByIdService,
+  authorizedPersonSendMailIdService,
 };

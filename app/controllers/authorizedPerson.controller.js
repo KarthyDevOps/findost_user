@@ -13,7 +13,7 @@ const {
   authorizedPersonListService,
   deleteauthorizedPersonService,
   authorizedPersonSendLoginIdService,
-  authorizedPersonLoginByIdService,
+  authorizedPersonSendMailIdService,
 } = require("../services/authorizedPerson.service");
 
 //authorizedPerson profile related api's
@@ -41,7 +41,7 @@ const authorizedPersonLogin = async (req, res) => {
 
 const authorizedPersonMailLoginById = async (req, res) => {
   const params = req.body;
-  const result = await authorizedPersonLoginByIdService(params);
+  const result = await authorizedPersonSendMailIdService(params);
   console.log('result111--->', result)
   if (!result.status) {
     return sendErrorResponse(

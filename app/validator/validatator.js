@@ -162,7 +162,7 @@ const authorizedPersonloginSchema = (req, res, next) => {
 const authorizedPersonloginbyIdSchema = (req, res, next) => {
   const schema = joi.object({
     authorizedPersonId: joi.string().min(6).max(6).required(),
-    password: joi.string().min(8).max(10),
+    password: joi.string().min(8).max(10).required(),
   });
   return bodyParamValidation(req, res, next, schema);
 };
@@ -176,9 +176,10 @@ const authorizedPersonforgotPasswordSchema = (req, res, next) => {
 
 const authorizedPersonVerifyOTPSchema = (req, res, next) => {
   const schema = joi.object({
-    mobileNumber: joi.string().required().min(10).max(10),
+    mobileNumber: joi.string().min(10).max(10),
+    authorizedPersonId: joi.string(),
     otp: joi.number().required(),
-  });
+  }).or('mobileNumber', 'authorizedPersonId');
   return bodyParamValidation(req, res, next, schema);
 };
 

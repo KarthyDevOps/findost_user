@@ -82,17 +82,17 @@ router.get( routes.v1.admin.list,[verifyToken(["ADMIN"]), adminListSchema],errHa
 
 // authorizedPerson related api's
 router.post(routes.v1.authorizedPerson.login,[authorizedPersonloginSchema],errHandle(authorizedPersonLogin)); //authorizedPerson login using mobileNumber
-router.post(routes.v1.authorizedPerson.verifyOTP,[authorizedPersonVerifyOTPSchema],errHandle(authorizedPersonverifyOTP)); //authorized person verify Otp through mobileNumber
-router.post(routes.v1.authorizedPerson.sendOTP,[sendOTPSchema],errHandle(authorizedPersonLogin)); //authorized person send Otp through authorizedPersonID
-router.post(routes.v1.authorizedPerson.forgotPasswordverifyOTP, [forgotPasswordVerifyOTPSchema], errHandle(authorizedPersonverifyOTP)); //authorized person verify Otp through authorizedPersonID
-router.post(routes.v1.authorizedPerson.forgotPasswordLoginIdMail,[forgotPasswordLoginIdSchema],errHandle(authorizedPersonMailLoginById)); //authorized person verify Otp through authorizedPersonID
+router.post(routes.v1.authorizedPerson.verifyOTP,[authorizedPersonVerifyOTPSchema],errHandle(authorizedPersonverifyOTP)); //authorized person verify Otp through mobileNumber or AP ID
+router.post(routes.v1.authorizedPerson.sendOTP,[sendOTPSchema],errHandle(authorizedPersonLogin)); //for future use
+router.post(routes.v1.authorizedPerson.forgotPasswordverifyOTP, [forgotPasswordVerifyOTPSchema], errHandle(authorizedPersonverifyOTP)); //for furture use
+router.post(routes.v1.authorizedPerson.forgotPasswordLoginIdMail,[forgotPasswordLoginIdSchema],errHandle(authorizedPersonMailLoginById)); //AP send id through mail
 router.post(routes.v1.authorizedPerson.loginById,[authorizedPersonloginbyIdSchema],errHandle(authorizedPersonLoginById)); //authorized person login via id and password
 router.post(routes.v1.authorizedPerson.addProfile, [addAuthorizedPersonSchema],errHandle(addauthorizedPerson));
 router.get(routes.v1.authorizedPerson.getProfile,[verifyToken(["AP"]), getAuthorizedPersonProfileSchema],errHandle(getauthorizedPersonProfile));
 router.get(routes.v1.authorizedPerson.getProfileById,errHandle(getauthorizedPersonProfile));
-router.delete(routes.v1.authorizedPerson.delete,[verifyToken(["AP"]), updateAuthorizedPersonProfileSchema],errHandle(deleteauthorizedPerson));
+router.delete(routes.v1.authorizedPerson.delete,[verifyToken(["AP","SUPER ADMIN","ADMIN"]), updateAuthorizedPersonProfileSchema],errHandle(deleteauthorizedPerson));
 router.put(routes.v1.authorizedPerson.updateProfile,[verifyToken(["AP"]), updateAuthorizedPersonProfileSchema],errHandle(updateauthorizedPersonProfile));
-router.get(routes.v1.authorizedPerson.list, [verifyToken(["ADMIN"]), authorizedPersonListSchema],errHandle(authorizedPersonList));
+router.get(routes.v1.authorizedPerson.list, [verifyToken(["ADMIN","SUPER ADMIN"]), authorizedPersonListSchema],errHandle(authorizedPersonList));
 
 
 //client family related api
