@@ -1,7 +1,3 @@
-const { Admin } = require("../models/admin");
-const { authorizedPersons } = require("../models/authorizedPersons");
-const { clientFamily } = require("../models/clientFamily");
-
 const json2csv = require("json2csv").parse;
 
 const pageMetaService = async (params, count) => {
