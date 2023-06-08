@@ -112,9 +112,9 @@ const deleteClientFamilyService = async (params) => {
 
 const clientFamilyListService = async (params) => {
   try {
-    
-    let cond = {};  
-    cond.isDeleted = false 
+
+    let cond = {};
+    cond.isDeleted = false
     let page = params?.page || 1;
     page = Number(page);
     let limit = params?.limit || 10;
@@ -127,12 +127,12 @@ const clientFamilyListService = async (params) => {
         { email: { $regex: `${params?.search}`, $options: "i" } },
       ];
     }
-    if(params.isActive){
-      cond.isActive = params?.isActive  
+    if (params.isActive) {
+      cond.isActive = params?.isActive
     }
     let totalCount = await clientFamily.find(cond).countDocuments();
-    let data = await clientFamily.find(cond).sort({ createdAt: -1}).skip(limit * (page - 1)).limit(limit);
-    const pageMeta = await pageMetaService(params,totalCount);
+    let data = await clientFamily.find(cond).sort({ createdAt: -1 }).skip(limit * (page - 1)).limit(limit);
+    const pageMeta = await pageMetaService(params, totalCount);
     if (data.length > 0) {
       return {
         status: true,
@@ -143,20 +143,17 @@ const clientFamilyListService = async (params) => {
     }
     else {
       return {
-        status:false,
+        status: false,
         statusCode: statusCodes?.HTTP_OK,
         data: [],
       };
 
     }
-     
-
-
-}
-catch (error) {
-  console.log("error", error);
-  throw new Error(error);
-}
+  }
+  catch (error) {
+    console.log("error", error);
+    throw new Error(error);
+  }
 }
 
 module.exports = {
