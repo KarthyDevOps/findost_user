@@ -122,7 +122,7 @@ const clientFamilyListService = async (params) => {
   console.log("allList", allList);
 
   //calculate pagemeta for pages and count
-  const pageMeta = await pageMetaService(params, allList?.data?.length || 0);
+  const pageMeta = await pageMetaService(params, allList?.total || 0);
 
   return {
     status: true,

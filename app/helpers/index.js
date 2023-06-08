@@ -268,7 +268,7 @@ const getClientFamilyDetailsById = async (params) => {
     $or: [{ _id: params?.id }, { clientId: params?.clientId }],
     isDeleted: false,
   });
-  console.log("data", data);
+
   //return object based on authorizedPerson already exist or not
   if (data && Object.keys(data).length) {
     return { status: true, data: data };
@@ -299,11 +299,12 @@ const getClientPersonList = async (param) => {
     .skip(Number(param?.page - 1) * Number(param?.limit))
     .limit(Number(param?.limit))
     .sort({ createdAt: -1 });
-
+  let totalCount = await clientFamily.find(filter).countDocuments();
   if (data.length > 0) {
     return {
       status: true,
       data: data,
+      total: totalCount,
     };
   }
   return {
