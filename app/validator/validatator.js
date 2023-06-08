@@ -87,7 +87,7 @@ const getAdminProfileSchema = (req, res, next) => {
 const deleteAdminProfileSchema = (req, res, next) => {
   const schema = joi.object({
   //  adminId: joi.string().optional().allow(null).allow(""),
-    id: joi.string().required().allow(null).allow("")
+    id: joi.string().optional().allow(null).allow("")
   });
   return queryParamValidation(req, res, next, schema);
 };

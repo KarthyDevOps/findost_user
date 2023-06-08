@@ -347,6 +347,10 @@ const updateAdminProfileService = async (params) => {
 };
 
 const deleteAdminService = async (params) => {
+  let ids= [];
+  if(params.id) ids.push(params?.id); else if(params.ids) {
+ids = params.ids 
+  }
   const id = mongoose.Types.ObjectId(params?.id) ;
   console.log("id -->",id)
   delete params["adminId"];
@@ -359,7 +363,10 @@ const deleteAdminService = async (params) => {
   };
 //console.log(pa)
   //update admin details into admins table
-  const result = await Admin.updateOne({ _id: id }, query);
+  console.log("id-->",ids)
+
+
+  const result = await Admin.updateMany({_id:ids}, query);
   if (!result.modifiedCount) {
     return {
       status: false,
@@ -399,6 +406,7 @@ const adminListService = async (params) => {
     if(params.isActive){
       cond.isActive = params?.isActive  
     }
+    
     let totalCount = await Admin.find(cond).countDocuments();
     let data = await Admin.find(cond).sort({ createdAt: -1}).skip(limit * (page - 1)).limit(limit);
     const pageMeta = await pageMetaService(params,totalCount);
