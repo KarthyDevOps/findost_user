@@ -48,12 +48,6 @@ const convert_JSON_to_file = async (res, data, params) => {
       "attachment; filename=authorizedPerson Export.csv"
     );
   }
-  // else if (type == "") { //need to change type
-  //   res.setHeader(
-  //     "Content-disposition",
-  //     "attachment; filename=Trucker Export.csv"
-  //   );
-  // }
   res.set("Content-Type", "text/csv");
   res.status(200).send(csvString);
   return;
