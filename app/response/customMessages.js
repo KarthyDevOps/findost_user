@@ -41,5 +41,6 @@ const messages = {
   addressAdded: "Address Added Successfully",
   addressNotExist: "Address Not Exists",
   dataNotFound: "Data not found",
+  success : "success"
 };
 module.exports = { customMessages, messages };

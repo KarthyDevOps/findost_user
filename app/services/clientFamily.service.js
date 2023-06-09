@@ -39,22 +39,18 @@ console.log("data -->",data)
 const getClientProfileService = async (params) => {
   console.log("params1");
   //get authorizedPerson details by authorizedPerson id
-  const result = await getClientFamilyDetailsById(params);
-  if (result.status) {
-    return {
-      status: true,
-      statusCode: statusCodes?.HTTP_OK,
-      message: statusMessage.success,
-      data: result.data,
-    };
-  } else {
-    return {
-      status: false,
-      statusCode: statusCodes?.HTTP_BAD_REQUEST,
-      message: messages?.userNotExist,
-      data: [],
-    };
-  }
+  const data = await clientFamily.findOne({
+    $or: [
+      { clientId: params?.clientId },
+      { _id: params?.id }
+    ],
+  });
+  return {
+    status: true,
+    statusCode: statusCodes?.HTTP_OK,
+    message: messages?.success,
+    data: { data : data },
+  };
 };
 
 const updateClientProfileService = async (params) => {
