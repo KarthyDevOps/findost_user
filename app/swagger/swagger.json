@@ -382,11 +382,7 @@
         "security": [{ "Bearer": [] }],
         "summary": " AuthorizedPerson reset Password Details",
         "parameters": [
-          {
-            "name": "id",
-            "in": "query",
-            "type": "string"
-          },
+          
           {
             "name": "AuthorizedPersonResetPassword",
             "in": "body",
