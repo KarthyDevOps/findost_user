@@ -359,6 +359,16 @@ const updateClientFamilyProfileSchema = (req, res, next) => {
   return bodyParamValidation(req, res, next, schema);
 };
 
+const authorizedPersonResetPasswordSchema = (req, res, next) => {
+  const schema = joi.object({
+    password: joi.string().required(),
+    confirmPassword: joi.any().valid(joi.ref('password')).required().options({ language: { any: { allowOnly: 'must match password' } } })
+  });
+  return bodyParamValidation(req, res, next, schema);
+};
+
+
+
 
 const clientFamilyProfileSchema = (req, res, next) => {
   const schema = joi.object({
@@ -401,5 +411,6 @@ module.exports = {
   addClientFamilySchema , //<----client family
   clientFamilyProfileSchema,
   clientFamilyListSchema,  
-  updateClientFamilyProfileSchema
+  updateClientFamilyProfileSchema,
+  authorizedPersonResetPasswordSchema
 };

@@ -19,6 +19,7 @@ const routes = {
       loginById: "/v1/authorizedPerson/loginbyId",
       sendOTP: "/v1/authorizedPerson/sendOtp",
       verifyOTP: "/v1/authorizedPerson/verifyOTP",
+      resetPassword: "/v1/authorizedPerson/resetPassword",
       forgotPasswordverifyOTP: "/v1/authorizedPerson/forgotPassword/verifyOTP",
       forgotPasswordLoginIdMail: "/v1/authorizedPerson/forgotPassword/loginIdByMail",
       addProfile: "/v1/authorizedPerson/addProfile",

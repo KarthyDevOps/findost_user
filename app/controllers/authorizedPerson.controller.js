@@ -14,6 +14,7 @@ const {
   deleteauthorizedPersonService,
   authorizedPersonSendLoginIdService,
   authorizedPersonSendMailIdService,
+  authorizedPersonResetPasswordService
 } = require("../services/authorizedPerson.service");
 
 //authorizedPerson profile related api's
@@ -253,6 +254,32 @@ const deleteauthorizedPerson = async (req, res) => {
   );
 };
 
+const authorizedPersonResetPassword = async (req, res) => {
+  const params = req.body;
+  params.authorizedPersonId =
+    req?.query?.authorizedPersonId || req.user._id.toString();
+  params.updatedBy = req?.user?._id?.toString();
+  params.lastUpdatedBy = req?.user?.userType;
+  const result = await authorizedPersonResetPasswordService(params);
+  if (!result.status) {
+    return sendErrorResponse(
+      req,
+      res,
+      result?.statusCode,
+      result?.message,
+      result?.data
+    );
+  }
+  return sendSuccessResponse(
+    req,
+    res,
+    result?.statusCode,
+    result?.message,
+    result?.data
+  );
+};
+
+
 module.exports = {
   authorizedPersonLogin,
   authorizedPersonverifyOTP,
@@ -264,4 +291,5 @@ module.exports = {
   authorizedPersonMailLoginById,
   authorizedPersonSendLoginId,
   deleteauthorizedPerson,
+  authorizedPersonResetPassword
 };

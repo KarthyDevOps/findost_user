@@ -372,6 +372,50 @@
         }
       }
     },
+
+
+
+
+    "/authorizedPerson/resetPassword": {
+      "put": {
+        "tags": ["AuthorizedPerson Module"],
+        "security": [{ "Bearer": [] }],
+        "summary": " AuthorizedPerson reset Password Details",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "AuthorizedPersonResetPassword",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/authorizedPersonResetPassword"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return a JSON response with submitted Aman form details.",
+            "schema": { "$ref": "#/definitions/response" }
+          },
+          "404": {
+            "description": "Validation failure.",
+            "schema": {
+              "$ref": "#/definitions/validationError"
+            }
+          },
+          "default": {
+            "description": "Unexpected error.",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+
     "/authorizedPerson/getProfile": {
       "get": {
         "tags": ["AuthorizedPerson Module"],
@@ -955,6 +999,17 @@
         }
       }
     },
+    "authorizedPersonResetPassword": {
+      "properties": {
+        "password": {
+          "type": "string"
+        },
+        "confirmPassword": {
+          "type": "string"
+        }
+      }
+    },
+    
     "sendOTP": {
       "properties": {
         "mobileNumber": {

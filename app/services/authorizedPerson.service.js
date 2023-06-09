@@ -379,7 +379,42 @@ catch (error) {
   console.log("error", error);
   throw new Error(error);
 }
-}
+};
+
+
+
+const authorizedPersonResetPasswordService = async (params) => {
+  try {
+    let password = await bcrypt.hash(params.password.toString(), 10);
+    var query = { $set: {password : password} };
+    //update authorizedPerson details into authorizedPersons table
+    const result = await authorizedPersons.updateOne(
+      { _id: params.authorizedPersonId },
+      query
+    );
+    console.log("result -->", result);
+    if (!result.modifiedCount) {
+      return {
+        status: false,
+        statusCode: statusCodes?.HTTP_BAD_REQUEST,
+        message: messages?.userNotExist,
+        data: [],
+      };
+    }
+    return {
+      status: true,
+      statusCode: statusCodes?.HTTP_OK,
+      message: messages?.updated,
+      data: [],
+    };
+  }
+  catch (error) {
+    console.log("error", error);
+    throw new Error(error);
+  }
+};
+
+
 
 module.exports = {
   authorizedPersonLoginService,
@@ -391,4 +426,5 @@ module.exports = {
   authorizedPersonListService,
   authorizedPersonSendLoginIdService,
   authorizedPersonSendMailIdService,
+  authorizedPersonResetPasswordService
 };
