@@ -96,7 +96,7 @@ router.delete(routes.v1.authorizedPerson.delete,[verifyToken(["AP","SUPER ADMIN"
 router.put(routes.v1.authorizedPerson.updateProfile,[verifyToken(["AP"]), updateAuthorizedPersonProfileSchema],errHandle(updateauthorizedPersonProfile));
 router.get(routes.v1.authorizedPerson.list, [verifyToken(["ADMIN","SUPER ADMIN"]), authorizedPersonListSchema],errHandle(authorizedPersonList));
 
-router.put(routes.v1.authorizedPerson.resetPassword,[verifyToken(["AP"]), authorizedPersonResetPasswordSchema],errHandle(authorizedPersonResetPassword));
+router.post(routes.v1.authorizedPerson.resetPassword,[verifyToken(["AP"]), authorizedPersonResetPasswordSchema],errHandle(authorizedPersonResetPassword));
 
 
 //client family related api

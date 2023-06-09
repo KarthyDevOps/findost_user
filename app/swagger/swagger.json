@@ -377,7 +377,7 @@
 
 
     "/authorizedPerson/resetPassword": {
-      "put": {
+      "post": {
         "tags": ["AuthorizedPerson Module"],
         "security": [{ "Bearer": [] }],
         "summary": " AuthorizedPerson reset Password Details",
