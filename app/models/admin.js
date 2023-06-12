@@ -88,7 +88,7 @@ adminSchema.methods.toJSON = function () {
 adminSchema.plugin(mongooseLeanVirtuals);
 adminSchema.plugin(mongooseLeanGetters);
 
-adminSchema.virtual('profileUrlnew').get(function () {
+adminSchema.virtual('profileUrlS3').get(function () {
   console.log('s')
   return this.profileURL ? getImageURL(this.profileURL) : null;
 })
