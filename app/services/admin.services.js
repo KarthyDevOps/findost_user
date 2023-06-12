@@ -441,14 +441,13 @@ catch (error) {
 }
 
 const uploadImageService = async (req) => {
-
-  console.log(req.files.data)
+  let type = 'images'
   var {
     tempFilePath,
     name,
     mimetype
   } = req.files.data;
-  name = 'images/' + name + new Date().getTime()
+  name = `${type}/`+ name + new Date().getTime()
 
   const params = {
     Bucket: bucketName,
@@ -461,7 +460,6 @@ const uploadImageService = async (req) => {
   const location = (await upload(params)).Location;
   const s3URL = getSignedURL(name);
   const data = {
-   // url:  location,
     key: name,
    // location: location,
     s3URL:s3URL
