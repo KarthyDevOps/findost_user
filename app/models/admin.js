@@ -6,6 +6,7 @@ const {ROLE_TYPE} = require('../constants')
 const {getImageURL} = require("../utils/s3Utils")
 const mongooseLeanVirtuals = require('mongoose-lean-virtuals');
 const mongooseLeanGetters = require('mongoose-lean-getters');
+
 const adminSchema = new mongoose.Schema(
   {
     adminId: {
@@ -84,10 +85,11 @@ adminSchema.methods.toJSON = function () {
 };
 
 
-userSchema.plugin(mongooseLeanVirtuals);
-userSchema.plugin(mongooseLeanGetters);
+adminSchema.plugin(mongooseLeanVirtuals);
+adminSchema.plugin(mongooseLeanGetters);
 
-userSchema.virtual('profileUrl').get(function () {
+adminSchema.virtual('profileUrlnew').get(function () {
+  console.log('s')
   return this.profileURL ? getImageURL(this.profileURL) : null;
 })
 

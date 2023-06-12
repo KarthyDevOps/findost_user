@@ -307,6 +307,7 @@ const getAdminProfileService = async (params) => {
 
 const getAdminProfileByIdService = async (params) => {
   //get admin details by admin id
+  console.log(params?.adminId)
   const result = await Admin.findOne({
     $or: [{ _id: params?.id }, { adminId: params?.adminId }],
     isDeleted: false,
@@ -461,9 +462,9 @@ const uploadImageService = async (req) => {
   const location = (await upload(params)).Location;
   const s3URL = getSignedURL(name);
   const data = {
-    url:  location,
+   // url:  location,
     key: name,
-    location: location,
+   // location: location,
     s3URL:s3URL
   };
  
