@@ -12,16 +12,11 @@ const { session } = require("../models/session");
 const { generateAccessToken } = require("../utils");
 const { getSignedURL } = require("../utils/s3Utils");
 const { mongoose } = require("mongoose");
+const s3 = require("../handler/s3Handler")
 
 const util = require("util");
-const AWS = require('aws-sdk');
 const fs = require('fs');
-  // Configure AWS credentials
-  AWS.config.update({
-    accessKeyId: process.env.AWS_ACCESS_KEY || '',
-    secretAccessKey: process.env.AWS_SECRET_KEY || ''
-  });
-  const s3 = new AWS.S3();
+
   const bucketName = process.env.AWS_BUCKET || 'findoc-development';
 // admin related api's
 
