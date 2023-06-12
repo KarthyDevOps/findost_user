@@ -3,9 +3,9 @@ var Schema = mongoose.Schema;
 const jwt = require("jsonwebtoken");
 
 const {ROLE_TYPE} = require('../constants')
-
 const {getImageURL} = require("../utils/s3Utils")
-
+const mongooseLeanVirtuals = require('mongoose-lean-virtuals');
+const mongooseLeanGetters = require('mongoose-lean-getters');
 const adminSchema = new mongoose.Schema(
   {
     adminId: {
@@ -40,10 +40,7 @@ const adminSchema = new mongoose.Schema(
     },
     profileURL: {
       type: String,
-      required: false,
-      get(value) {
-        return getImageURL(value);
-      }
+      required: false
     },
     permissions: {
       type: Object,
@@ -85,6 +82,14 @@ adminSchema.methods.toJSON = function () {
   delete adminObject.password;
   return adminObject;
 };
+
+
+userSchema.plugin(mongooseLeanVirtuals);
+userSchema.plugin(mongooseLeanGetters);
+
+userSchema.virtual('profileUrl').get(function () {
+  return this.profileURL ? getImageURL(this.profileURL) : null;
+})
 
 adminSchema.methods.generateAuthToken = async function (department) {
   const admin = this;
