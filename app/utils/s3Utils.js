@@ -2,12 +2,11 @@ const s3 = require("../handler/s3Handler")
 
 const getSignedURL = (key) => {
     if (!key) return;
-    const params = { Bucket: process.env.S3_BUCKET_NAME, Key: key };
+    const params = { Bucket: process.env.AWS_BUCKET, Key: key };
     return s3.getSignedUrl('getObject', params);
 }
 
 const getImageURL = (data) => {
-
     if (typeof data === 'string') {
         if (/((https?)|(www)).*/gi.test(data)) return data;
         return getSignedURL(data);

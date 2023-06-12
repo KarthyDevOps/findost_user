@@ -10,6 +10,7 @@ const {
 const { InternalServices } = require("../apiServices");
 const { session } = require("../models/session");
 const { generateAccessToken } = require("../utils");
+const { getSignedURL } = require("../utils/s3Utils");
 const { mongoose } = require("mongoose");
 
 const util = require("util");
@@ -446,30 +447,36 @@ catch (error) {
 
 const uploadImageService = async (req) => {
 
-  console.log(req.files)
+  console.log(req.files.data)
   var {
     tempFilePath,
     name,
     mimetype
   } = req.files.data;
-  name = name + new Date().getTime()
+  name = 'images/' + name + new Date().getTime()
 
   const params = {
     Bucket: bucketName,
     Body: fs.readFileSync(tempFilePath),
-    Key: `images/${name}`,
+    Key: `${name}`,
     ContentType: mimetype,
     //ACL: "public-read",
   };
   const upload = util.promisify(s3.upload).bind(s3);
-
   const location = (await upload(params)).Location;
-
+  const s3URL = getSignedURL(name);
+  const data = {
+    url:  location,
+    key: name,
+    location: location,
+    s3URL:s3URL
+  };
+ 
   return {
     status: true,
     statusCode: statusCodes?.HTTP_OK,
     message: messages?.updated,
-    data: {location:location},
+    data: {data : data},
   };
 };
 module.exports = {
