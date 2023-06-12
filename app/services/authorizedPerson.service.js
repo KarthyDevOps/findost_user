@@ -251,17 +251,17 @@ const getauthorizedPersonProfileService = async (params) => {
   const data = await authorizedPersons.findOne({
     $or: [
       { _id: params?._id },
-      { _id: params?.id },
+      { _id: params?.authorizedPersonId },
     ],
     isDeleted: false,
   });
-  const result = await getauthorizedPersonDetailsById(params);
-  if (result.status) {
+ 
+  if (data) {
     return {
       status: true,
       statusCode: statusCodes?.HTTP_OK,
       message: statusMessage.success,
-      data: result.data,
+      data:data,
     };
   } else {
     return {
