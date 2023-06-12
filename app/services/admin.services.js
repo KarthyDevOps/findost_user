@@ -311,8 +311,7 @@ const getAdminProfileByIdService = async (params) => {
   const result = await Admin.findOne({
     $or: [{ _id: params?.id }, { adminId: params?.adminId }],
     isDeleted: false,
-  }).lean();
-
+  });
   if (result) {
     return {
       status: true,
