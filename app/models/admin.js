@@ -74,7 +74,14 @@ const adminSchema = new mongoose.Schema(
   },
 
   
-  { timestamps: true }
+  {
+    timestamps: true,
+    toObject: { getters: true },
+    toJSON: {
+      virtuals: true,
+      getters: true
+    }
+  }
 );
 
 adminSchema.methods.toJSON = function () {
@@ -89,7 +96,7 @@ adminSchema.plugin(mongooseLeanVirtuals);
 adminSchema.plugin(mongooseLeanGetters);
 
 adminSchema.virtual('profileUrlS3').get(function () {
-  console.log('s')
+  console.log('ttttt')
   return this.profileURL ? getImageURL(this.profileURL) : null;
 })
 
