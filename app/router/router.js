@@ -44,6 +44,7 @@ const {
   sendOTP,
   resetPassword,
   forgot_password,
+  uploadImage
 } = require("../controllers/admin.controller");
 const {
   authorizedPersonLogin,
@@ -105,5 +106,8 @@ router.put(routes.v1.clientFamily.updateProfile,[verifyToken(["AP", "ADMIN","SUP
 router.get(routes.v1.clientFamily.getProfile,[verifyToken(["AP", "ADMIN","SUPER ADMIN"]),verifyAdminRole("clientFamilyManagement", "VIEW"),clientFamilyProfileSchema],errHandle(getClientPersonProfile));
 router.get(routes.v1.clientFamily.list,[verifyToken(["AP", "ADMIN","SUPER ADMIN"]),verifyAdminRole("clientFamilyManagement", "VIEW"),clientFamilyListSchema],errHandle(clientFamilyList));
 router.delete(routes.v1.clientFamily.delete,[verifyToken(["AP", "ADMIN","SUPER ADMIN"]),verifyAdminRole("clientFamilyManagement", "DELETE"),clientFamilyProfileSchema],errHandle(deleteClientFamily));
+
+router.post(routes.v1.aws.uploadImage,errHandle(uploadImage));
+
 
 module.exports = router;

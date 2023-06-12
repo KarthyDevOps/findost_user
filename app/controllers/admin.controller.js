@@ -15,6 +15,7 @@ const {
   sendOTPService,
   verifyOTPService,
   forgotPasswordService,
+  uploadImageService
 } = require("../services/admin.services");
 
 // admin related api's
@@ -275,6 +276,29 @@ const deleteAdmin = async (req, res) => {
   );
 };
 
+
+const uploadImage = async (req, res) => {
+  const result = await uploadImageService(req);
+  console.log(result)
+  if (!result.status) {
+    return sendErrorResponse(
+      req,
+      res,
+      result?.statusCode,
+      result?.message,
+      result?.data
+    );
+  }
+  return sendSuccessResponse(
+    req,
+    res,
+    result?.statusCode,
+    result?.message,
+    result?.data
+  );
+};
+
+
 module.exports = {
   adminLogin,
   sendOTP,
@@ -287,4 +311,5 @@ module.exports = {
   updateAdminProfile,
   adminList,
   deleteAdmin,
+  uploadImage
 };

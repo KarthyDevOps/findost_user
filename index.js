@@ -1,4 +1,7 @@
 const express = require("express");
+const expressFileUpload = require("express-fileupload");
+
+
 const process = require("process");
 const dotenv = require("dotenv");
 dotenv.config()
@@ -33,7 +36,15 @@ app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Headers", "*");
   next();
 });
-
+//File Uploading middleware 
+app.use(
+  expressFileUpload({
+    safeFileNames: true,
+    limits: { fileSize: 30 * 1024 * 1024 },
+    useTempFiles: true,
+    tempFileDir: "/tmp/",
+  })
+);
 //app.use("/api-docs",swaggerUi.serve,swaggerUi.setup(swaggerDocument));
 
 app.use(express.static(__dirname + "/assets"));
