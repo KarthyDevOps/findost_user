@@ -356,7 +356,7 @@ const deleteAdminService = async (params) => {
   if(params.id) ids.push(params?.id); else if(params.ids) {
 ids = params.ids 
   }
-  const id = mongoose.Types.ObjectId(params?.id) ;
+  const id = params?.id ;
   console.log("id -->",id)
   var query = {
     $set: {
