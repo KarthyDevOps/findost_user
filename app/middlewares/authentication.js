@@ -24,13 +24,18 @@ async function (req, res, next) {
           var userData = null;
           let userType = null;
           try {
+            let id;
             decode = jwt.verify(token, process.env.JWT_ADMIN_SECRET);
+            if (decode) {
+              id = decode?.id || decode?._id;
+            }
             userData = await Admin.findOne({
-              _id: decode._id,
+              _id:id,
               //token: token,
             });
             console.log("data -->",decode)
             userType = "ADMIN";
+            console.log("userData-->",userData)
           } catch (error) {
             if (type.includes("AP")) {
               decode = jwt.verify(token, process.env.JWT_authorizedPerson_SECRET);
@@ -42,6 +47,7 @@ async function (req, res, next) {
             }
           }
           if (userData) {
+          
             if (!userData?.isActive) {
               return sendErrorResponse(
                 req,
