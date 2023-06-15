@@ -11,6 +11,7 @@ const messages = {
   inserted: "Inserted Successfully",
   created: "Created Successfully",
   mailSent: "Mail Sent Successfully",
+  accessDenied:"Access Denied",
   updated: "Updated Successfully",
   deleted: "Deleted Successfully",
   otpSendSuccessful: "OTP Sent Successfully",
