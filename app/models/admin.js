@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 const jwt = require("jsonwebtoken");
-
-const {ROLE_TYPE} = require('../constants')
-const {getImageURL} = require("../utils/s3Utils")
+const { Sequence } = require('./sequence');
+const { ROLE_TYPE } = require('../constants')
+const { getImageURL } = require("../utils/s3Utils")
 const mongooseLeanVirtuals = require('mongoose-lean-virtuals');
 const mongooseLeanGetters = require('mongoose-lean-getters');
 
@@ -11,13 +11,19 @@ const adminSchema = new mongoose.Schema(
   {
     adminId: {
       type: String,
-      required: true,
-      unique: true,
-      trim: true,
-      default: () => {
-        const now = Date.now().toString();
-        return  now.slice(0, 3) + now.slice(10, 13);
-      },
+
+      // required: true,
+      // unique: true,
+      // trim: true,
+      // default: async () => {
+      //   let resp = await Sequence.findOneAndUpdate(
+      //     { type: "ADMIN" },
+      //     {
+      //       $inc: { 'count': 1 }
+      //     }).lean();
+      //   console.log("resp-->", resp, resp?.count)
+      //   return (resp.count + 1).toString().padStart(6, '0');
+      // },
     },
     name: {
       type: String,
@@ -50,7 +56,7 @@ const adminSchema = new mongoose.Schema(
     role: {
       type: String,
       required: false,
-      enum: [ROLE_TYPE.SUPER_ADMIN,ROLE_TYPE.ADMIN,ROLE_TYPE.STAFF,ROLE_TYPE.SUB_Admin],
+      enum: [ROLE_TYPE.SUPER_ADMIN, ROLE_TYPE.ADMIN, ROLE_TYPE.STAFF, ROLE_TYPE.SUB_Admin],
     },
     isActive: {
       type: Boolean,
@@ -73,7 +79,7 @@ const adminSchema = new mongoose.Schema(
     otp: String,
   },
 
-  
+
   {
     timestamps: true,
     toObject: { getters: true },
@@ -83,6 +89,13 @@ const adminSchema = new mongoose.Schema(
     }
   }
 );
+
+adminSchema.pre('save', async function(next) { 
+  var doc = this; 
+ let counter = await Sequence.findOneAndUpdate({type: 'ADMIN'}, {$inc: { count: 1} })
+ doc.adminId = (counter.count + 1).toString().padStart(6, '0').toString();;
+ next();  
+});
 
 adminSchema.methods.toJSON = function () {
   const admin = this;
@@ -109,7 +122,7 @@ adminSchema.methods.generateAuthToken = async function (department) {
       profileURL: admin.profileURL ? admin.profileURL.toString() : "",
     },
     process.env.JWT_ADMIN_SECRET,
-  //  { expiresIn: process.env.TOKEN_EXPIRATION }
+    //  { expiresIn: process.env.TOKEN_EXPIRATION }
   );
   admin.token = token;
   await admin.save();

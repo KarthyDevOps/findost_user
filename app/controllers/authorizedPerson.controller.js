@@ -160,7 +160,7 @@ const addauthorizedPerson = async (req, res) => {
 const getauthorizedPersonProfile = async (req, res) => {
   console.log("data");
   let params = {};
-  params.id = req.query.id
+  params.id = req.query.id || req.query._id
   params.authorizedPersonId = req?.query?.authorizedPersonId  // || req.user._id.toString();
   console.log("enter");
   const result = await getauthorizedPersonProfileService(params);

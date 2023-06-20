@@ -44,7 +44,8 @@ const {
   sendOTP,
   resetPassword,
   forgot_password,
-  uploadImage
+  uploadImage,
+  getSequenceId
 } = require("../controllers/admin.controller");
 const {
   authorizedPersonLogin,
@@ -107,7 +108,13 @@ router.get(routes.v1.clientFamily.getProfile,[verifyToken(["AP", "ADMIN"]),verif
 router.get(routes.v1.clientFamily.list,[verifyToken(["AP", "ADMIN"]),verifyAdminRole("clientFamilyManagement", "VIEW"),clientFamilyListSchema],errHandle(clientFamilyList));
 router.delete(routes.v1.clientFamily.delete,[verifyToken(["AP", "ADMIN"]),verifyAdminRole("clientFamilyManagement", "DELETE"),clientFamilyProfileSchema],errHandle(deleteClientFamily));
 
+
+//upload Image
 router.post(routes.v1.aws.uploadImage,errHandle(uploadImage));
+
+//get sequence id
+router.get(routes.v1.sequence.sequenceId,errHandle(getSequenceId));
+
 
 
 module.exports = router;

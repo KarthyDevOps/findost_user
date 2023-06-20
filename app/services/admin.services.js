@@ -2,6 +2,7 @@ const { statusCodes } = require("../response/httpStatusCodes");
 const { statusMessage } = require("../response/httpStatusMessages");
 const { messages } = require("../response/customMessages");
 const { Admin } = require("../models/admin");
+const {Sequence} = require('../models/sequence')
 const bcrypt = require("bcryptjs");
 const {
   pageMetaService,
@@ -254,6 +255,7 @@ const addAdminService = async (params) => {
   //verify the given admin already exist or not
   const result = await Admin.findOne({
     email: params?.email,
+    isDeleted:false
   });
   if (result) {
     return {
@@ -472,6 +474,19 @@ const uploadImageService = async (req) => {
     data: {data : data},
   };
 };
+
+const getSequenceIdService = async (req) => {
+  console.log("req-->",req?.body)
+  let counter = await Sequence.findOneAndUpdate({type:req?.body?.type}, {$inc: { count: 1} })
+  return {
+    status: true,
+    statusCode: statusCodes?.HTTP_OK,
+    message: messages?.updated,
+    data:counter,
+  };
+};
+
+
 module.exports = {
     adminLoginService,
     sendOTPService,
@@ -484,5 +499,6 @@ module.exports = {
     deleteAdminService,
     adminListService,
     getAdminProfileByIdService,
-    uploadImageService
+    uploadImageService,
+    getSequenceIdService
   };

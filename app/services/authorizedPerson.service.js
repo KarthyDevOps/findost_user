@@ -250,7 +250,7 @@ const getauthorizedPersonProfileService = async (params) => {
 
   const data = await authorizedPersons.findOne({
     $or: [
-      { _id: params?._id },
+      { _id: params?.id },
       { _id: params?.authorizedPersonId },
     ],
     isDeleted: false,

@@ -15,7 +15,8 @@ const {
   sendOTPService,
   verifyOTPService,
   forgotPasswordService,
-  uploadImageService
+  uploadImageService,
+  getSequenceIdService
 } = require("../services/admin.services");
 
 // admin related api's
@@ -299,6 +300,30 @@ const uploadImage = async (req, res) => {
 };
 
 
+const getSequenceId = async (req, res) => {
+  console.log("data-->",req.body)
+  const result = await getSequenceIdService(req);
+  console.log(result)
+  if (!result.status) {
+    return sendErrorResponse(
+      req,
+      res,
+      result?.statusCode,
+      result?.message,
+      result?.data
+    );
+  }
+  return sendSuccessResponse(
+    req,
+    res,
+    result?.statusCode,
+    result?.message,
+    result?.data
+  );
+};
+
+
+
 module.exports = {
   adminLogin,
   sendOTP,
@@ -311,5 +336,6 @@ module.exports = {
   updateAdminProfile,
   adminList,
   deleteAdmin,
-  uploadImage
+  uploadImage,
+  getSequenceId
 };

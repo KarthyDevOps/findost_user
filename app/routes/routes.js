@@ -51,6 +51,9 @@ const routes = {
     aws: {
       uploadImage: "/v1/upload/image",
     },
+    sequence: {
+      sequenceId: "/v1/get/sequenceId",
+    },
   },
 };
 
