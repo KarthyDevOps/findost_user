@@ -51,6 +51,12 @@ const routes = {
     aws: {
       uploadImage: "/v1/upload/image",
     },
+    razorPay: {
+      orderCreate: "/v1/razorPay/orderCreate",     
+      paymentverify : "/v1/razorPay/paymentverify",
+      checkPaymentStatus : "/v1/razorPay/checkPaymentStatus",
+      
+    },
   },
 };
 

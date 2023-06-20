@@ -65,6 +65,13 @@ const {
   updateClientFamilyProfile,
   deleteClientFamily,
 } = require("../controllers/clientFamily.controller");
+
+const {
+  orderCreate,
+  paymentverify,
+  checkPaymentStatus
+} = require("../controllers/payment.controller");
+
 const { errHandle } = require("../helpers/index");
 const { routes } = require("../routes/routes");
 const router = Router();
@@ -108,6 +115,12 @@ router.get(routes.v1.clientFamily.list,[verifyToken(["AP", "ADMIN"]),verifyAdmin
 router.delete(routes.v1.clientFamily.delete,[verifyToken(["AP", "ADMIN"]),verifyAdminRole("clientFamilyManagement", "DELETE"),clientFamilyProfileSchema],errHandle(deleteClientFamily));
 
 router.post(routes.v1.aws.uploadImage,errHandle(uploadImage));
+
+
+// razorpay
+router.post(routes.v1.razorPay.orderCreate,errHandle(orderCreate));
+router.post(routes.v1.razorPay.paymentverify,errHandle(paymentverify));
+router.post(routes.v1.razorPay.checkPaymentStatus,errHandle(checkPaymentStatus));
 
 
 module.exports = router;
