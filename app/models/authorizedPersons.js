@@ -235,6 +235,46 @@ const nomineeDetailsSchema = new mongoose.Schema(
 
   }
 )
+
+const paymentSchema = new mongoose.Schema(
+  {
+    paymentStatus: {
+      type: String,
+      trim: true,
+    },
+    totalAmount: {
+      type: String,
+      trim: true,
+    },
+    couponCode: {
+      type: String,
+      trim: true,
+    },
+    isCouponApplied: {
+      type: Boolean,
+      default: false,
+    },
+    paymentId: {
+      type: String,
+      trim: true,
+    },
+    orderId: {
+      type: String,
+      trim: true,
+    },
+    paymentMode: {
+      type: String
+    },
+    currency: {
+      type: String,
+      default: "INR",
+    },
+    paymentInfo : {
+      type: Object,
+    }
+  }
+)
+
 const authorizedPersonsSchema = new mongoose.Schema(
   {
     authorizedPersonId: {
@@ -325,9 +365,7 @@ const authorizedPersonsSchema = new mongoose.Schema(
     bankDetails: bankDetailsSchema,
     nomineeDetails: nomineeDetailsSchema,
     settings: settingsSchema,
-    paymentDetails: {
-      type: Object
-    },
+    paymentDetails:paymentSchema,
     isActive: {
       type: Boolean,
       default: true,

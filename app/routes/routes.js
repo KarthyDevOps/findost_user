@@ -54,6 +54,12 @@ const routes = {
     sequence: {
       sequenceId: "/v1/get/sequenceId",
     },
+    razorPay: {
+      orderCreate: "/v1/razorPay/orderCreate",     
+      paymentverify : "/v1/razorPay/paymentverify",
+      checkPaymentStatus : "/v1/razorPay/checkPaymentStatus",
+      
+    },
   },
 };
 

@@ -66,6 +66,13 @@ const {
   updateClientFamilyProfile,
   deleteClientFamily,
 } = require("../controllers/clientFamily.controller");
+
+const {
+  orderCreate,
+  paymentverify,
+  checkPaymentStatus
+} = require("../controllers/payment.controller");
+
 const { errHandle } = require("../helpers/index");
 const { routes } = require("../routes/routes");
 const router = Router();
@@ -115,6 +122,12 @@ router.post(routes.v1.aws.uploadImage,errHandle(uploadImage));
 //get sequence id
 router.get(routes.v1.sequence.sequenceId,errHandle(getSequenceId));
 
+
+
+// razorpay
+router.post(routes.v1.razorPay.orderCreate,errHandle(orderCreate));
+router.post(routes.v1.razorPay.paymentverify,errHandle(paymentverify));
+router.post(routes.v1.razorPay.checkPaymentStatus,errHandle(checkPaymentStatus));
 
 
 module.exports = router;
