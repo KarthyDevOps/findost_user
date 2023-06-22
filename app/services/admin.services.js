@@ -41,7 +41,7 @@ const adminLoginService = async (params) => {
       return {
         status: false,
         statusCode: statusCodes?.HTTP_BAD_REQUEST,
-        message:"user not found",
+        message:"User not found",
       };
     }
     const admin = result;

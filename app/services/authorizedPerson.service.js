@@ -122,7 +122,7 @@ const authorizedPersonSendLoginIdService = async (params) => {
       return {
         status: false,
         statusCode: statusCodes?.HTTP_BAD_REQUEST,
-        message: "user not found",
+        message: "User not found",
       };
     }
     const authorizedPerson = data;
@@ -177,7 +177,7 @@ const authorizedPersonSendMailIdService = async (params) => {
       return {
         status: false,
         statusCode: statusCodes?.HTTP_BAD_REQUEST,
-        message: "user not found",
+        message: "User not found",
       };
     }
     let sendMail = await InternalServices.sendEmail({
