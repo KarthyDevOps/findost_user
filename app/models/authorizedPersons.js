@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 const jwt = require("jsonwebtoken");
+const { Sequence } = require('./sequence');
 
 const addressSchema = new mongoose.Schema(
   {
@@ -278,14 +279,7 @@ const paymentSchema = new mongoose.Schema(
 const authorizedPersonsSchema = new mongoose.Schema(
   {
     authorizedPersonId: {
-      type: String,
-      required: true,
-      unique: true,
-      trim: true,
-      default: () => {
-        const now = Date.now().toString();
-        return now.slice(0, 3) + now.slice(10, 13);
-      },
+      type: String
     },
     profileURL: {
       type: String,
@@ -419,6 +413,13 @@ authorizedPersonsSchema.methods.generateAuthToken = async function () {
   await authorizedPersons.save();
   return token;
 };
+authorizedPersonsSchema.pre('save', async function(next) { 
+  var doc = this; 
+ let counter = await Sequence.findOneAndUpdate({type: 'authorizedPersons'}, {$inc: { count: 1} })
+ doc.authorizedPersonId = (counter.count + 1).toString().padStart(6, '0').toString();;
+ next(); 
+ 
+});
 
 const authorizedPersons = mongoose.model(
   "authorizedPersons",

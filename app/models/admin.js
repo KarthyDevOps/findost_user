@@ -10,20 +10,7 @@ const mongooseLeanGetters = require('mongoose-lean-getters');
 const adminSchema = new mongoose.Schema(
   {
     adminId: {
-      type: String,
-
-      // required: true,
-      // unique: true,
-      // trim: true,
-      // default: async () => {
-      //   let resp = await Sequence.findOneAndUpdate(
-      //     { type: "ADMIN" },
-      //     {
-      //       $inc: { 'count': 1 }
-      //     }).lean();
-      //   console.log("resp-->", resp, resp?.count)
-      //   return (resp.count + 1).toString().padStart(6, '0');
-      // },
+      type: String
     },
     name: {
       type: String,
@@ -89,11 +76,12 @@ const adminSchema = new mongoose.Schema(
   }
 );
 
-adminSchema.pre('save', async function(next) { 
-  var doc = this; 
- let counter = await Sequence.findOneAndUpdate({type: 'ADMIN'}, {$inc: { count: 1} })
- doc.adminId = (counter.count + 1).toString().padStart(6, '0').toString();;
- next();  
+adminSchema.pre('save', async function (next) {
+  var doc = this;
+  let counter = await Sequence.findOneAndUpdate({ type: 'ADMIN' }, { $inc: { count: 1 } })
+  doc.adminId = (counter.count + 1).toString().padStart(6, '0').toString();;
+  next();
+
 });
 
 adminSchema.methods.toJSON = function () {

@@ -2,21 +2,16 @@ const mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 const jwt = require("jsonwebtoken");
 
-const {ROLE_TYPE} = require('../constants')
+const { ROLE_TYPE } = require('../constants')
 
-const {getImageURL} = require("../utils/s3Utils")
+const { getImageURL } = require("../utils/s3Utils")
+
+const { Sequence } = require('./sequence');
 
 const clientFamilySchema = new mongoose.Schema(
   {
     clientId: {
-      type: String,
-      required: true,
-      unique: true,
-      trim: true,
-      default: () => {
-        const now = Date.now().toString();
-        return  now.slice(0, 3) + now.slice(10, 13);
-      },
+      type: String
     },
     clientName: {
       type: String,
@@ -70,9 +65,18 @@ const clientFamilySchema = new mongoose.Schema(
     otp: String,
   },
 
-  
+
   { timestamps: true }
 );
+
+clientFamilySchema.pre('save', async function (next) {
+  var doc = this;
+  let counter = await Sequence.findOneAndUpdate({ type: 'clientFamily' }, { $inc: { count: 1 } })
+  doc.clientId = (counter.count + 1).toString().padStart(6, '0').toString();;
+  next();
+
+});
+
 
 const clientFamily = mongoose.model("clientFamily", clientFamilySchema);
 
