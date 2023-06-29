@@ -60,6 +60,20 @@ const routes = {
       checkPaymentStatus : "/v1/razorPay/checkPaymentStatus",
       
     },
+    segment: {
+      addSegment: "/v1/segment/addSegment",
+      getSegment: "/v1/segment/getSegment",
+      updateSegment: "/v1/segment/updateSegment",
+      delete: "/v1/segment/deleteSegment",
+      list: "/v1/segment/list",
+    },
+    registerSetting: {
+      add: "/v1/registerSetting/add",
+      get: "/v1/registerSetting/get",
+      update: "/v1/registerSetting/update",
+      delete: "/v1/registerSetting/delete",
+      list: "/v1/registerSetting/list",
+    },
   },
 };
 

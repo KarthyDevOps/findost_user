@@ -72,7 +72,9 @@ const {
   paymentverify,
   checkPaymentStatus
 } = require("../controllers/payment.controller");
+const { addSegment, getSegmentById, updateSegment, segmentList, deleteSegment } = require('../controllers/segment.controller')
 
+const { addregisterSettings, getregisterSettingById, updateregisterSetting, deleteregisterSetting, registerSettingList } = require('../controllers/registerSetting.controller')
 const { errHandle } = require("../helpers/index");
 const { routes } = require("../routes/routes");
 const router = Router();
@@ -114,6 +116,20 @@ router.put(routes.v1.clientFamily.updateProfile,[verifyToken(["AP", "ADMIN"]),ve
 router.get(routes.v1.clientFamily.getProfile,[verifyToken(["AP", "ADMIN"]),verifyAdminRole("clientFamilyManagement", "VIEW"),clientFamilyProfileSchema],errHandle(getClientPersonProfile));
 router.get(routes.v1.clientFamily.list,[verifyToken(["AP", "ADMIN"]),verifyAdminRole("clientFamilyManagement", "VIEW"),clientFamilyListSchema],errHandle(clientFamilyList));
 router.delete(routes.v1.clientFamily.delete,[verifyToken(["AP", "ADMIN"]),verifyAdminRole("clientFamilyManagement", "DELETE"),clientFamilyProfileSchema],errHandle(deleteClientFamily));
+
+//Segment api
+router.post(routes.v1.segment.addSegment,[verifyToken(["ADMIN"])],errHandle(addSegment));
+router.put(routes.v1.segment.updateSegment,[verifyToken(["ADMIN"])],errHandle(updateSegment));
+router.get(routes.v1.segment.getSegment,[verifyToken(["ADMIN"])],errHandle(getSegmentById));
+router.get(routes.v1.segment.list,[verifyToken(["ADMIN"])],errHandle(segmentList));
+router.delete(routes.v1.segment.delete,[verifyToken(["ADMIN"])],errHandle(deleteSegment));
+
+//register setting api
+router.post(routes.v1.registerSetting.add,[verifyToken(["ADMIN"])],errHandle(addregisterSettings));
+router.put(routes.v1.registerSetting.update,[verifyToken(["ADMIN"])],errHandle(updateregisterSetting));
+router.get(routes.v1.registerSetting.get,[verifyToken(["ADMIN"])],errHandle(getregisterSettingById));
+router.get(routes.v1.registerSetting.list,[verifyToken(["ADMIN"])],errHandle(registerSettingList));
+router.delete(routes.v1.registerSetting.delete,[verifyToken(["ADMIN"])],errHandle(deleteregisterSetting));
 
 
 //upload Image
