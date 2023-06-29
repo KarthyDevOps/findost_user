@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 var Schema = mongoose.Schema;
+const { Sequence } = require('./sequence');
 
 const segmentSchema = new mongoose.Schema(
     {
