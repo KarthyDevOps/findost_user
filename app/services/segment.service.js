@@ -95,7 +95,7 @@ const deleteSegmentService = async (params) => {
     };
     console.log("ids-->",ids)
     //update ScheduleListService details into ScheduleListService table
-    const result = await segment.updateOne({ _id: ids }, query);
+    const result = await segment.updateMany({ _id: ids }, query);
     if (!result.modifiedCount) {
         return {
             status: false,

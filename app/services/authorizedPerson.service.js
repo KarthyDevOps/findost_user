@@ -15,6 +15,7 @@ const bcrypt = require("bcryptjs");
 const { statusMessage } = require("../response/httpStatusMessages");
 //const { authorizedPersonsAddress } = require("../models/authorizedPerson-address");
 const moment = require("moment-timezone");
+const jwt = require("jsonwebtoken");
 const { InternalServices } = require("../apiServices");
 //authorizedPerson profile related api's
 
@@ -125,7 +126,7 @@ const authorizedPersonSendLoginIdService = async (params) => {
         message: "User not found",
       };
     }
-    const authorizedPerson = data;
+     const authorizedPerson = data;
     //compare given password and stored password by user
     const isMatch = await bcrypt.compare(
       params?.password,
@@ -140,7 +141,30 @@ const authorizedPersonSendLoginIdService = async (params) => {
       };
     }
     //generate token with user details
-    const token = await authorizedPerson.generateAuthToken(data);
+    // const token = await authorizedPerson.generateAuthToken(data);
+
+    const token = jwt.sign(
+      {
+        _id: authorizedPerson._id ? authorizedPerson._id.toString() : "",
+        name: authorizedPerson.name ? authorizedPerson.name.toString() : "",
+        email: authorizedPerson.email ? authorizedPerson.email.toString() : "",
+        mobileNumber: authorizedPerson.mobileNumber
+          ? authorizedPerson.mobileNumber.toString()
+          : "",
+        profileURL: authorizedPerson.profileURL
+          ? authorizedPerson.profileURL.toString()
+          : "",
+      },
+      process.env.JWT_authorizedPerson_SECRET,
+
+      { expiresIn: process.env.TOKEN_EXPIRATION }
+    );
+    // authorizedPerson.token = token;
+    await authorizedPersons.findByIdAndUpdate({
+      _id: authorizedPerson._id
+    }, {
+      token: token
+    });
     authorizedPerson.token = token;
     return {
       status: true,

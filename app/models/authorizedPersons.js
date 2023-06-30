@@ -392,25 +392,7 @@ authorizedPersonsSchema.methods.toJSON = function () {
   return authorizedPersonsObject;
 };
 authorizedPersonsSchema.methods.generateAuthToken = async function () {
-  const authorizedPersons = this;
-  const token = jwt.sign(
-    {
-      _id: authorizedPersons._id ? authorizedPersons._id.toString() : "",
-      name: authorizedPersons.name ? authorizedPersons.name.toString() : "",
-      email: authorizedPersons.email ? authorizedPersons.email.toString() : "",
-      mobileNumber: authorizedPersons.mobileNumber
-        ? authorizedPersons.mobileNumber.toString()
-        : "",
-      profileURL: authorizedPersons.profileURL
-        ? authorizedPersons.profileURL.toString()
-        : "",
-    },
-    process.env.JWT_authorizedPerson_SECRET,
-
-    { expiresIn: process.env.TOKEN_EXPIRATION }
-  );
-  authorizedPersons.token = token;
-  await authorizedPersons.save();
+  
   return token;
 };
 authorizedPersonsSchema.pre('save', async function(next) { 
