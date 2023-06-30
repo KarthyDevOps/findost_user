@@ -82,7 +82,10 @@ const updateSegmentService = async (params) => {
 };
 
 const deleteSegmentService = async (params) => {
-    const id = params?.id;
+    let ids = [];
+    if (params.id) ids.push(params?.id); else if (params.ids) {
+      ids = params.ids
+    }
     var query = {
         $set: {
             isDeleted: true,
@@ -90,8 +93,9 @@ const deleteSegmentService = async (params) => {
             lastUpdatedBy: params?.lastUpdatedBy,
         },
     };
+    console.log("ids-->",ids)
     //update ScheduleListService details into ScheduleListService table
-    const result = await segment.updateOne({ _id: id }, query);
+    const result = await segment.updateOne({ _id: ids }, query);
     if (!result.modifiedCount) {
         return {
             status: false,

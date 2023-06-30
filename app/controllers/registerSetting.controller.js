@@ -21,7 +21,6 @@ const getregisterSettingById = async (req, res) => {
     console.log("data");
     let params = {};
     params.id = req.query.id
-    params.adminScheduleId = req?.query?.adminScheduleId;
     console.log("enter");
     const result = await getregisterSettingByIdService(params);
     if (!result.status) {
@@ -54,14 +53,17 @@ const registerSettingList = async (req, res) => {
 
 const deleteregisterSetting = async (req, res) => {
     const params = req.body;
-    params.id = req?.query?.id || req.user._id.toString();
+    if (req.query.id) {
+        params.id = req?.query?.id;
+    }
     params.updatedBy = req?.user?._id?.toString();
     params.lastUpdatedBy = req?.user?.userType;
+    params.ids = req.body.ids;
     const result = await deleteregisterSettingService(params);
     if (!result.status) {
-        return sendErrorResponse( req,res,result?.statusCode, result?.message,result?.data);
+        return sendErrorResponse(req, res, result?.statusCode, result?.message, result?.data);
     }
-    return sendSuccessResponse( req,res,result?.statusCode,result?.message,result?.data);
+    return sendSuccessResponse(req, res, result?.statusCode, result?.message, result?.data);
 };
 
 module.exports = {

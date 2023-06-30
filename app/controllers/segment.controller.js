@@ -50,14 +50,17 @@ const segmentList = async (req, res) => {
 
 const deleteSegment = async (req, res) => {
     const params = req.body;
-    params.id = req?.query?.id || req.user._id.toString();
+    if (req.query.id) {
+        params.id = req?.query?.id;
+    }
     params.updatedBy = req?.user?._id?.toString();
     params.lastUpdatedBy = req?.user?.userType;
+    params.ids = req.body.ids;
     const result = await deleteSegmentService(params);
     if (!result.status) {
-        return sendErrorResponse( req,res,result?.statusCode, result?.message,result?.data);
+        return sendErrorResponse(req, res, result?.statusCode, result?.message, result?.data);
     }
-    return sendSuccessResponse( req,res,result?.statusCode,result?.message,result?.data);
+    return sendSuccessResponse(req, res, result?.statusCode, result?.message, result?.data);
 };
 
 module.exports = {

@@ -57,7 +57,7 @@ const {
   authorizedPersonResetPassword
 } = require("../controllers/authorizedPerson.controller");
 
-const {addClientFamilyPerson,getClientPersonProfile,clientFamilyList, updateClientFamilyProfile, deleteClientFamil} = require("../controllers/clientFamily.controller");
+const {addClientFamilyPerson,getClientPersonProfile,clientFamilyList, updateClientFamilyProfile, deleteClientFamily} = require("../controllers/clientFamily.controller");
 const { orderCreate, paymentverify, checkPaymentStatus} = require("../controllers/payment.controller");
 const { addSegment, getSegmentById, updateSegment, segmentList, deleteSegment } = require('../controllers/segment.controller')
 const { addregisterSettings, getregisterSettingById, updateregisterSetting, deleteregisterSetting, registerSettingList } = require('../controllers/registerSetting.controller')
