@@ -32,7 +32,7 @@ const getregisterSettingById = async (req, res) => {
 
 const updateregisterSetting = async (req, res) => {
     const params = req.body;
-    params.id = req?.query?.id || req.user._id.toString();
+    params.id = req?.query?.id 
     params.updatedBy = req?.user?._id?.toString();
     params.lastUpdatedBy = req?.user?.userType;
     const result = await updateregisterSettingService(params);

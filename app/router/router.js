@@ -2,10 +2,7 @@ const express = require("express");
 const Router = express.Router;
 var multer = require("multer");
 var upload = multer();
-const {
-  verifyToken,
-  verifyAdminRole,
-} = require("../middlewares/authentication");
+const {verifyToken,verifyAdminRole,} = require("../middlewares/authentication");
 const {
   adminloginSchema,
   addAdminSchema,
@@ -59,21 +56,10 @@ const {
   authorizedPersonMailLoginById,
   authorizedPersonResetPassword
 } = require("../controllers/authorizedPerson.controller");
-const {
-  addClientFamilyPerson,
-  getClientPersonProfile,
-  clientFamilyList,
-  updateClientFamilyProfile,
-  deleteClientFamily,
-} = require("../controllers/clientFamily.controller");
 
-const {
-  orderCreate,
-  paymentverify,
-  checkPaymentStatus
-} = require("../controllers/payment.controller");
+const {addClientFamilyPerson,getClientPersonProfile,clientFamilyList, updateClientFamilyProfile, deleteClientFamil} = require("../controllers/clientFamily.controller");
+const { orderCreate, paymentverify, checkPaymentStatus} = require("../controllers/payment.controller");
 const { addSegment, getSegmentById, updateSegment, segmentList, deleteSegment } = require('../controllers/segment.controller')
-
 const { addregisterSettings, getregisterSettingById, updateregisterSetting, deleteregisterSetting, registerSettingList } = require('../controllers/registerSetting.controller')
 const { errHandle } = require("../helpers/index");
 const { routes } = require("../routes/routes");
@@ -106,7 +92,6 @@ router.get(routes.v1.authorizedPerson.getProfileById,errHandle(getauthorizedPers
 router.delete(routes.v1.authorizedPerson.delete,[verifyToken(["AP",,"ADMIN"]), updateAuthorizedPersonProfileSchema],errHandle(deleteauthorizedPerson));
 router.put(routes.v1.authorizedPerson.updateProfile,[verifyToken(["AP"]), updateAuthorizedPersonProfileSchema],errHandle(updateauthorizedPersonProfile));
 router.get(routes.v1.authorizedPerson.list, [verifyToken(["ADMIN"]), authorizedPersonListSchema],errHandle(authorizedPersonList));
-
 router.post(routes.v1.authorizedPerson.resetPassword,[verifyToken(["AP"]), authorizedPersonResetPasswordSchema],errHandle(authorizedPersonResetPassword));
 
 
@@ -131,14 +116,11 @@ router.get(routes.v1.registerSetting.get,[verifyToken(["ADMIN"])],errHandle(getr
 router.get(routes.v1.registerSetting.list,[verifyToken(["ADMIN"])],errHandle(registerSettingList));
 router.delete(routes.v1.registerSetting.delete,[verifyToken(["ADMIN"])],errHandle(deleteregisterSetting));
 
-
 //upload Image
 router.post(routes.v1.aws.uploadImage,errHandle(uploadImage));
 
 //get sequence id
 router.get(routes.v1.sequence.sequenceId,errHandle(getSequenceId));
-
-
 
 // razorpay
 router.post(routes.v1.razorPay.orderCreate,errHandle(orderCreate));
