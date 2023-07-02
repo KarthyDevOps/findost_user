@@ -103,18 +103,18 @@ router.get(routes.v1.clientFamily.list,[verifyToken(["AP", "ADMIN"]),verifyAdmin
 router.delete(routes.v1.clientFamily.delete,[verifyToken(["AP", "ADMIN"]),verifyAdminRole("clientFamilyManagement", "DELETE"),clientFamilyProfileSchema],errHandle(deleteClientFamily));
 
 //Segment api
-router.post(routes.v1.segment.addSegment,[verifyToken(["ADMIN"])],errHandle(addSegment));
-router.put(routes.v1.segment.updateSegment,[verifyToken(["ADMIN"])],errHandle(updateSegment));
-router.get(routes.v1.segment.getSegment,[verifyToken(["ADMIN"])],errHandle(getSegmentById));
-router.get(routes.v1.segment.list,[verifyToken(["ADMIN"])],errHandle(segmentList));
-router.delete(routes.v1.segment.delete,[verifyToken(["ADMIN"])],errHandle(deleteSegment));
+router.post(routes.v1.segment.addSegment,[verifyToken(["ADMIN"]),verifyAdminRole("segmentManagement", "ADD"),],errHandle(addSegment));
+router.put(routes.v1.segment.updateSegment,[verifyToken(["ADMIN"]),verifyAdminRole("segmentManagement", "UPDATE"),],errHandle(updateSegment));
+router.get(routes.v1.segment.getSegment,[verifyToken(["ADMIN"]),verifyAdminRole("segmentManagement", "VIEW"),],errHandle(getSegmentById));
+router.get(routes.v1.segment.list,[verifyToken(["ADMIN"]),verifyAdminRole("segmentManagement", "VIEW"),],errHandle(segmentList));
+router.delete(routes.v1.segment.delete,[verifyToken(["ADMIN"]),verifyAdminRole("segmentManagement", "DELETE"),],errHandle(deleteSegment));
 
 //register setting api
-router.post(routes.v1.registerSetting.add,[verifyToken(["ADMIN"])],errHandle(addregisterSettings));
-router.put(routes.v1.registerSetting.update,[verifyToken(["ADMIN"])],errHandle(updateregisterSetting));
-router.get(routes.v1.registerSetting.get,[verifyToken(["ADMIN"])],errHandle(getregisterSettingById));
-router.get(routes.v1.registerSetting.list,[verifyToken(["ADMIN"])],errHandle(registerSettingList));
-router.delete(routes.v1.registerSetting.delete,[verifyToken(["ADMIN"])],errHandle(deleteregisterSetting));
+router.post(routes.v1.registerSetting.add,[verifyToken(["ADMIN"]),verifyAdminRole("registersettingsManagement", "ADD")],errHandle(addregisterSettings));
+router.put(routes.v1.registerSetting.update,[verifyToken(["ADMIN"]),verifyAdminRole("registersettingsManagement", "UPDATE")],errHandle(updateregisterSetting));
+router.get(routes.v1.registerSetting.get,[verifyToken(["ADMIN"]),verifyAdminRole("registersettingsManagement", "VIEW"),],errHandle(getregisterSettingById));
+router.get(routes.v1.registerSetting.list,[verifyToken(["ADMIN"]),verifyAdminRole("registersettingsManagement", "VIEW"),],errHandle(registerSettingList));
+router.delete(routes.v1.registerSetting.delete,[verifyToken(["ADMIN"]),verifyAdminRole("registersettingsManagement", "DELETE"),],errHandle(deleteregisterSetting));
 
 //upload Image
 router.post(routes.v1.aws.uploadImage,errHandle(uploadImage));
