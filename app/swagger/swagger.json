@@ -863,7 +863,267 @@
         }
       }
     },
+    "/segment/addSegment": {
+      "post": {
+        "tags": ["Segment Module"],
+        "security": [{ "Bearer": [] }],
+        "summary": "Segment Create",
+        "parameters": [
+          {
+            "name": "segmentCreate",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/segmentCreate"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return a JSON response with submitted Aman form details.",
+            "schema": { "$ref": "#/definitions/response" }
+          },
+          "404": {
+            "description": "Validation failure.",
+            "schema": {
+              "$ref": "#/definitions/validationError"
+            }
+          },
+          "default": {
+            "description": "Unexpected error.",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/segment/updateSegment": {
+      "put": {
+        "tags": ["Segment Module"],
+        "security": [{ "Bearer": [] }],
+        "summary": "segment module update",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "segmentUpdate",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/segmentUpdate"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return a JSON response with submitted Aman form details.",
+            "schema": { "$ref": "#/definitions/response" }
+          },
+          "404": {
+            "description": "Validation failure.",
+            "schema": {
+              "$ref": "#/definitions/validationError"
+            }
+          },
+          "default": {
+            "description": "Unexpected error.",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/segment/getSegment": {
+      "get": {
+        "tags": ["Segment Module"],
+        "security": [{ "Bearer": [] }],
+        "summary": "get segment details",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return a JSON response with submitted Aman form details.",
+            "schema": { "$ref": "#/definitions/response" }
+          },
+          "404": {
+            "description": "Validation failure.",
+            "schema": {
+              "$ref": "#/definitions/validationError"
+            }
+          },
+          "default": {
+            "description": "Unexpected error.",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/segment/list": {
+      "get": {
+        "tags": ["Segment Module"],
+        "security": [{ "Bearer": [] }],
+        "summary": "List all segment",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "number"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "type": "number"
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return a JSON response with submitted Aman form details.",
+            "schema": { "$ref": "#/definitions/response" }
+          },
+          "404": {
+            "description": "Validation failure.",
+            "schema": {
+              "$ref": "#/definitions/validationError"
+            }
+          },
+          "default": {
+            "description": "Unexpected error.",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
 
+    "/segment/deleteSegment": {
+      "delete": {
+        "tags": ["Segment Module"],
+        "security": [{ "Bearer": [] }],
+        "summary": "delete segment",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return a JSON response with submitted Aman form details.",
+            "schema": { "$ref": "#/definitions/response" }
+          },
+          "404": {
+            "description": "Validation failure.",
+            "schema": {
+              "$ref": "#/definitions/validationError"
+            }
+          },
+          "default": {
+            "description": "Unexpected error.",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+  
+    "/registerSetting/update": {
+      "put": {
+        "tags": [
+          "RegisterSettings Module"
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "summary": "RegistrationSetting update",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "registrationSettingUpdate",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/registerSettingUpdate"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return a JSON response with submitted Aman form details.",
+            "schema": {
+              "$ref": "#/definitions/response"
+            }
+          },
+          "404": {
+            "description": "Validation failure.",
+            "schema": {
+              "$ref": "#/definitions/validationError"
+            }
+          },
+          "default": {
+            "description": "Unexpected error.",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/registerSetting/get": {
+      "get": {
+        "tags": ["RegisterSettings Module"],
+        "security": [{ "Bearer": [] }],
+        "summary": "get registration setting",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return a JSON response with submitted Aman form details.",
+            "schema": { "$ref": "#/definitions/response" }
+          },
+          "404": {
+            "description": "Validation failure.",
+            "schema": {
+              "$ref": "#/definitions/validationError"
+            }
+          },
+          "default": {
+            "description": "Unexpected error.",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+  
     "/upload/image": {
       "post": {
         "tags": ["Image Upload Module"],
@@ -1098,6 +1358,45 @@
           "type": "string"
         },
         "isActive": {
+          "type": "string"
+        }
+      }
+    },
+    "segmentCreate": {
+      "properties": {
+        "segmentName": {
+          "type": "string"
+        },
+        "segmentCharge": {
+          "type": "string"
+        }
+      }
+    },
+    "segmentUpdate": {
+      "properties": {
+        "segmentName": {
+          "type": "string"
+        },
+        "segmentCharge": {
+          "type": "string"
+        }
+      }
+    },
+    "registerSettingUpdate": {
+      "properties": {
+        "applicationFee": {
+          "type": "string"
+        },
+        "securityDeposit": {
+          "type": "string"
+        },
+        "registrationCharge": {
+          "type": "string"
+        },
+        "couponCode": {
+          "type": "string"
+        },
+        "segmentGst": {
           "type": "string"
         }
       }
