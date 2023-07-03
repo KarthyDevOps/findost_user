@@ -14,7 +14,7 @@ const { generateAccessToken } = require("../utils");
 const { getSignedURL } = require("../utils/s3Utils");
 const { mongoose } = require("mongoose");
 const s3 = require("../handler/s3Handler")
-
+const jwt = require("jsonwebtoken");
 const util = require("util");
 const fs = require('fs');
 
@@ -26,7 +26,7 @@ const adminLoginService = async (params) => {
   let result = await Admin.findOne({
     email: params?.email,
   });
-  console.log("result-->",result)
+  console.log("result-->", result)
   if (result) {
     if (!result.isActive) {
       console.log('result-->', result)
@@ -41,11 +41,11 @@ const adminLoginService = async (params) => {
       return {
         status: false,
         statusCode: statusCodes?.HTTP_BAD_REQUEST,
-        message:"User not found",
+        message: "User not found",
       };
     }
     const admin = result;
-    console.log("admin -->",admin)
+    console.log("admin -->", admin)
     //compare given password and stored password by user
     const isMatch = await bcrypt.compare(params?.password, admin.password);
     if (!isMatch) {
@@ -56,8 +56,24 @@ const adminLoginService = async (params) => {
         data: [],
       };
     }
-    //generate token with user details
-    const token = await admin.generateAuthToken(result?.data);
+
+    const token = jwt.sign(
+      {
+        _id: admin._id ? admin._id.toString() : "",
+        name: admin.name ? admin.name.toString() : "",
+        mobileNumber: admin.mobileNumber ? admin.mobileNumber.toString() : "",
+        profileURL: admin.profileURL ? admin.profileURL.toString() : "",
+      },
+      process.env.JWT_ADMIN_SECRET,
+      //  { expiresIn: process.env.TOKEN_EXPIRATION }
+    );
+
+    //generate token with admin details
+    await Admin.findByIdAndUpdate({
+      _id: admin._id
+    }, {
+      token: token
+    });
     admin.token = token;
     return {
       status: true,

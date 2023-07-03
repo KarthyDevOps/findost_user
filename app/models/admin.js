@@ -100,19 +100,7 @@ adminSchema.virtual('profileURLS3').get(function () {
 })
 
 adminSchema.methods.generateAuthToken = async function (department) {
-  const admin = this;
-  const token = jwt.sign(
-    {
-      _id: admin._id ? admin._id.toString() : "",
-      name: admin.name ? admin.name.toString() : "",
-      mobileNumber: admin.mobileNumber ? admin.mobileNumber.toString() : "",
-      profileURL: admin.profileURL ? admin.profileURL.toString() : "",
-    },
-    process.env.JWT_ADMIN_SECRET,
-    //  { expiresIn: process.env.TOKEN_EXPIRATION }
-  );
-  admin.token = token;
-  await admin.save();
+ 
   return token;
 };
 const Admin = mongoose.model("admin", adminSchema);
