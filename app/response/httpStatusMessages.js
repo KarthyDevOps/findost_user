@@ -64,6 +64,7 @@ const statusMessage = {
     bulkUploadError: "Bulk Upload Failed",
     barCodeAlreadyExist: "Barcode already exist",
     invalidPwd: "Invalid Passowrd",
+    invalidAPpwd:"Login Id and password do not match",
     notActive:"Admin InActive "
   };
   module.exports = { statusMessage };

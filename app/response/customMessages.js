@@ -31,7 +31,7 @@ const messages = {
   passwordAreSame: "new password and confirm password should be same",
   resetPassword: "Reset password successfully",
   barcodeExists: "Barcode already exists",
-  userNotExist: "This user does not registered with us",
+  userNotExist: "User does not exist",
   outOfStock: "Product is Out of Stock",
   authorizedPersonExists: "authorizedPerson Already Exists",
   authorizedPersonAdded: "authorizedPerson Added Successfully",

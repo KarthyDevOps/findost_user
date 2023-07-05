@@ -136,7 +136,7 @@ const authorizedPersonSendLoginIdService = async (params) => {
       return {
         status: false,
         statusCode: statusCodes?.HTTP_BAD_REQUEST,
-        message: statusMessage.invalidPwd,
+        message: statusMessage.invalidAPpwd,
         data: [],
       };
     }
