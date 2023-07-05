@@ -85,7 +85,7 @@ router.post(routes.v1.authorizedPerson.verifyOTP,[authorizedPersonVerifyOTPSchem
 router.post(routes.v1.authorizedPerson.sendOTP,[sendOTPSchema],errHandle(authorizedPersonLogin)); //for future use
 router.post(routes.v1.authorizedPerson.forgotPasswordverifyOTP, [forgotPasswordVerifyOTPSchema], errHandle(authorizedPersonverifyOTP)); //for furture use
 router.post(routes.v1.authorizedPerson.forgotPasswordLoginIdMail,[forgotPasswordLoginIdSchema],errHandle(authorizedPersonMailLoginById)); //AP send id through mail
-router.post(routes.v1.authorizedPerson.loginById,[authorizedPersonloginbyIdSchema],errHandle(authorizedPersonLoginById)); //authorized person login via id and password
+router.post(routes.v1.authorizedPerson.loginById,errHandle(authorizedPersonLoginById)); //authorized person login via id and password
 router.post(routes.v1.authorizedPerson.addProfile, [addAuthorizedPersonSchema],errHandle(addauthorizedPerson));
 router.get(routes.v1.authorizedPerson.getProfile,[verifyToken(["AP"]), getAuthorizedPersonProfileSchema],errHandle(getauthorizedPersonProfile));
 router.get(routes.v1.authorizedPerson.getProfileById,errHandle(getauthorizedPersonProfile));
