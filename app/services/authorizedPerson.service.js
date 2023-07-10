@@ -30,21 +30,23 @@ const authorizedPersonLoginService = async (params) => {
     ],
   });  
   if (data) {
-    const authorizedPersons = data;
+    const authorizedPerson = data;
     //send OTP to given mobile number for verification
-    const otp = await sendOTP_to_mobileNumber(authorizedPersons);
+    const otp = await sendOTP_to_mobileNumber(authorizedPerson);
     console.log(otp.toString());
     //hash the generated otp by bcypt
-    authorizedPersons.otp = await bcrypt.hash(otp.toString(), 4);
+    authorizedPerson.otp = await bcrypt.hash(otp.toString(), 4);
 
     //store authorizedPerson details into authorizedPersons table
-    await authorizedPersons.save();
+    await authorizedPersons.findByIdAndUpdate({
+      _id:data._id
+    },{otp:authorizedPerson.otp});
     return {
       status: true,
       statusCode: statusCodes?.HTTP_OK,
       message: messages?.otpSendSuccessful,
       data: {
-        mobileNumber : authorizedPersons.mobileNumber
+        mobileNumber : authorizedPerson.mobileNumber
       },
     };
   } else {
@@ -79,7 +81,28 @@ const authorizedPersonVerifyOTPService = async (params) => {
       };
     }
     //generate token with authorizedPerson details
-    const token = await authorizedPerson.generateAuthToken();
+    const token = jwt.sign(
+      {
+        _id: authorizedPerson._id ? authorizedPerson._id.toString() : "",
+        name: authorizedPerson.name ? authorizedPerson.name.toString() : "",
+        email: authorizedPerson.email ? authorizedPerson.email.toString() : "",
+        mobileNumber: authorizedPerson.mobileNumber
+          ? authorizedPerson.mobileNumber.toString()
+          : "",
+        profileURL: authorizedPerson.profileURL
+          ? authorizedPerson.profileURL.toString()
+          : "",
+      },
+      process.env.JWT_authorizedPerson_SECRET,
+
+      { expiresIn: process.env.TOKEN_EXPIRATION }
+    );
+    // authorizedPerson.token = token;
+    await authorizedPersons.findByIdAndUpdate({
+      _id: authorizedPerson._id
+    }, {
+      token: token
+    });
     authorizedPerson.token = token;
     return {
       status: true,

@@ -35,7 +35,7 @@ const adminLogin = async (req, res) => {
   }
   return sendSuccessResponse(
     req,
-    res,
+    res,  
     result?.statusCode,
     result?.message,
     result?.data
