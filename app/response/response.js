@@ -22,7 +22,7 @@ const sendSuccessResponse = (req, res, status, message, data) => {
   
     return res.status(status).json({
       status,
-      message,
+      message:error[Object.keys(error)[0]],
       error,
     });
   };
