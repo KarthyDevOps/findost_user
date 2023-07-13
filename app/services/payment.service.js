@@ -1,11 +1,12 @@
 const { statusCodes } = require("../response/httpStatusCodes");
 const { authorizedPersons } = require("../models/authorizedPersons");
 const { PAYMENT_STATUS, ORDER_STATUS, PAYMENT_ENTITY, REFUND_ENTITY } = require("../constants");
+const { messages } = require("../response/customMessages");
 
 const Razorpay = require("razorpay");
 const crypto = require("crypto");
 const orderCreateService = async (req, params) => {
-  console.log("params-->", params);
+  console.log("params 111-->", params);
   const instance = new Razorpay({
     key_id: process.env.RAZORPAY_KEY_ID,
     key_secret: process.env.RAZORPAY_KEY_SECRET,
@@ -15,45 +16,46 @@ const orderCreateService = async (req, params) => {
     currency: ORDER_STATUS.currency,
     receipt: crypto.randomBytes(10).toString("hex"),
   };
-  instance.orders.create(options, async (error, order) => {
-    console.log({ error, order, options }, "error, order");
-    if (error) {
-      console.log(error);
-      return {
-        status: false,
-        statusCode: statusCodes?.HTTP_OK,
-        messages: "Something Went Wrong! Unable to create razorpay Order!",
-        data: [],
-      };
-    } else {
-      let obj = {
-        orderId: order.id,
-        orderAmount: +order.amount,
-        orderReceipt: order.receipt,
-        paymentMode: "Online - Razorpay",
-      };
-      var query = {
-        $set: {
-          paymentDetails: {
-            paymentStatus: "PENDING",
-            totalAmount: order.amount,
-            orderId: order.id,
-          },
+  let order = await instance.orders.create(options)
+  if(order.error)
+  {
+    return {
+      status: false,
+      statusCode: statusCodes?.HTTP_OK,
+      messages: "Something Went Wrong! Unable to create razorpay Order!",
+      data: [],
+    };
+  }
+  else
+  {
+    let obj = {
+      orderId: order.id,
+      orderAmount: +order.amount,
+      orderReceipt: order.receipt,
+      paymentMode: "Online - Razorpay",
+    };
+    var query = {
+      $set: {
+        paymentDetails: {
+          paymentStatus: "PENDING",
+          totalAmount: order.amount,
+          orderId: order.id,
         },
-      };
+      },
+    };
+    console.log('success');
+    const result = await authorizedPersons.updateOne(
+      { _id: params.authorizedPersonId },
+      query
+    );
 
-      const result = await authorizedPersons.updateOne(
-        { _id: params.authorizedPersonId },
-        query
-      );
-
-      return {
-        status: true,
-        statusCode: statusCodes?.HTTP_OK,
-        data: obj,
-      };
-    }
-  });
+    return {
+      status: true,
+      statusCode: statusCodes?.HTTP_OK,
+      data: obj,
+    };
+  }
+  
 };
 const paymentverifyService = async (req, params) => {
   let body = req.body;
