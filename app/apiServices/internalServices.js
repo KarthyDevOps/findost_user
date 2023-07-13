@@ -1,9 +1,7 @@
 let { InternalAPIs } = require("../configs");
 let { Rest } = require("../restCalls");
 
-class InternalServices {}
-
-InternalServices.sendEmail = async (data) => {
+const sendEmail = async (data) => {
   try {
     console.log("The following is the data", data);
     let urlPayload = JSON.parse(JSON.stringify(InternalAPIs.sendEmail));
@@ -18,7 +16,7 @@ InternalServices.sendEmail = async (data) => {
   }
 };
 
-InternalServices.forgetEmail = async (data) => {
+const forgetEmail = async (data) => {
   try {
     console.log("The following is the data", data);
     let urlPayload = JSON.parse(JSON.stringify(InternalAPIs.forgetEmail));
@@ -31,4 +29,8 @@ InternalServices.forgetEmail = async (data) => {
     throw new Error(err);
   }
 };
-module.exports = InternalServices;
+module.exports = {
+  sendEmail,
+  forgetEmail
+
+};
