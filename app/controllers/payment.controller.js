@@ -15,7 +15,9 @@ const {
 
 const orderCreate = async (req, res) => {
   const params = req.body;
+  console.log('params');
   const result = await orderCreateService(req, params);
+  console.log('result',result)
   if (!result.status) {
     return sendErrorResponse(
       req,

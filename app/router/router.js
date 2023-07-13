@@ -125,7 +125,7 @@ router.get(routes.v1.sequence.sequenceId,errHandle(getSequenceId));
 // razorpay
 router.post(routes.v1.razorPay.orderCreate,errHandle(orderCreate));
 router.post(routes.v1.razorPay.paymentverify,errHandle(paymentverify));
-router.post(routes.v1.razorPay.checkPaymentStatus,errHandle(checkPaymentStatus));
+router.get(routes.v1.razorPay.checkPaymentStatus,errHandle(checkPaymentStatus));
 
 
 module.exports = router;

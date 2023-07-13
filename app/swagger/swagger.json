@@ -1123,6 +1123,73 @@
         }
       }
     },
+    "/razorPay/orderCreate": {
+      "post": {
+        "tags": ["Razor pay Module"],
+        "security": [{ "Bearer": [] }],
+        "summary": " Create order",
+        "parameters": [
+          {
+            "name": "orderCreate",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/razorpayOrderCreate"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return a JSON response with submitted Aman form details.",
+            "schema": { "$ref": "#/definitions/response" }
+          },
+          "404": {
+            "description": "Validation failure.",
+            "schema": {
+              "$ref": "#/definitions/validationError"
+            }
+          },
+          "default": {
+            "description": "Unexpected error.",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/razorPay/checkPaymentStatus": {
+      "get": {
+        "tags": ["Razor pay Module"],
+        "security": [{ "Bearer": [] }],
+        "summary": "get registration setting",
+        "parameters": [
+          {
+            "name": "authorizedPersonId",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return a JSON response with submitted Aman form details.",
+            "schema": { "$ref": "#/definitions/response" }
+          },
+          "404": {
+            "description": "Validation failure.",
+            "schema": {
+              "$ref": "#/definitions/validationError"
+            }
+          },
+          "default": {
+            "description": "Unexpected error.",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+   
   
     "/upload/image": {
       "post": {
@@ -1400,6 +1467,17 @@
           "type": "string"
         }
       }
+    },
+    "razorpayOrderCreate": {
+      "properties": {
+        "amount": {
+          "type": "string"
+        },
+        "authorizedPersonId": {
+          "type": "string"
+        }
+      }
     }
+    
   }
 }
