@@ -79,12 +79,12 @@ const addressSchema = new mongoose.Schema(
 const documentSchema = new mongoose.Schema(
   {
     professionalDocument: {
-      type: String,
+      type: Object,
       trim: true,
 
     },
     educationQualificationDocument: {
-      type: String,
+      type: Object,
       trim: true,
     },
     isDifferentPanName: {
@@ -92,15 +92,15 @@ const documentSchema = new mongoose.Schema(
       default: false,
     },
     residentialAddressProof: {
-      type: String,
+      type: Object,
       trim: true,
     },
     officeAddressProof: {
-      type: String,
+      type: Object,
       trim: true,
     },
     proofOfNameChange: {
-      type: String,
+      type: Object,
       trim: true,
     },
   }
