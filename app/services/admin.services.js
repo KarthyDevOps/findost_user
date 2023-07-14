@@ -465,6 +465,7 @@ const uploadImageService = async (req) => {
     name,
     mimetype
   } = req.files.data;
+  let fileName = name
   name = `${type}/`+ name + new Date().getTime()
 
   const params = {
@@ -480,6 +481,7 @@ const uploadImageService = async (req) => {
   const data = {
     key: name,
    // location: location,
+    fileName : fileName,
     s3URL:s3URL
   };
  
