@@ -482,7 +482,8 @@ const uploadImageService = async (req) => {
     key: name,
    // location: location,
     fileName : fileName,
-    s3URL:s3URL
+    s3URL:s3URL,
+    all :req.files.data
   };
  
   return {
