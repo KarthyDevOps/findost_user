@@ -88,7 +88,7 @@ const documentSchema = new mongoose.Schema(
       trim: true,
     },
     isDifferentPanName: {
-      type: Object,
+      type: Boolean,
       default: false,
     },
     residentialAddressProof: {
