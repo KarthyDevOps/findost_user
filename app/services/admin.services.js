@@ -483,7 +483,7 @@ const uploadImageService = async (req) => {
    // location: location,
     fileName : fileName,
     s3URL:s3URL,
-    all :req.files.data
+    
   };
  
   return {
