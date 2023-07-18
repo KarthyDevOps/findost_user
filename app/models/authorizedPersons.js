@@ -99,6 +99,7 @@ const documentSchema = new mongoose.Schema(
       type: Object,
       trim: true,
     },
+    
     proofOfNameChange: {
       type: Object,
       trim: true,

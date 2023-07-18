@@ -106,7 +106,7 @@ router.delete(routes.v1.clientFamily.delete,[verifyToken(["AP", "ADMIN"]),verify
 router.post(routes.v1.segment.addSegment,[verifyToken(["ADMIN"]),verifyAdminRole("feeManagement", "ADD"),],errHandle(addSegment));
 router.put(routes.v1.segment.updateSegment,[verifyToken(["ADMIN"]),verifyAdminRole("feeManagement", "UPDATE"),],errHandle(updateSegment));
 router.get(routes.v1.segment.getSegment,[verifyToken(["ADMIN"]),verifyAdminRole("feeManagement", "VIEW"),],errHandle(getSegmentById));
-router.get(routes.v1.segment.list,[verifyToken(["ADMIN"]),verifyAdminRole("feeManagement", "VIEW"),],errHandle(segmentList));
+router.get(routes.v1.segment.list,errHandle(segmentList));
 router.delete(routes.v1.segment.delete,[verifyToken(["ADMIN"]),verifyAdminRole("feeManagement", "DELETE"),],errHandle(deleteSegment));
 
 //register setting api
