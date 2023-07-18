@@ -463,8 +463,10 @@ const uploadImageService = async (req) => {
   var {
     tempFilePath,
     name,
-    mimetype
+    mimetype,
+    size,
   } = req.files.data;
+  console.log('req.files.data',req.files.data)
   let fileName = name
   name = `${type}/`+ name + new Date().getTime()
 
@@ -482,7 +484,9 @@ const uploadImageService = async (req) => {
     key: name,
    // location: location,
     fileName : fileName,
-    s3URL:s3URL
+    s3URL:s3URL,
+    mimetype : mimetype,
+    size : size
   };
  
   return {
