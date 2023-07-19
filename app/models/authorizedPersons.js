@@ -354,6 +354,10 @@ const authorizedPersonsSchema = new mongoose.Schema(
       type: Object,
       trim: false
     },
+    inPersonVerification: {
+      type: String,
+      trim: false
+    },
     address: addressSchema,
     document: documentSchema,
     business: businessSchema,
