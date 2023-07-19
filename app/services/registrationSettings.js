@@ -31,12 +31,12 @@ const addregisterSettingService = async (req, params) => {
     }
 };
 
-const getregisterSettingByIdService = async (params) => {
-    console.log("params-->", params)
+const getregisterSettingByIdService = async () => {
+    
     //get ScheduleListService details by ScheduleListService id
     const result = await registrationSettings.findOne(
         {
-            _id: params?.id,
+            // _id: params?.id,
             isDeleted: false
         });
 

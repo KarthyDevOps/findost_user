@@ -18,11 +18,8 @@ const addregisterSettings = async (req, res) => {
 };
 
 const getregisterSettingById = async (req, res) => {
-    console.log("data");
-    let params = {};
-    params.id = req.query.id
-    console.log("enter");
-    const result = await getregisterSettingByIdService(params);
+
+    const result = await getregisterSettingByIdService();
     if (!result.status) {
         return sendErrorResponse( req,res,result?.statusCode, result?.message,result?.data);
     }

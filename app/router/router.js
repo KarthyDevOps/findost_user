@@ -112,7 +112,7 @@ router.delete(routes.v1.segment.delete,[verifyToken(["ADMIN"]),verifyAdminRole("
 //register setting api
 router.post(routes.v1.registerSetting.add,[verifyToken(["ADMIN"]),verifyAdminRole("feeManagement", "ADD")],errHandle(addregisterSettings));
 router.put(routes.v1.registerSetting.update,[verifyToken(["ADMIN"]),verifyAdminRole("feeManagement", "UPDATE")],errHandle(updateregisterSetting));
-router.get(routes.v1.registerSetting.get,[verifyToken(["ADMIN"]),verifyAdminRole("feeManagement", "VIEW"),],errHandle(getregisterSettingById));
+router.get(routes.v1.registerSetting.get,errHandle(getregisterSettingById));
 router.get(routes.v1.registerSetting.list,[verifyToken(["ADMIN"]),verifyAdminRole("feeManagement", "VIEW"),],errHandle(registerSettingList));
 router.delete(routes.v1.registerSetting.delete,[verifyToken(["ADMIN"]),verifyAdminRole("feeManagement", "DELETE"),],errHandle(deleteregisterSetting));
 
