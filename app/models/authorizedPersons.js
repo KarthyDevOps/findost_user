@@ -3,6 +3,7 @@ var Schema = mongoose.Schema;
 const jwt = require("jsonwebtoken");
 const { Sequence } = require('./sequence');
 
+const { getImageURL } = require("../utils/s3Utils")
 const addressSchema = new mongoose.Schema(
   {
     addressType: {
@@ -81,7 +82,6 @@ const documentSchema = new mongoose.Schema(
     professionalDocument: {
       type: Object,
       trim: true,
-
     },
     educationQualificationDocument: {
       type: Object,
@@ -355,7 +355,7 @@ const authorizedPersonsSchema = new mongoose.Schema(
       trim: false
     },
     inPersonVerification: {
-      type: String,
+      type: Object,
       trim: false
     },
     address: addressSchema,
@@ -386,6 +386,11 @@ const authorizedPersonsSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
+    toObject: { getters: true },
+    toJSON: {
+      virtuals: true,
+      getters: true
+    }
   }
 );
 
@@ -407,6 +412,34 @@ authorizedPersonsSchema.pre('save', async function(next) {
  next(); 
  
 });
+
+authorizedPersonsSchema.virtual('inPersonVerification.documentPathS3').get(function () {
+ 
+  return this.inPersonVerification.documentPath ? getImageURL(this.inPersonVerification.documentPath) : null;
+})
+authorizedPersonsSchema.virtual('professionalDocument.documentPathS3').get(function () {
+  return this.professionalDocument.documentPath ? getImageURL(this.professionalDocument.documentPath) : null;
+})
+authorizedPersonsSchema.virtual('educationQualificationDocument.documentPathS3').get(function () {
+  return this.educationQualificationDocument.documentPath ? getImageURL(this.educationQualificationDocument.documentPath) : null;
+})
+authorizedPersonsSchema.virtual('educationQualificationDocument.documentPathS3').get(function () {
+  return this.educationQualificationDocument.documentPath ? getImageURL(this.educationQualificationDocument.documentPath) : null;
+})
+authorizedPersonsSchema.virtual('residentialAddressProof.documentPathS3').get(function () {
+  return this.residentialAddressProof.documentPath ? getImageURL(this.residentialAddressProof.documentPath) : null;
+})
+authorizedPersonsSchema.virtual('officeAddressProof.documentPathS3').get(function () {
+  return this.officeAddressProof.documentPath ? getImageURL(this.officeAddressProof.documentPath) : null;
+})
+authorizedPersonsSchema.virtual('proofOfNameChangef.documentPathS3').get(function () {
+  return this.proofOfNameChange.documentPath ? getImageURL(this.proofOfNameChange.documentPath) : null;
+})
+authorizedPersonsSchema.virtual('uploadChequeLeaflet.documentPathS3').get(function () {
+  return this.uploadChequeLeaflet.documentPath ? getImageURL(this.uploadChequeLeaflet.documentPath) : null;
+})
+
+
 
 const authorizedPersons = mongoose.model(
   "authorizedPersons",

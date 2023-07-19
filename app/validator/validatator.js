@@ -208,7 +208,7 @@ const addAuthorizedPersonSchema = (req, res, next) => {
     mobileNumber: joi.string().min(10).max(10).required(),
     email: joi.string().email(),
     nationality: joi.string().allow(null).allow(""),
-    tradeMember: joi.string().optional(),
+    tradeMember: joi.string().allow(null).allow(""),
     website: joi.string().optional(),
     occupationType: joi.string().required(),
     role: joi.string().required(),
@@ -231,13 +231,13 @@ const addAuthorizedPersonSchema = (req, res, next) => {
       officePinCode: joi.string().optional(),
       isOfficeSameAsResident: joi.boolean().required() 
     }),
-    document:joi.object({
-      professionalDocument: joi.string().required(),
-      educationQualificationDocument: joi.string().optional(),
-      isDifferentPanName: joi.boolean().required(),
-      residentialAddressProof: joi.string().optional(),
-      officeAddressProof: joi.string().optional(),
-    }),
+    // document:joi.object({
+    //   professionalDocument: joi.object().optional(),
+    //   educationQualificationDocument: joi.object().optional(),
+    //   isDifferentPanName: joi.boolean().optional(),
+    //   residentialAddressProof: joi.object().optional(),
+    //   officeAddressProof: joi.object().optional(),
+    // }),
     bankDetails: joi.object({
       bankName: joi.string().required(),
       accountNo: joi.string().required(),
