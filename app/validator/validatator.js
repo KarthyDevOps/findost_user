@@ -208,7 +208,7 @@ const addAuthorizedPersonSchema = (req, res, next) => {
     mobileNumber: joi.string().min(10).max(10).required(),
     email: joi.string().email(),
     nationality: joi.string().allow(null).allow(""),
-    tradeMember: joi.string().required(),
+    tradeMember: joi.string().optional(),
     website: joi.string().optional(),
     occupationType: joi.string().required(),
     role: joi.string().required(),
@@ -237,7 +237,6 @@ const addAuthorizedPersonSchema = (req, res, next) => {
       isDifferentPanName: joi.boolean().required(),
       residentialAddressProof: joi.string().optional(),
       officeAddressProof: joi.string().optional(),
-      proofOfNameChange: joi.string().optional()
     }),
     bankDetails: joi.object({
       bankName: joi.string().required(),
