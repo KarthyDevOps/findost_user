@@ -209,7 +209,7 @@ const addAuthorizedPersonSchema = (req, res, next) => {
     email: joi.string().email(),
     nationality: joi.string().allow(null).allow(""),
     tradeMember: joi.string().allow(null).allow(""),
-    website: joi.string().optional(),
+    website: joi.string().allow(null).allow(""),
     occupationType: joi.string().required(),
     role: joi.string().required(),
     address: joi.object({
@@ -254,18 +254,18 @@ const addAuthorizedPersonSchema = (req, res, next) => {
       isNomineeMinor : joi.boolean().required(),
       nomineeRelationship: joi.string().optional(), 
       nomineeGuardian: joi.object({
-        guardianName: joi.string().required(),
-        guardianPAN: joi.string().required(),
-        guardianMobile: joi.string().required(),
-        guardianDOB : joi.string().required()
+        guardianName:joi.string().allow(null).allow(""),
+        guardianPAN: joi.string().allow(null).allow(""),
+        guardianMobile: joi.string().allow(null).allow(""),
+        guardianDOB : joi.string().allow(null).allow("")
       }),   
     }),
-    paymentDetails:joi.required({
-      applicationFee: joi.string().required(),
-      securityDeposit: joi.string().required(),
-      couponCode: joi.string().required(),
-      totalcharges : joi.string().required()
-    }),
+    // paymentDetails:joi.required({
+    //   applicationFee:paymentDetails,
+    //   securityDeposit: joi.string().required(),
+    //   couponCode: joi.string().required(),
+    //   totalcharges : joi.string().required()
+    // }),
     settings: joi.object({
       isDarkTheme: joi.string().required(),
       isEnableBioMetricLogin: joi.string().required(),
