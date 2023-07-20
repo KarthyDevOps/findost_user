@@ -62,7 +62,7 @@ const paymentverifyService = async (req, params) => {
   let headers = req.headers;
   console.log('body',JSON.stringify(body,null,2))
   console.log('headers',JSON.stringify(headers,null,2))
-  const shasum = crypto.createHmac("sha256", process.env.KEY_SECRET);
+  const shasum = crypto.createHmac("sha256", process.env.RAZORPAY_KEY_SECRET);
   shasum.update(JSON.stringify(body));
   const digest = shasum.digest("hex");
 
