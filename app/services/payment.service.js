@@ -12,7 +12,7 @@ const orderCreateService = async (req, params) => {
     key_secret: process.env.RAZORPAY_KEY_SECRET,
   });
   const options = {
-    amount: +params.amount * 100 || 0,
+    amount: parseFloat(params.amount) * 100 || 0,
     currency: ORDER_STATUS.currency,
     receipt: crypto.randomBytes(10).toString("hex"),
   };
