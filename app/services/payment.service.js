@@ -144,6 +144,12 @@ const paymentverifyService = async (req, params) => {
       { "paymentDetails.orderId": paymentOrderId },
       query
     );
+    return {
+      status: true,
+      statusCode: statusCodes?.HTTP_OK,
+      message: messages?.success,
+      data: null,
+    };
   } else if (REFUND_ENTITY?.includes(body.event)) {
   }
 };
