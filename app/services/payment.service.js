@@ -131,6 +131,7 @@ const paymentverifyService = async (req, params) => {
         },
       };
     }
+    console.log(query,'query')
     const result = await authorizedPersons.updateOne(
       { "paymentDetails.orderId": paymentOrderId },
       query
