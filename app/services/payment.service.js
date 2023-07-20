@@ -65,7 +65,7 @@ const paymentverifyService = async (req, params) => {
   const shasum = crypto.createHmac("sha256", process.env.RAZORPAY_KEY_SECRET);
   shasum.update(JSON.stringify(body));
   const digest = shasum.digest("hex");
-
+  console.log('digest',JSON.stringify(digest,null,2))
   if (digest !== headers["x-razorpay-signature"])
     return response.success(
       req,
