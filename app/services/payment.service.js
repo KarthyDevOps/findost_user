@@ -117,30 +117,27 @@ const paymentverifyService = async (req, params) => {
       }
 
       var query = {
-        $set: {
           paymentDetails: {
             paymentStatus: paymentStatus,
             paymentMode: paymentMode,
             paymentInfo: paymentInfo,
             paymentId: paymentId,
           },
-        },
       };
     }
     if (body?.payload?.payment?.entity?.status == "failed") {
       paymentStatus = PAYMENT_STATUS.FAILURE;
       paymentId = body?.payload?.payment?.entity?.id || null;
       var query = {
-        $set: {
           paymentDetails: {
             paymentStatus: paymentStatus,
             paymentId: paymentId,
           },
-        },
       };
     }
     console.log(query,'query',paymentOrderId)
-    const result = await authorizedPersons.updateOne(
+    
+    const resp = await authorizedPersons.findOneAndUpdate(
       { "paymentDetails.orderId": paymentOrderId },
       query
     );
