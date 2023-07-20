@@ -67,21 +67,29 @@ const paymentverifyService = async (req, params) => {
   const digest = shasum.digest("hex");
   console.log('digest',JSON.stringify(digest,null,2))
   if (digest !== headers["x-razorpay-signature"])
-    return response.success(
-      req,
-      res,
-      statusCodes.HTTP_FORBIDDEN,
-      null,
-      "Signature missmatch"
-    );
+  {
+    return {
+      status: false,
+      statusCode: statusCodes?.HTTP_FORBIDDEN,
+      message: "Signature missmatch",
+      data: null,
+    };
+  }
+   
+    
+   
   if (![...PAYMENT_ENTITY, ...REFUND_ENTITY]?.includes(body.event))
-    return response.success(
-      req,
-      res,
-      statusCodes.HTTP_FORBIDDEN,
-      null,
-      "payment failed"
-    );
+  {
+    return {
+      status: false,
+      statusCode: statusCodes?.HTTP_FORBIDDEN,
+      message: "payment failed",
+      data: null,
+    };
+  
+  }
+   
+   
   if (PAYMENT_ENTITY?.includes(body.event)) {
     let paymentStatus = PAYMENT_STATUS.PENDING,
       paymentId,
