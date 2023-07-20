@@ -37,7 +37,7 @@ const orderCreate = async (req, res) => {
 };
 
 const paymentverify = async (req, res) => {
- 
+  console.log('req',req)
   const result = await paymentverifyService(req);
   if (!result.status) {
     return sendErrorResponse(
