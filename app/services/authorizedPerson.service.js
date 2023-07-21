@@ -462,6 +462,38 @@ const authorizedPersonResetPasswordService = async (params) => {
 };
 
 
+const validateCouponService = async (params) => {
+  try {
+    if(params.couponCode.toString() == process.env.AP_REGISTER_DISCOUNT_COUPON.toString())
+    {
+      return {
+        status: true,
+        statusCode: statusCodes?.HTTP_OK,
+        message: messages?.success,
+        data: {
+          couponCode :params.couponCode, 
+          couponPercentage :process.env.AP_REGISTER_DISCOUNT_COUPON_PERCENTAGE
+        },
+      };
+    }
+    else
+    {
+      return {
+        status: false,
+        statusCode: statusCodes?.HTTP_BAD_REQUEST,
+        message: 'Invaid Coupon',
+        data: [],
+      };
+    }
+  }
+  catch (error) {
+    console.log("error", error);
+    throw new Error(error);
+  }
+};
+
+
+
 
 module.exports = {
   authorizedPersonLoginService,
@@ -473,5 +505,6 @@ module.exports = {
   authorizedPersonListService,
   authorizedPersonSendLoginIdService,
   authorizedPersonSendMailIdService,
-  authorizedPersonResetPasswordService
+  authorizedPersonResetPasswordService,
+  validateCouponService
 };

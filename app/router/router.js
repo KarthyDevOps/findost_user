@@ -27,7 +27,8 @@ const {
   updateClientFamilyProfileSchema,
   forgotPasswordLoginIdSchema,
   forgotThroughMailSchema,
-  authorizedPersonResetPasswordSchema
+  authorizedPersonResetPasswordSchema,
+  validateCouponSchema
 } = require("../validator/validatator");
 const {
   adminLogin,
@@ -54,7 +55,8 @@ const {
   deleteauthorizedPerson,
   authorizedPersonLoginById,
   authorizedPersonMailLoginById,
-  authorizedPersonResetPassword
+  authorizedPersonResetPassword,
+  validateCoupon
 } = require("../controllers/authorizedPerson.controller");
 
 const {addClientFamilyPerson,getClientPersonProfile,clientFamilyList, updateClientFamilyProfile, deleteClientFamily} = require("../controllers/clientFamily.controller");
@@ -93,6 +95,8 @@ router.delete(routes.v1.authorizedPerson.delete,[verifyToken(["AP",,"ADMIN"]), u
 router.put(routes.v1.authorizedPerson.updateProfile,[verifyToken(["AP"]), updateAuthorizedPersonProfileSchema],errHandle(updateauthorizedPersonProfile));
 router.get(routes.v1.authorizedPerson.list, [verifyToken(["ADMIN"]), authorizedPersonListSchema],errHandle(authorizedPersonList));
 router.post(routes.v1.authorizedPerson.resetPassword,[verifyToken(["AP"]), authorizedPersonResetPasswordSchema],errHandle(authorizedPersonResetPassword));
+router.post(routes.v1.authorizedPerson.validateCoupon,[verifyToken(["AP"]),validateCouponSchema],errHandle(validateCoupon));
+
 
 
 //client family related api
