@@ -41,6 +41,8 @@ const orderCreateService = async (req, params) => {
           paymentStatus: "PENDING",
           totalAmount: order.amount,
           orderId: order.id,
+          couponCode : params.couponCode || "",
+          isCouponApplied : params.isCouponApplied || false,
         },
       },
     };
