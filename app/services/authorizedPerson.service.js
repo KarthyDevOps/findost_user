@@ -389,6 +389,29 @@ const authorizedPersonListService = async (params) => {
     let limit = params?.limit || 10;
     limit = Number(limit);
 
+    if (params?.all) {
+      let data = await authorizedPersons.find({
+        isDeleted: false
+      });
+
+      if (data.length > 0) {
+        return {
+          status: true,
+          statusCode: statusCodes?.HTTP_OK,
+          data: data,
+        };
+
+      }
+      else {
+        return {
+          status: false,
+          statusCode: statusCodes?.HTTP_OK,
+          data: [],
+        };
+
+      }
+    }
+
     if (params.search) {
       cond.$or = [
         { authorizedPersonId: { $regex: `${params?.search}`, $options: "i" } },
