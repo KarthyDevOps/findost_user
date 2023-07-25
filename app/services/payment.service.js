@@ -12,10 +12,11 @@ const orderCreateService = async (req, params) => {
     key_secret: process.env.RAZORPAY_KEY_SECRET,
   });
   const options = {
-    amount: +params.amount * 100 || 0,
+    amount: parseInt(parseFloat(params.amount) * 100 || 0),
     currency: ORDER_STATUS.currency,
     receipt: crypto.randomBytes(10).toString("hex"),
   };
+  console.log(options,'options')
   let order = await instance.orders.create(options)
   if(order.error)
   {
@@ -40,6 +41,8 @@ const orderCreateService = async (req, params) => {
           paymentStatus: "PENDING",
           totalAmount: order.amount,
           orderId: order.id,
+          couponCode : params.couponCode || "",
+          isCouponApplied : params.isCouponApplied || false,
         },
       },
     };
@@ -60,26 +63,36 @@ const orderCreateService = async (req, params) => {
 const paymentverifyService = async (req, params) => {
   let body = req.body;
   let headers = req.headers;
-  const shasum = crypto.createHmac("sha256", process.env.KEY_SECRET);
+  console.log('body',JSON.stringify(body,null,2))
+  console.log('headers',JSON.stringify(headers,null,2))
+  const shasum = crypto.createHmac("sha256", process.env.RAZORPAY_KEY_SECRET);
   shasum.update(JSON.stringify(body));
   const digest = shasum.digest("hex");
-
+  console.log('digest',JSON.stringify(digest,null,2))
   if (digest !== headers["x-razorpay-signature"])
-    return response.success(
-      req,
-      res,
-      statusCodes.HTTP_FORBIDDEN,
-      null,
-      "Signature missmatch"
-    );
+  {
+    return {
+      status: false,
+      statusCode: statusCodes?.HTTP_FORBIDDEN,
+      message: "Signature missmatch",
+      data: null,
+    };
+  }
+   
+    
+   
   if (![...PAYMENT_ENTITY, ...REFUND_ENTITY]?.includes(body.event))
-    return response.success(
-      req,
-      res,
-      statusCodes.HTTP_FORBIDDEN,
-      null,
-      "payment failed"
-    );
+  {
+    return {
+      status: false,
+      statusCode: statusCodes?.HTTP_FORBIDDEN,
+      message: "payment failed",
+      data: null,
+    };
+  
+  }
+   
+   
   if (PAYMENT_ENTITY?.includes(body.event)) {
     let paymentStatus = PAYMENT_STATUS.PENDING,
       paymentId,
@@ -107,32 +120,36 @@ const paymentverifyService = async (req, params) => {
       }
 
       var query = {
-        $set: {
           paymentDetails: {
             paymentStatus: paymentStatus,
             paymentMode: paymentMode,
             paymentInfo: paymentInfo,
             paymentId: paymentId,
           },
-        },
       };
     }
     if (body?.payload?.payment?.entity?.status == "failed") {
       paymentStatus = PAYMENT_STATUS.FAILURE;
       paymentId = body?.payload?.payment?.entity?.id || null;
       var query = {
-        $set: {
           paymentDetails: {
             paymentStatus: paymentStatus,
             paymentId: paymentId,
           },
-        },
       };
     }
-    const result = await authorizedPersons.updateOne(
+    console.log(query,'query',paymentOrderId)
+    
+    const resp = await authorizedPersons.findOneAndUpdate(
       { "paymentDetails.orderId": paymentOrderId },
       query
     );
+    return {
+      status: true,
+      statusCode: statusCodes?.HTTP_OK,
+      message: messages?.success,
+      data: null,
+    };
   } else if (REFUND_ENTITY?.includes(body.event)) {
   }
 };

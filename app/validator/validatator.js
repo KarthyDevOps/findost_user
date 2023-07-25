@@ -366,8 +366,12 @@ const authorizedPersonResetPasswordSchema = (req, res, next) => {
   return bodyParamValidation(req, res, next, schema);
 };
 
-
-
+const validateCouponSchema = (req, res, next) => {
+  const schema = joi.object({
+    couponCode: joi.string().required(),
+  });
+  return bodyParamValidation(req, res, next, schema);
+};
 
 const clientFamilyProfileSchema = (req, res, next) => {
   const schema = joi.object({
@@ -411,5 +415,6 @@ module.exports = {
   clientFamilyProfileSchema,
   clientFamilyListSchema,  
   updateClientFamilyProfileSchema,
-  authorizedPersonResetPasswordSchema
+  authorizedPersonResetPasswordSchema,
+  validateCouponSchema
 };

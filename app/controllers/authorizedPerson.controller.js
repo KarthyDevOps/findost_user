@@ -14,7 +14,8 @@ const {
   deleteauthorizedPersonService,
   authorizedPersonSendLoginIdService,
   authorizedPersonSendMailIdService,
-  authorizedPersonResetPasswordService
+  authorizedPersonResetPasswordService,
+  validateCouponService
 } = require("../services/authorizedPerson.service");
 
 //authorizedPerson profile related api's
@@ -280,6 +281,27 @@ const authorizedPersonResetPassword = async (req, res) => {
 };
 
 
+const validateCoupon = async (req, res) => {
+  const params = req.body;
+  const result = await validateCouponService(params);
+  if (!result.status) {
+    return sendErrorResponse(
+      req,
+      res,
+      result?.statusCode,
+      result?.message,
+      result?.data
+    );
+  }
+  return sendSuccessResponse(
+    req,
+    res,
+    result?.statusCode,
+    result?.message,
+    result?.data
+  );
+};
+
 module.exports = {
   authorizedPersonLogin,
   authorizedPersonverifyOTP,
@@ -291,5 +313,6 @@ module.exports = {
   authorizedPersonMailLoginById,
   authorizedPersonSendLoginId,
   deleteauthorizedPerson,
-  authorizedPersonResetPassword
+  authorizedPersonResetPassword,
+  validateCoupon
 };

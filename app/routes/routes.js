@@ -30,6 +30,7 @@ const routes = {
       list: "/v1/authorizedPerson/list",
       logout: "/v1/authorizedPerson/logout",
       export: "/v1/authorizedPerson/export",
+      validateCoupon  : "/v1/authorizedPerson/validateCoupon"
     },
     clientFamily: {
       addProfile: "/v1/clientFamily/addProfile",
