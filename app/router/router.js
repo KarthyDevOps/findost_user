@@ -92,7 +92,7 @@ router.post(routes.v1.authorizedPerson.addProfile, [addAuthorizedPersonSchema],e
 router.get(routes.v1.authorizedPerson.getProfile,[verifyToken(["AP"]), getAuthorizedPersonProfileSchema],errHandle(getauthorizedPersonProfile));
 router.get(routes.v1.authorizedPerson.getProfileById,errHandle(getauthorizedPersonProfile));
 router.delete(routes.v1.authorizedPerson.delete,[verifyToken(["AP",,"ADMIN"]), updateAuthorizedPersonProfileSchema],errHandle(deleteauthorizedPerson));
-router.put(routes.v1.authorizedPerson.updateProfile,[verifyToken(["AP"]), updateAuthorizedPersonProfileSchema],errHandle(updateauthorizedPersonProfile));
+router.put(routes.v1.authorizedPerson.updateProfile,[verifyToken(["ADMIN","AP"]), updateAuthorizedPersonProfileSchema],errHandle(updateauthorizedPersonProfile));
 router.get(routes.v1.authorizedPerson.list, [verifyToken(["ADMIN"]), authorizedPersonListSchema],errHandle(authorizedPersonList));
 router.post(routes.v1.authorizedPerson.resetPassword,[verifyToken(["AP"]), authorizedPersonResetPasswordSchema],errHandle(authorizedPersonResetPassword));
 router.post(routes.v1.authorizedPerson.validateCoupon,[validateCouponSchema],errHandle(validateCoupon));

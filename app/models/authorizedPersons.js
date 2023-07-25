@@ -369,6 +369,10 @@ const authorizedPersonsSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
+    isAdminUpdated: {
+      type: Boolean,
+      default: false,
+    },
     isDeleted: {
       type: Boolean,
       default: false,

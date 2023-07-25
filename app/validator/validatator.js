@@ -313,8 +313,8 @@ const updateAuthorizedPersonProfileSchema = (req, res, next) => {
 const authorizedPersonListSchema = (req, res, next) => {
   const schema = joi.object({
     search: joi.allow(null).allow(""),
-    limit: joi.number().required(),
-    page: joi.number().required(),
+    limit: joi.number().optional(),
+    page: joi.number().optional(),
   });
   return queryParamValidation(req, res, next, schema);
 };
