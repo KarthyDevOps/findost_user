@@ -10,21 +10,6 @@ const { statusMessage } = require("../response/httpStatusMessages");
 const addClientFamilyService = async (req, params) => {
   console.log("params-->", params);
   //verify the given person already exist or not
-  const data = await clientFamily.findOne({
-    $or: [
-      { email: params?.email },
-      { mobileNumber: params?.mobileNumber }
-    ],
-  });
-console.log("data -->",data)
-  if (data) {
-    return {
-      status: false,
-      statusCode: statusCodes?.HTTP_BAD_REQUEST,
-      message: messages?.clientFamilyExists,
-      data: [],
-    };
-  }
 
   const clientFamilys = await new clientFamily(params);
   const details = await clientFamilys.save();

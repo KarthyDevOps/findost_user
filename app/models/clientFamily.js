@@ -15,19 +15,16 @@ const clientFamilySchema = new mongoose.Schema(
     },
     clientName: {
       type: String,
-      required: true,
       trim: true,
     },
     mobileNumber: {
       type: String,
       required: true,
-      unique: true,
       trim: true,
     },
     email: {
       type: String,
       required: true,
-      unique: true,
       trim: true,
     },
     dateOfBirth: {
@@ -37,12 +34,13 @@ const clientFamilySchema = new mongoose.Schema(
     relativeName: {
       type: String,
       required: false,
-      get(value) {
-        return getImageURL(value);
-      }
     },
     relationShip: {
       type: Object,
+      required: false,
+    },
+    apId: {
+      type: String,
       required: false,
     },
     isActive: {

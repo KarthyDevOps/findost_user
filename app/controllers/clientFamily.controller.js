@@ -20,6 +20,7 @@ const addClientFamilyPerson = async (req, res) => {
   params.createdBy = req?.user?._id?.toString();
   params.updatedBy = req?.user?._id?.toString();
   params.lastUpdatedBy = req?.user?.userType;
+  params.apId = req?.user?.apId;
   const result = await addClientFamilyService(req, params);
   if (!result.status) {
     return sendErrorResponse(
