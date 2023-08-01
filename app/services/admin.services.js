@@ -351,6 +351,10 @@ const getAdminProfileByIdService = async (params) => {
 
 const updateAdminProfileService = async (params) => {
   const Id = params?.id;
+  if(params.password && params.password !='')
+  {
+    params.password = await bcrypt.hash(params?.password.toString(), 10);
+  }
   var query = { $set: params };
   console.log('query-->', query)
   const result = await Admin.updateOne({ _id: Id }, query);
