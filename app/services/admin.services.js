@@ -25,6 +25,7 @@ const adminLoginService = async (params) => {
   // get admin details by email
   let result = await Admin.findOne({
     email: params?.email,
+    isDeleted :false
   });
   console.log("result-->", result)
   if (result) {
