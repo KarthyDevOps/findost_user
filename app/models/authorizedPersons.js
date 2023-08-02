@@ -80,29 +80,65 @@ const addressSchema = new mongoose.Schema(
 const documentSchema = new mongoose.Schema(
   {
     professionalDocument: {
-      type: Object,
-      trim: true,
+      status: {
+        type: String,
+        trim: true
+      },
+      url: {
+        type: String,
+        trim: true
+      } 
     },
     educationQualificationDocument: {
-      type: Object,
-      trim: true,
+      status: {
+        type: String,
+        trim: true
+      },
+      url: {
+        type: String,
+        trim: true
+      } 
     },
     isDifferentPanName: {
-      type: Boolean,
-      default: false,
+      status: {
+        type: String,
+        trim: true
+      },
+      url: {
+        type: String,
+        trim: true
+      } 
     },
     residentialAddressProof: {
-      type: Object,
-      trim: true,
+      status: {
+        type: String,
+        trim: true
+      },
+      url: {
+        type: String,
+        trim: true
+      } 
     },
     officeAddressProof: {
-      type: Object,
-      trim: true,
+      status: {
+        type: String,
+        trim: true
+      },
+      url: {
+        type: String,
+        trim: true
+      } 
     },
     
     proofOfNameChange: {
-      type: Object,
-      trim: true,
+      status: {
+        type: String,
+        trim: true
+      },
+      url: {
+        type: String,
+        trim: true
+      } 
     },
   }
 )
