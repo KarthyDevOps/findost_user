@@ -25,6 +25,7 @@ const adminLoginService = async (params) => {
   // get admin details by email
   let result = await Admin.findOne({
     email: params?.email,
+    isDeleted :false
   });
   console.log("result-->", result)
   if (result) {
@@ -350,6 +351,10 @@ const getAdminProfileByIdService = async (params) => {
 
 const updateAdminProfileService = async (params) => {
   const Id = params?.id;
+  if(params.password && params.password !='')
+  {
+    params.password = await bcrypt.hash(params?.password.toString(), 10);
+  }
   var query = { $set: params };
   console.log('query-->', query)
   const result = await Admin.updateOne({ _id: Id }, query);
