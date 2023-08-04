@@ -324,6 +324,14 @@ const paymentSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
+    segmentTotalCharge: {
+      type: String,
+      trim: true,
+    },
+    registrationCharge: {
+      type: String,
+      trim: true,
+    },
     couponCode: {
       type: String,
       trim: true,
@@ -503,30 +511,30 @@ authorizedPersonsSchema.pre('save', async function(next) {
  
 });
 
-authorizedPersonsSchema.virtual('inPersonVerificationS3').get(function () {
+authorizedPersonsSchema.virtual('inPersonVerificationS3.urlS3').get(function () {
  
-  return  this.inPersonVerification ? getImageURL(this.inPersonVerification) : null;
+  return  this.inPersonVerification.url ? getImageURL(this.inPersonVerification.url) : null;
 })
-authorizedPersonsSchema.virtual('professionalDocument.documentPathS3').get(function () {
-  return this.professionalDocument?.documentPath ? getImageURL(this.professionalDocument.documentPath) : null;
+authorizedPersonsSchema.virtual('professionalDocument.urlS3').get(function () {
+  return this.professionalDocument?.url ? getImageURL(this.professionalDocument.documentPath) : null;
 })
-authorizedPersonsSchema.virtual('educationQualificationDocument.documentPathS3').get(function () {
-  return this.educationQualificationDocument?.documentPath ? getImageURL(this.educationQualificationDocument.documentPath) : null;
+authorizedPersonsSchema.virtual('educationQualificationDocument.urlS3').get(function () {
+  return this.educationQualificationDocument?.url ? getImageURL(this.educationQualificationDocument.documentPath) : null;
 })
-authorizedPersonsSchema.virtual('educationQualificationDocument.documentPathS3').get(function () {
-  return this.educationQualificationDocument?.documentPath ? getImageURL(this.educationQualificationDocument.documentPath) : null;
+authorizedPersonsSchema.virtual('educationQualificationDocument.urlS3').get(function () {
+  return this.educationQualificationDocument?.url ? getImageURL(this.educationQualificationDocument.documentPath) : null;
 })
-authorizedPersonsSchema.virtual('residentialAddressProof.documentPathS3').get(function () {
-  return this.residentialAddressProof?.documentPath ? getImageURL(this.residentialAddressProof.documentPath) : null;
+authorizedPersonsSchema.virtual('residentialAddressProof.urlS3').get(function () {
+  return this.residentialAddressProof?.url ? getImageURL(this.residentialAddressProof.documentPath) : null;
 })
-authorizedPersonsSchema.virtual('officeAddressProof.documentPathS3').get(function () {
-  return this.officeAddressProof?.documentPath ? getImageURL(this.officeAddressProof.documentPath) : null;
+authorizedPersonsSchema.virtual('officeAddressProof.urlS3').get(function () {
+  return this.officeAddressProof?.url ? getImageURL(this.officeAddressProof.documentPath) : null;
 })
-authorizedPersonsSchema.virtual('proofOfNameChangef.documentPathS3').get(function () {
-  return this.proofOfNameChange?.documentPath ? getImageURL(this.proofOfNameChange.documentPath) : null;
+authorizedPersonsSchema.virtual('proofOfNameChangef.urlS3').get(function () {
+  return this.proofOfNameChange?.url ? getImageURL(this.proofOfNameChange.documentPath) : null;
 })
-authorizedPersonsSchema.virtual('uploadChequeLeaflet.documentPathS3').get(function () {
-  return this.uploadChequeLeaflet?.documentPath ? getImageURL(this.uploadChequeLeaflet.documentPath) : null;
+authorizedPersonsSchema.virtual('uploadChequeLeaflet.urlS3').get(function () {
+  return this.uploadChequeLeaflet?.url ? getImageURL(this.uploadChequeLeaflet.documentPath) : null;
 })
 
 
