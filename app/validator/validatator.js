@@ -325,12 +325,7 @@ const authorizedPersonListSchema = (req, res, next) => {
 const addClientFamilySchema = (req, res, next) => {
   const schema = joi.object({
     clientName: joi.string().required(),
-    gender: joi.string().optional(),
-    mobileNumber: joi.string().min(10).max(10).required(),
-    email: joi.string().email(),
-    dateOfBirth: joi.string().required(),
-    relativeName: joi.string().required(),
-    relationShip: joi.string().required(),
+    familyMember: joi.array().required(),
     isActive: joi.boolean().required(),
   });
   return bodyParamValidation(req, res, next, schema);
