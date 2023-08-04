@@ -17,7 +17,7 @@ const clientFamilySchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
-    familMember : {
+    familyMember : {
       type:Array,
       trim:true
     },
