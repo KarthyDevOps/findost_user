@@ -87,6 +87,14 @@ const documentSchema = new mongoose.Schema(
       url: {
         type: String,
         trim: true
+      },
+      fileName: {
+        type: String,
+        trim: true
+      },
+      fileSize: {
+        type: String,
+        trim: true
       } 
     },
     educationQualificationDocument: {
@@ -95,6 +103,14 @@ const documentSchema = new mongoose.Schema(
         trim: true
       },
       url: {
+        type: String,
+        trim: true
+      },
+      fileName: {
+        type: String,
+        trim: true
+      },
+      fileSize: {
         type: String,
         trim: true
       } 
@@ -117,6 +133,14 @@ const documentSchema = new mongoose.Schema(
       url: {
         type: String,
         trim: true
+      },
+      fileName: {
+        type: String,
+        trim: true
+      },
+      fileSize: {
+        type: String,
+        trim: true
       } 
     },
     officeAddressProof: {
@@ -127,7 +151,15 @@ const documentSchema = new mongoose.Schema(
       url: {
         type: String,
         trim: true
-      } 
+      },
+      fileName: {
+        type: String,
+        trim: true
+      },
+      fileSize: {
+        type: String,
+        trim: true
+      }  
     },
     
     proofOfNameChange: {
@@ -136,6 +168,14 @@ const documentSchema = new mongoose.Schema(
         trim: true
       },
       url: {
+        type: String,
+        trim: true
+      },
+      fileName: {
+        type: String,
+        trim: true
+      },
+      fileSize: {
         type: String,
         trim: true
       } 
@@ -391,8 +431,18 @@ const authorizedPersonsSchema = new mongoose.Schema(
       trim: false
     },
     inPersonVerification: {
-      type: String,
-      trim: false
+      url: {
+        type: String,
+        trim: true
+      },
+      fileName: {
+        type: String,
+        trim: true
+      },
+      fileSize: {
+        type: String,
+        trim: true
+      } 
     },
     address: addressSchema,
     document: documentSchema,
