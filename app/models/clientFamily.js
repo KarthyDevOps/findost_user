@@ -17,27 +17,9 @@ const clientFamilySchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
-    mobileNumber: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    email: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    dateOfBirth: {
-      type: String,
-      required: true,
-    },
-    relativeName: {
-      type: String,
-      required: false,
-    },
-    relationShip: {
-      type: Object,
-      required: false,
+    familMember : {
+      type:Array,
+      trim:true
     },
     apId: {
       type: String,
