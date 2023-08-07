@@ -15,6 +15,13 @@ module.exports = {
             contentType: "application/json",
         },
     },
+    AddAPNotification: {
+        method: "POST",
+        url: process.env.COMMUNICATION_URL + process.env.ADMIN_NOTIFICATION,
+        headers: {
+            contentType: "application/json",
+        },
+    },
 
     
 }

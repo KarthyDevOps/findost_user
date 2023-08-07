@@ -283,6 +283,14 @@ const addauthorizedPersonService = async (req, params) => {
   //migrating authorizedPerson to authorizedPersons and store authorizedPerson details into authorizedPersons table
   const authorizedPerson = await new authorizedPersons(params);
   const details = await authorizedPerson.save();
+  let passData = {
+    type:"AP_CREATED_NOTIFICATION",
+    authorizedPersonId : details.authorizedPersonId,
+    extra : {
+      authorizedPersonId:details.authorizedPersonId
+    }
+  }
+  await InternalServices.postAPCreationNotification(passData)
   return {
     status: true,
     statusCode: statusCodes?.HTTP_OK,

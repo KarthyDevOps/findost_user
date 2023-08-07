@@ -29,8 +29,17 @@ const forgetEmail = async (data) => {
     throw new Error(err);
   }
 };
+
+const postAPCreationNotification = async (data) => {
+  console.log("The following is the data", data);
+  let apiConfig = JSON.parse(JSON.stringify(InternalAPIs.AddAPNotification));
+  apiConfig.data = data;
+  console.log('apiConfig',apiConfig)
+  return await Rest.callApi(apiConfig);
+};
 module.exports = {
   sendEmail,
-  forgetEmail
+  forgetEmail,
+  postAPCreationNotification
 
 };
