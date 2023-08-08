@@ -67,6 +67,8 @@ const {
   clientFamilyList,
   updateClientFamilyProfile,
   deleteClientFamily,
+  getAdminClientPersonProfile,
+  updateAdminClientFamilyProfile,
 } = require("../controllers/clientFamily.controller");
 const {
   orderCreate,
@@ -226,6 +228,16 @@ router.put(
   ],
   errHandle(updateClientFamilyProfile)
 );
+//admin side
+router.put(
+  routes.v1.clientAdminFamily.updateProfile,
+  [
+    verifyToken(["ADMIN"]),
+    verifyAdminRole("clientFamilyManagement", "EDIT"),
+    updateClientFamilyProfileSchema,
+  ],
+  errHandle(updateAdminClientFamilyProfile)
+);
 router.get(
   routes.v1.clientFamily.getProfile,
   [
@@ -236,9 +248,28 @@ router.get(
   errHandle(getClientPersonProfile)
 );
 router.get(
-  routes.v1.clientFamily.list,
+  routes.v1.clientAdminFamily.getProfile,
+  [
+    verifyToken(["ADMIN"]),
+    verifyAdminRole("clientFamilyManagement", "VIEW"),
+    clientFamilyProfileSchema,
+  ],
+  errHandle(getAdminClientPersonProfile)
+);
+router.get(
+  routes.v1.clientFamily.getProfile,
   [
     verifyToken(["AP", "ADMIN"]),
+    verifyAdminRole("clientFamilyManagement", "VIEW"),
+    clientFamilyProfileSchema,
+  ],
+  errHandle(getClientPersonProfile)
+);
+
+router.get(
+  routes.v1.clientFamily.list,
+  [
+    verifyToken(["AP", "ADMIN"]), 
     verifyAdminRole("clientFamilyManagement", "VIEW"),
     clientFamilyListSchema,
   ],

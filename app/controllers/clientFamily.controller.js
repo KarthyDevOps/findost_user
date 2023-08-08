@@ -10,6 +10,8 @@ const {
   clientFamilyListService,
   updateClientProfileService,
   deleteClientFamilyService,
+  getAdminClientProfileService,
+  updateAdminClientProfileService,
 } = require("../services/clientFamily.service");
 
 //authorizedPerson profile related api's
@@ -65,6 +67,33 @@ const getClientPersonProfile = async (req, res) => {
   );
 };
 
+
+const getAdminClientPersonProfile = async (req, res) => {
+  console.log("data",req.user);
+  let params = {};
+  params.id = req.query.id
+  params.clientId = req?.query?.clientId;
+  console.log("enter");
+  const result = await getAdminClientProfileService(params);
+  if (!result.status) {
+    return sendErrorResponse(
+      req,
+      res,
+      result?.statusCode,
+      result?.message,
+      result?.data
+    );
+  }
+  return sendSuccessResponse(
+    req,
+    res,
+    result?.statusCode,
+    result?.message,
+    result?.data
+  );
+};
+
+
 const updateClientFamilyProfile = async (req, res) => {
   const params = req.body;
   params.id =
@@ -72,6 +101,31 @@ const updateClientFamilyProfile = async (req, res) => {
   params.updatedBy = req?.user?._id?.toString();
   params.lastUpdatedBy = req?.user?.userType;
   const result = await updateClientProfileService(params);
+  if (!result.status) {
+    return sendErrorResponse(
+      req,
+      res,
+      result?.statusCode,
+      result?.message,
+      result?.data
+    );
+  }
+  return sendSuccessResponse(
+    req,
+    res,
+    result?.statusCode,
+    result?.message,
+    result?.data
+  );
+};
+
+const updateAdminClientFamilyProfile = async (req, res) => {
+  const params = req.body;
+  params.id =
+    req?.query?.id || req.user._id.toString();
+  params.updatedBy = req?.user?._id?.toString();
+  params.lastUpdatedBy = req?.user?.userType;
+  const result = await updateAdminClientProfileService(params);
   if (!result.status) {
     return sendErrorResponse(
       req,
@@ -144,4 +198,6 @@ module.exports = {
   updateClientFamilyProfile,
   clientFamilyList,
   deleteClientFamily,
+  getAdminClientPersonProfile,
+  updateAdminClientFamilyProfile
 };

@@ -1,3 +1,4 @@
+const { default: mongoose } = require("mongoose");
 const {
   convert_JSON_to_file,
   pageMetaService,
@@ -27,11 +28,39 @@ const getClientProfileService = async (params) => {
   console.log("params1");
   //get authorizedPerson details by authorizedPerson id
   const data = await clientFamily.findOne({
-    $or: [
-      { clientId: params?.clientId },
-      { _id: params?.id }
-    ],
+    _id:params.id
   });
+  return {
+    status: true,
+    statusCode: statusCodes?.HTTP_OK,
+    message: messages?.success,
+    data: { data : data },
+  };
+};
+
+const getAdminClientProfileService = async (params) => {
+  console.log("params1");
+  //get authorizedPerson details by authorizedPerson id
+  let data = await clientFamily.findOne({
+    familyMember: {
+      $elemMatch:{
+        _id:params?.id
+      }   
+    }
+  }).lean();
+
+  if (data) {
+    let obj = {}
+    for (let item of data?.familyMember) {
+      if (item._id == params.id) {
+        console.log('item-->', item)
+        obj = item
+      }
+    }
+  
+    data.familyMember = {...obj}
+    
+  }
   return {
     status: true,
     statusCode: statusCodes?.HTTP_OK,
@@ -63,6 +92,45 @@ const updateClientProfileService = async (params) => {
     data: [],
   };
 };
+
+const updateAdminClientProfileService = async (params) => {
+  const id = params?.id;
+
+  console.log("id", id);
+  console.log('params->', params)
+  //update client profile details into client profile table
+  const result = await clientFamily.updateOne({
+    familyMember: {
+      $elemMatch: {
+        _id: new mongoose.Types.ObjectId(id)
+      }
+    }
+  }, {
+    '$set': {
+      'familyMember.$.relativeName': params?.familyMember?.relativeName,
+      'familyMember.$.dateOfBirth': params?.familyMember?.dateOfBirth,
+      'familyMember.$.relationShip': params?.familyMember?.relationShip,
+      'familyMember.$.mobileNumber': params?.familyMember?.mobileNumber,
+      'familyMember.$.email': params?.familyMember?.email
+    }
+  });
+  console.log("result -->", result);
+  if (!result.modifiedCount) {
+    return {
+      status: false,
+      statusCode: statusCodes?.HTTP_BAD_REQUEST,
+      message: messages?.userNotExist,
+      data: [],
+    };
+  }
+  return {
+    status: true,
+    statusCode: statusCodes?.HTTP_OK,
+    message: messages?.updated,
+    data: [],
+  };
+};
+
 
 const deleteClientFamilyService = async (params) => {
 
@@ -114,4 +182,6 @@ module.exports = {
   updateClientProfileService,
   deleteClientFamilyService,
   clientFamilyListService,
+  getAdminClientProfileService,
+  updateAdminClientProfileService
 };
