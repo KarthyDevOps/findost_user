@@ -41,7 +41,7 @@ const clientFamilyList = async (params) => {
                 { email: { $regex: `${params?.search}`, $options: "i" } },
             ];
         }
-
+        
         data = await clientFamily.aggregate([
             {
                 '$match': filter
@@ -58,7 +58,7 @@ const clientFamilyList = async (params) => {
                 $skip: (params.page - 1) * params.limit
             },
             {
-                $limit:10
+                $limit:Number(params.limit)
             }
         ])
     if (data && data.length) {

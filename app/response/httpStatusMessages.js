@@ -63,7 +63,7 @@ const statusMessage = {
     barCodeExist: "Barcode already exist",
     bulkUploadError: "Bulk Upload Failed",
     barCodeAlreadyExist: "Barcode already exist",
-    invalidPwd: "Invalid Passowrd",
+    invalidPwd: "Invalid Password",
     invalidAPpwd:"Login Id and password do not match",
     notActive:"Admin InActive "
   };
