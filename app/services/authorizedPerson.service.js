@@ -280,11 +280,23 @@ const addauthorizedPersonService = async (req, params) => {
   //encrypt given original password by bcrypt
   params.password = await bcrypt.hash(password.toString(), 10);
 
+  console.log('first', params.business?.segmentSelection)
+
+  if(params.business?.segmentSelection.length > 0){
+
+    let data = params.business?.segmentSelection.reduce((a,b)=>{
+         return a + parseInt(b.segmentCharge);
+    },0)
+    params.paymentDetails = {}
+    params.paymentDetails.segmentTotalCharge = data
+
+  }
   //migrating authorizedPerson to authorizedPersons and store authorizedPerson details into authorizedPersons table
   const authorizedPerson = await new authorizedPersons(params);
   const details = await authorizedPerson.save();
   let passData = {
     type:"AP_CREATED_NOTIFICATION",
+    userId : details.authorizedPersonId,
     authorizedPersonId : details.authorizedPersonId,
     extra : {
       authorizedPersonId:details.authorizedPersonId

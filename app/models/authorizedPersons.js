@@ -333,6 +333,7 @@ const paymentSchema = new mongoose.Schema(
     paymentStatus: {
       type: String,
       trim: true,
+      default:"PENDING"
     },
     totalAmount: {
       type: String,
