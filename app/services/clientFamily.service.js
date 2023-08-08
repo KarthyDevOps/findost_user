@@ -7,6 +7,8 @@ const { messages } = require("../response/customMessages");
 const { statusCodes } = require("../response/httpStatusCodes");
 const { statusMessage } = require("../response/httpStatusMessages");
 
+const {clientFamilyList} = require('./list.services')
+
 const addClientFamilyService = async (req, params) => {
   console.log("params-->", params);
   //verify the given person already exist or not
@@ -94,51 +96,17 @@ const deleteClientFamilyService = async (params) => {
 };
 
 const clientFamilyListService = async (params) => {
-  try {
-
-    let cond = {};
-    cond.isDeleted = false
-    let page = params?.page || 1;
-    page = Number(page);
-    let limit = params?.limit || 10;
-    limit = Number(limit);
-
-    if (params.search) {
-      cond.$or = [
-        { clientId: { $regex: `${params?.search}`, $options: "i" } },
-        { clientName: { $regex: `${params?.search}`, $options: "i" } },
-        { email: { $regex: `${params?.search}`, $options: "i" } },
-      ];
-    }
-    if (params.isActive) {
-      cond.isActive = params?.isActive
-    }
-    let totalCount = await clientFamily.find(cond).countDocuments();
-    let data = await clientFamily.find(cond).sort({ createdAt: -1 }).skip(limit * (page - 1)).limit(limit);
-    const pageMeta = await pageMetaService(params, totalCount);
-    if (data.length > 0) {
-      return {
-        status: true,
-        statusCode: statusCodes?.HTTP_OK,
-        data: { list: data, pageMeta },
-      };
-
-    }
-    else {
-      return {
-        status: false,
-        statusCode: statusCodes?.HTTP_OK,
-        data:  { list: data, pageMeta },
-      };
-
-    }
-  }
-  catch (error) {
-    console.log("error", error);
-    throw new Error(error);
-  }
-}
-
+  params.all = true;
+  const allList = await clientFamilyList(params);
+  params.all = params.returnAll ==true ? true : false;
+  const result = await clientFamilyList(params);
+  const pageMeta = await pageMetaService(params, allList?.data?.length || 0);
+  return {
+    status: true,
+    statusCode: statusCodes?.HTTP_OK,
+    data: { list: result?.data, pageMeta },
+  };
+};
 module.exports = {
   addClientFamilyService,
   getClientProfileService,
