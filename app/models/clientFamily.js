@@ -8,6 +8,31 @@ const { getImageURL } = require("../utils/s3Utils")
 
 const { Sequence } = require('./sequence');
 
+const familyMemberSchema = new mongoose.Schema(
+  {
+    relativeName: {
+      type: String,
+      trim: true,
+    },
+    dateOfBirth: {
+      type: String,
+      trim: true,
+    },
+    relationShip: {
+      type: String,
+      trim: true,
+    },
+    email: {
+      type: String,
+      trim: true,
+    },
+    mobileNumber: {
+      type: String,
+      trim: true,
+    }
+  }
+)
+
 const clientFamilySchema = new mongoose.Schema(
   {
     clientId: {
@@ -17,10 +42,7 @@ const clientFamilySchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
-    familyMember : {
-      type:Array,
-      trim:true
-    },
+    familyMember : [familyMemberSchema],
     apId: {
       type: String,
       required: false,
