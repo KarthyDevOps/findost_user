@@ -36,7 +36,7 @@ const messages = {
   authorizedPersonExists: "authorizedPerson Already Exists",
   authorizedPersonAdded: "authorizedPerson Added Successfully",
   clientFamilyExists: "client family Already Exists",
-  clientFamilyAdded: "client family Added Successfully",
+  clientFamilyAdded: "Client Family Added Successfully",
   adminExists: "Admin Already Exists",
   adminAdded: "Admin Added Successfully",
   addressAdded: "Address Added Successfully",

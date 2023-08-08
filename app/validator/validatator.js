@@ -243,7 +243,7 @@ const addAuthorizedPersonSchema = (req, res, next) => {
       accountNo: joi.string().required(),
       ifscCode: joi.string().optional(),
       bankBranch: joi.string().optional(),
-      uploadChequeLeaflet: joi.string().optional(),
+      uploadChequeLeaflet: joi.object().optional(),
     }),
     nomineeDetails:joi.object({
       nomineeName: joi.string().required(),
