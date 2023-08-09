@@ -297,26 +297,21 @@ const bankDetailsSchema = new mongoose.Schema(
       trim: true,
     },
     uploadChequeLeaflet: {
-      type : {
-        type :String
+      status: {
+        type: String,
+        trim: true
       },
-      documentPath : {
-        status: {
-          type: String,
-          trim: true
-        },
-        url: {
-          type: String,
-          trim: true
-        },
-        fileName: {
-          type: String,
-          trim: true
-        },
-        fileSize: {
-          type: String,
-          trim: true
-        } 
+      url: {
+        type: String,
+        trim: true
+      },
+      fileName: {
+        type: String,
+        trim: true
+      },
+      fileSize: {
+        type: String,
+        trim: true
       } 
     },
 
