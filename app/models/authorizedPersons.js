@@ -80,40 +80,50 @@ const addressSchema = new mongoose.Schema(
 const documentSchema = new mongoose.Schema(
   {
     professionalDocument: {
-      status: {
-        type: String,
-        trim: true
+      type : {
+        type :String
       },
-      url: {
-        type: String,
-        trim: true
-      },
-      fileName: {
-        type: String,
-        trim: true
-      },
-      fileSize: {
-        type: String,
-        trim: true
-      } 
+      documentPath : {
+        status: {
+          type: String,
+          trim: true
+        },
+        url: {
+          type: String,
+          trim: true
+        },
+        fileName: {
+          type: String,
+          trim: true
+        },
+        fileSize: {
+          type: String,
+          trim: true
+        } 
+      }
     },
     educationQualificationDocument: {
-      status: {
-        type: String,
-        trim: true
+      type : {
+        type :String
       },
-      url: {
-        type: String,
-        trim: true
-      },
-      fileName: {
-        type: String,
-        trim: true
-      },
-      fileSize: {
-        type: String,
-        trim: true
-      } 
+      documentPath : {
+        status: {
+          type: String,
+          trim: true
+        },
+        url: {
+          type: String,
+          trim: true
+        },
+        fileName: {
+          type: String,
+          trim: true
+        },
+        fileSize: {
+          type: String,
+          trim: true
+        } 
+      }
     },
     isDifferentPanName: {
       status: {
@@ -126,58 +136,73 @@ const documentSchema = new mongoose.Schema(
       } 
     },
     residentialAddressProof: {
-      status: {
-        type: String,
-        trim: true
+      type : {
+        type :String
       },
-      url: {
-        type: String,
-        trim: true
-      },
-      fileName: {
-        type: String,
-        trim: true
-      },
-      fileSize: {
-        type: String,
-        trim: true
-      } 
+      documentPath : {
+        status: {
+          type: String,
+          trim: true
+        },
+        url: {
+          type: String,
+          trim: true
+        },
+        fileName: {
+          type: String,
+          trim: true
+        },
+        fileSize: {
+          type: String,
+          trim: true
+        } 
+      }
     },
     officeAddressProof: {
-      status: {
-        type: String,
-        trim: true
+      type : {
+        type :String
       },
-      url: {
-        type: String,
-        trim: true
-      },
-      fileName: {
-        type: String,
-        trim: true
-      },
-      fileSize: {
-        type: String,
-        trim: true
-      }  
+      documentPath : {
+        status: {
+          type: String,
+          trim: true
+        },
+        url: {
+          type: String,
+          trim: true
+        },
+        fileName: {
+          type: String,
+          trim: true
+        },
+        fileSize: {
+          type: String,
+          trim: true
+        } 
+      }
     },
     
     proofOfNameChange: {
-      status: {
-        type: String,
-        trim: true
+      type : {
+        type :String
       },
-      url: {
-        type: String,
-        trim: true
-      },
-      fileName: {
-        type: String,
-        trim: true
-      },
-      fileSize: {
-        type: String,
-        trim: true
+      documentPath : {
+        status: {
+          type: String,
+          trim: true
+        },
+        url: {
+          type: String,
+          trim: true
+        },
+        fileName: {
+          type: String,
+          trim: true
+        },
+        fileSize: {
+          type: String,
+          trim: true
+        } 
       } 
     },
   }
