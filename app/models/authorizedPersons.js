@@ -566,8 +566,8 @@ authorizedPersonsSchema.virtual('document.educationQualificationDocument.documen
 authorizedPersonsSchema.virtual('document.educationQualificationDocument.documentPath.urlS3').get(function () {
   return this.document?.educationQualificationDocument?.documentPath?.url ? getImageURL(this.document?.educationQualificationDocument?.documentPath?.url) : null;
 })
-authorizedPersonsSchema.virtual('document.residentialAddressProof.urlS3').get(function () {
-  return this.document?.residentialAddressProof?.url ? getImageURL(this.document?.residentialAddressProof?.url) : null;
+authorizedPersonsSchema.virtual('document.residentialAddressProof.documentPath.urlS3').get(function () {
+  return this.document?.residentialAddressProof?.documentPath?.url ? getImageURL(this.document?.residentialAddressProof?.documentPath?.url) : null;
 })
 authorizedPersonsSchema.virtual('document.officeAddressProof.documentPath.urlS3').get(function () {
   return this.document?.officeAddressProof?.documentPath?.url ? getImageURL(this.document?.officeAddressProof.documentPath.url) : null;
