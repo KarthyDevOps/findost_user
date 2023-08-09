@@ -556,24 +556,24 @@ authorizedPersonsSchema.virtual('inPersonVerification.urlS3').get(function () {
  
   return  this.inPersonVerification.url ? getImageURL(this.inPersonVerification.url) : null;
 })
-authorizedPersonsSchema.virtual('document.professionalDocument.urlS3').get(function () {
+authorizedPersonsSchema.virtual('document.professionalDocument.documentPath.urlS3').get(function () {
  
-  return this.document?.professionalDocument?.url ? getImageURL(this.document?.professionalDocument?.url) : null;
+  return this.document?.professionalDocument?.documentPath?.url ? getImageURL(this.document?.professionalDocument?.documentPath?.url) : null;
 })
-authorizedPersonsSchema.virtual('document.educationQualificationDocument.urlS3').get(function () {
-  return this.document?.educationQualificationDocument?.url ? getImageURL(this.document?.educationQualificationDocument?.url) : null;
+authorizedPersonsSchema.virtual('document.educationQualificationDocument.documentPath.urlS3').get(function () {
+  return this.document?.educationQualificationDocument?.documentPath?.url ? getImageURL(this.document?.educationQualificationDocument?.documentPath?.url) : null;
 })
-authorizedPersonsSchema.virtual('document.educationQualificationDocument.urlS3').get(function () {
-  return this.document?.educationQualificationDocument?.url ? getImageURL(this.document?.educationQualificationDocument?.url) : null;
+authorizedPersonsSchema.virtual('document.educationQualificationDocument.documentPath.urlS3').get(function () {
+  return this.document?.educationQualificationDocument?.documentPath?.url ? getImageURL(this.document?.educationQualificationDocument?.documentPath?.url) : null;
 })
 authorizedPersonsSchema.virtual('document.residentialAddressProof.urlS3').get(function () {
   return this.document?.residentialAddressProof?.url ? getImageURL(this.document?.residentialAddressProof?.url) : null;
 })
-authorizedPersonsSchema.virtual('document.officeAddressProof.urlS3').get(function () {
-  return this.document?.officeAddressProof?.url ? getImageURL(this.document?.officeAddressProof.url) : null;
+authorizedPersonsSchema.virtual('document.officeAddressProof.documentPath.urlS3').get(function () {
+  return this.document?.officeAddressProof?.documentPath?.url ? getImageURL(this.document?.officeAddressProof.documentPath.url) : null;
 })
-authorizedPersonsSchema.virtual('document.proofOfNameChange.urlS3').get(function () {
-  return this.document?.proofOfNameChange?.url ? getImageURL(this.document?.proofOfNameChange.url) : null;
+authorizedPersonsSchema.virtual('document.proofOfNameChange.documentPath.urlS3').get(function () {
+  return this.document?.proofOfNameChange?.documentPath?.url ? getImageURL(this.document?.proofOfNameChange.documentPath.url) : null;
 })
 authorizedPersonsSchema.virtual('bankDetails.uploadChequeLeaflet.urlS3').get(function () {
   return this.bankDetails?.uploadChequeLeaflet?.url ? getImageURL(this.bankDetails?.uploadChequeLeaflet?.url) : null;
