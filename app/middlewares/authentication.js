@@ -41,7 +41,6 @@ async function (req, res, next) {
               decode = jwt.verify(token, process.env.JWT_authorizedPerson_SECRET);
               userData = await authorizedPersons.findOne({
                 _id: decode._id,
-                isAdminUpdated:true
                 // token: token,
               });
               userType = "AP";
