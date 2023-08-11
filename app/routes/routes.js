@@ -51,6 +51,7 @@ const routes = {
 
     aws: {
       uploadImage: "/v1/upload/image",
+      getImageBlob: "/v1/image/getBlob",
     },
     sequence: {
       sequenceId: "/v1/get/sequenceId",

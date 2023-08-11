@@ -16,7 +16,7 @@ const {
   verifyOTPService,
   forgotPasswordService,
   uploadImageService,
-  getSequenceIdService
+  getSequenceIdService,getImageBlobService
 } = require("../services/admin.services");
 
 // admin related api's
@@ -323,6 +323,34 @@ const getSequenceId = async (req, res) => {
 };
 
 
+const getImageBlob = async (req, res) => {
+  console.log("data-->",req.body)
+  const result = await getImageBlobService(req.body.key);
+ 
+  res.setHeader(
+      "Content-Disposition",
+      "attachment;"
+  );
+ 
+  if (!result.status) {
+    return sendErrorResponse(
+      req,
+      res,
+      result?.statusCode,
+      result?.message,
+      result?.data
+    );
+  }
+  return sendSuccessResponse(
+    req,
+    res,
+    result?.statusCode,
+    result?.message,
+    result?.data
+  );
+};
+
+
 
 module.exports = {
   adminLogin,
@@ -337,5 +365,6 @@ module.exports = {
   adminList,
   deleteAdmin,
   uploadImage,
-  getSequenceId
+  getSequenceId,
+  getImageBlob
 };

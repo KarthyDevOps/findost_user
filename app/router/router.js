@@ -46,6 +46,7 @@ const {
   resetPassword,
   forgot_password,
   uploadImage,
+  getImageBlob,
   getSequenceId,
 } = require("../controllers/admin.controller");
 const {
@@ -330,6 +331,9 @@ router.delete(
 );
 //upload Image
 router.post(routes.v1.aws.uploadImage, errHandle(uploadImage));
+router.post(routes.v1.aws.getImageBlob, errHandle(getImageBlob));
+
+
 //get sequence id
 router.get(routes.v1.sequence.sequenceId, errHandle(getSequenceId));
 // razorpay

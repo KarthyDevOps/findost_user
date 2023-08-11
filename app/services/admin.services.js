@@ -517,6 +517,36 @@ const getSequenceIdService = async (req) => {
   };
 };
 
+const getImageBlobService = async (key) => { 
+  const s3Object = await s3.getObject({
+    Bucket: bucketName,
+    Key: key,
+  }).promise();
+
+  if(s3Object)
+  {
+    let data =  {
+      ContentType : s3Object.ContentType,
+      Body : s3Object.Body
+    }
+  
+    return {
+      status: true,
+      statusCode: statusCodes?.HTTP_OK,
+      message: messages?.updated,
+      data: {data : data},
+    };
+  }
+  else
+  {
+    return {
+      status:false,
+      statusCode: statusCodes?.HTTP_OK,
+      data:{ },
+    };
+  }
+ 
+};
 
 module.exports = {
     adminLoginService,
@@ -531,5 +561,6 @@ module.exports = {
     adminListService,
     getAdminProfileByIdService,
     uploadImageService,
-    getSequenceIdService
+    getSequenceIdService,
+    getImageBlobService
   };
