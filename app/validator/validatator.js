@@ -356,7 +356,8 @@ const updateClientFamilyProfileSchema = (req, res, next) => {
 const authorizedPersonResetPasswordSchema = (req, res, next) => {
   const schema = joi.object({
     password: joi.string().required(),
-    confirmPassword: joi.any().valid(joi.ref('password')).required().options({ language: { any: { allowOnly: 'must match password' } } })
+    confirmPassword: joi.string().required(),
+   // confirmPassword: //joi.any().valid(joi.ref('password')).required().options({ confirmPassword: { any: { allowOnly: 'must match password' } } })
   });
   return bodyParamValidation(req, res, next, schema);
 };
