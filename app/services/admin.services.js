@@ -517,7 +517,7 @@ const getSequenceIdService = async (req) => {
   };
 };
 
-const getImageBlobService = async (key) => { 
+const getImageBlobService = async (key,res) => { 
   const s3Object = await s3.getObject({
     Bucket: bucketName,
     Key: key,
@@ -525,6 +525,10 @@ const getImageBlobService = async (key) => {
 
   if(s3Object)
   {
+
+  
+
+      
     let data =  {
       ContentType : s3Object.ContentType,
       Body : s3Object.Body

@@ -325,29 +325,40 @@ const getSequenceId = async (req, res) => {
 
 const getImageBlob = async (req, res) => {
   console.log("data-->",req.body)
-  const result = await getImageBlobService(req.body.key);
- 
-  res.setHeader(
-      "Content-Disposition",
-      "attachment;"
-  );
- 
-  if (!result.status) {
-    return sendErrorResponse(
-      req,
-      res,
-      result?.statusCode,
-      result?.message,
-      result?.data
-    );
+  const result = await getImageBlobService(req.body.key,res);
+  if(result.data)
+  {
+    console.log("data-->",result)
+    res.setHeader(
+      "Content-Type",
+      result.data.data.ContentType
+      );
+      res.setHeader(
+          "Content-Disposition",
+          "attachment;"
+      );
+      return res.status(200).send(result.data.data.Body);
   }
-  return sendSuccessResponse(
-    req,
-    res,
-    result?.statusCode,
-    result?.message,
-    result?.data
-  );
+ 
+   
+
+
+  // if (!result.status) {
+  //   return sendErrorResponse(
+  //     req,
+  //     res,
+  //     result?.statusCode,
+  //     result?.message,
+  //     result?.data
+  //   );
+  // }
+  // return sendSuccessResponse(
+  //   req,
+  //   res,
+  //   result?.statusCode,
+  //   result?.message,
+  //   result?.data
+  // );
 };
 
 
