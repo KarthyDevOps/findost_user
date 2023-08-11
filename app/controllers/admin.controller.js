@@ -2,6 +2,8 @@ const {
   sendErrorResponse,
   sendSuccessResponse,
 } = require("../response/response");
+const moment = require("moment");
+
 
 const {
   adminLoginService,
@@ -333,10 +335,9 @@ const getImageBlob = async (req, res) => {
       "custom-Content-Type",
       result.data.data.ContentType
       );
-      res.setHeader(
-          "Content-Disposition",
-          "attachment;"
-      );
+      let contentType = result.data.data.ContentType.split('/')[1]
+      console.log(contentType,'contentType')
+      res.setHeader("Content-Disposition", `attachment; filename=${moment().format('YYYY-MM-DD-hh-mm-ss')}.${contentType}`);
       return res.status(200).send(result.data.data.Body);
   }
  
