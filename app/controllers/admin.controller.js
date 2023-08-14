@@ -331,14 +331,14 @@ const getImageBlob = async (req, res) => {
   if(result.data)
   {
     console.log("data-->",result)
-    res.setHeader(
-      "custom-Content-Type",
-      result.data.data.ContentType
-      );
-      let contentType = result.data.data.ContentType.split('/')[1]
-      console.log(contentType,'contentType')
-      res.setHeader("Content-Disposition", `attachment; filename=${moment().format('YYYY-MM-DD-hh-mm-ss')}.${contentType}`);
-      return res.status(200).send(result.data.data.Body);
+    // res.setHeader(
+    //   "custom-Content-Type",
+    //   result.data.data.ContentType
+    //   );
+    //   let contentType = result.data.data.ContentType.split('/')[1]
+    //   console.log(contentType,'contentType')
+    //   res.setHeader("Content-Disposition", `attachment; filename=${moment().format('YYYY-MM-DD-hh-mm-ss')}.${contentType}`);
+      return res.status(200).send(result.data.data);
 
     // return sendErrorResponse(
     //       req,

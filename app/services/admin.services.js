@@ -531,11 +531,15 @@ const getImageBlobService = async (key,res) => {
 
   if(s3Object)
   {
+
+    let image = Buffer.from(s3Object.Body).toString('base64');
+    console.log(image)
     return {
           status: true,
           statusCode: statusCodes?.HTTP_OK,
           message: messages?.updated,
-          data: {data : s3Object},
+          //data: {data : s3Object},
+          data: {data : { Body : image,contentType : s3Object.ContentType}},
         };
 
    
