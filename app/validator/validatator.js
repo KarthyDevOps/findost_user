@@ -220,7 +220,7 @@ const addAuthorizedPersonSchema = (req, res, next) => {
       residentialState: joi.string().optional(),
       residentialCountry: joi.string().optional(),
       residentialLandMark: joi.string().optional(),
-      residentialPinCode: joi.string().optional(),
+      residentialPinCode: joi.string().allow(null).allow(""),
       isResidentialSameAsOffice: joi.boolean().required(),
       officeFlatNo: joi.string().optional(),
       officeArea: joi.string().optional(),
@@ -228,7 +228,7 @@ const addAuthorizedPersonSchema = (req, res, next) => {
       officeState: joi.string().optional(),
       officeCountry: joi.string().optional(),
       officeLandMark: joi.string().optional(),
-      officePinCode: joi.string().optional(),
+      officePinCode:joi.string().allow(null).allow(""),
       isOfficeSameAsResident: joi.boolean().required() 
     }),
     // document:joi.object({
