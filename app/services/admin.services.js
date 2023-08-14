@@ -519,7 +519,7 @@ const getSequenceIdService = async (req) => {
 
 const getImageBlobService = async (key,res) => { 
 
-  const { blobToBase64 } = require("file64");
+  const blobToBase64 = require('blob-to-base64');
   const { Blob } = require("buffer");
 
 
@@ -531,23 +531,14 @@ const getImageBlobService = async (key,res) => {
 
   if(s3Object)
   {
-
-  
-
-      
-    let data =  {
-      ContentType : s3Object.ContentType,
-      Body : s3Object.Body
-    }
-    const blob = new Blob([s3Object.Body], { type: s3Object.ContentType });
-    const base64 = await blobToBase64(blob);
     return {
-      status: true,
-      statusCode: statusCodes?.HTTP_OK,
-      message: messages?.updated,
-     // data: {data : data,base64:base64 },
-      data: {base64:base64 },
-    };
+          status: true,
+          statusCode: statusCodes?.HTTP_OK,
+          message: messages?.updated,
+          data: {data : s3Object},
+        };
+
+   
   }
   else
   {
