@@ -330,7 +330,7 @@ const getImageBlob = async (req, res) => {
   const result = await getImageBlobService(req.body.key,res);
   if(result.data)
   {
-    console.log("data-->",result)
+    console.log("data1-->",result)
     // res.setHeader(
     //   "custom-Content-Type",
     //   result.data.data.ContentType
