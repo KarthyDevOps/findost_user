@@ -2,7 +2,7 @@ const s3 = require("../handler/s3Handler")
 
 const getSignedURL = (key) => {
     if (!key) return;
-    const params = { Bucket: process.env.AWS_BUCKET, Key: key };
+    const params = { Bucket: process.env.AWS_BUCKET, Key: key , Expires : 86400 };
     return s3.getSignedUrl('getObject', params);
 }
 
