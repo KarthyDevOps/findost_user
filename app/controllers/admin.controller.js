@@ -330,7 +330,7 @@ const getImageBlob = async (req, res) => {
   const result = await getImageBlobService(req.body.key,res);
   if(result.data)
   {
-    console.log("data-->",result)
+    console.log("data1-->",result)
     // res.setHeader(
     //   "custom-Content-Type",
     //   result.data.data.ContentType
@@ -338,15 +338,15 @@ const getImageBlob = async (req, res) => {
     //   let contentType = result.data.data.ContentType.split('/')[1]
     //   console.log(contentType,'contentType')
     //   res.setHeader("Content-Disposition", `attachment; filename=${moment().format('YYYY-MM-DD-hh-mm-ss')}.${contentType}`);
-    //   return res.status(200).send(result.data.data.Body);
+      return res.status(200).send(result.data.data);
 
-    return sendErrorResponse(
-          req,
-          res,
-          result?.statusCode,
-          result?.message,
-          result?.data
-        );
+    // return sendErrorResponse(
+    //       req,
+    //       res,
+    //       result?.statusCode,
+    //       result?.message,
+    //       result?.data
+    //     );
 
   }
  
