@@ -10,8 +10,8 @@ const addregisterSettings = async (req, res) => {
     const params = req.body;
     params.createdBy = req?.user?._id?.toString();
     params.updatedBy = req?.user?._id?.toString();
-    params.applicationFee = req?.body?.applicationFee.toFixed(2);
-    params.securityDeposit = req?.body?.securityDeposit.toFixed(2);
+    params.applicationFee = Number(req?.body?.applicationFee).toFixed(2);
+    params.securityDeposit = Number(req?.body?.securityDeposit).toFixed(2);
     const result = await addregisterSettingService(req, params);
     if (!result.status) {
         return sendErrorResponse(req, res, result?.statusCode, result?.message, result?.data);
@@ -33,8 +33,8 @@ const updateregisterSetting = async (req, res) => {
     params.id = req?.query?.id 
     params.updatedBy = req?.user?._id?.toString();
     params.lastUpdatedBy = req?.user?.userType;
-    params.applicationFee = req?.body?.applicationFee.toFixed(2);
-    params.securityDeposit = req?.body?.securityDeposit.toFixed(2);
+    params.applicationFee = Number(req?.body?.applicationFee).toFixed(2);
+    params.securityDeposit = Number(req?.body?.securityDeposit).toFixed(2);
     const result = await updateregisterSettingService(params);
     if (!result.status) {
         return sendErrorResponse( req,res,result?.statusCode, result?.message,result?.data);
