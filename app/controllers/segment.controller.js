@@ -6,6 +6,7 @@ const addSegment = async (req, res) => {
     const params = req.body;
     params.createdBy = req?.user?._id?.toString();
     params.updatedBy = req?.user?._id?.toString();
+    params.segmentCharge = req?.body?.segmentCharge.toFixed(2);
     const result = await addSegmentService(req, params);
     if (!result.status) {
         return sendErrorResponse(req, res, result?.statusCode, result?.message, result?.data);
@@ -31,6 +32,7 @@ const updateSegment = async (req, res) => {
     params.id = req?.query?.id || req.user._id.toString();
     params.updatedBy = req?.user?._id?.toString();
     params.lastUpdatedBy = req?.user?.userType;
+    params.segmentCharge = req?.body?.segmentCharge.toFixed(2);
     const result = await updateSegmentService(params);
     if (!result.status) {
         return sendErrorResponse( req,res,result?.statusCode, result?.message,result?.data);
