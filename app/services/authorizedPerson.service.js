@@ -315,20 +315,42 @@ const getauthorizedPersonProfileService = async (params) => {
   console.log("params1");
   //get authorizedPerson details by authorizedPerson id
 
-  const data = await authorizedPersons.findOne({
-    $or: [
-      { _id: params?.id },
-      { _id: params?.authorizedPersonId },
-    ],
+  let data = await authorizedPersons.findOne({
+    $or: [{ _id: params?.id }, { _id: params?.authorizedPersonId }],
     isDeleted: false,
   });
+
+  data = JSON.parse(JSON.stringify(data))
+
+  const currentTime = moment();
+
+  const morningStart = moment("06:00:00", "HH:mm:ss");
+  
+  const afternoonStart = moment("12:00:00", "HH:mm:ss");
+
  
+ 
+  if (currentTime.isBefore(morningStart)) {
+
+    data.showtime = "Good Morning"
+ 
+  } else if (currentTime.isBefore(afternoonStart)) {
+
+    data.showtime = "Good Morning"
+
+  } else {
+    data.showtime = "Good Afternoon"
+  }
+  
+console.log('showtime-->', data.showtime)
+  
+
   if (data) {
     return {
       status: true,
       statusCode: statusCodes?.HTTP_OK,
       message: statusMessage.success,
-      data:data,
+      data: data,
     };
   } else {
     return {

@@ -161,8 +161,9 @@ const addauthorizedPerson = async (req, res) => {
 };
 
 const validateNomineeAge = async (req, res) => {
+  
   if (req?.body?.nomineeDOB) {
-    
+
     const birthdate = req.body.nomineeDOB;
 
     const currentDate = moment();
