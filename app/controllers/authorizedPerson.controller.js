@@ -18,6 +18,8 @@ const {
   validateCouponService
 } = require("../services/authorizedPerson.service");
 
+const moment = require('moment');
+
 //authorizedPerson profile related api's
 
 const authorizedPersonLogin = async (req, res) => {
@@ -156,6 +158,31 @@ const addauthorizedPerson = async (req, res) => {
     result?.message,
     result?.data
   );
+};
+
+const validateNomineeAge = async (req, res) => {
+
+  const birthdate = req.body.nomineeDOB;
+
+  const currentDate = moment();
+
+  const ageInYears = currentDate.diff(birthdate, "years");
+
+  console.log('ageInYears-->', ageInYears)
+
+  if (ageInYears <= 18) {
+    return sendErrorResponse(
+      req,
+      res,
+      400,
+      "Nomine Must be Greater than 18 Age",
+      []
+    );
+  } else {
+    
+    return sendSuccessResponse(req, res, 200, "Nominee Age Accepted", []);
+
+  }
 };
 
 const getauthorizedPersonProfile = async (req, res) => {
@@ -312,6 +339,7 @@ module.exports = {
   authorizedPersonMailLoginById,
   authorizedPersonSendLoginId,
   deleteauthorizedPerson,
+  validateNomineeAge,
   authorizedPersonResetPassword,
   validateCoupon
 };

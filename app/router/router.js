@@ -57,6 +57,7 @@ const {
   updateauthorizedPersonProfile,
   authorizedPersonList,
   deleteauthorizedPerson,
+  validateNomineeAge,
   authorizedPersonLoginById,
   authorizedPersonMailLoginById,
   authorizedPersonResetPassword,
@@ -175,6 +176,11 @@ router.post(
   routes.v1.authorizedPerson.addProfile,
   [addAuthorizedPersonSchema],
   errHandle(addauthorizedPerson)
+);
+
+router.post(
+  routes.v1.authorizedPerson.validateNomineeAge,
+  errHandle(validateNomineeAge)
 );
 router.get(
   routes.v1.authorizedPerson.getProfile,
