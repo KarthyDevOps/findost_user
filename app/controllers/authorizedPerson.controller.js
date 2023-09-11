@@ -161,27 +161,49 @@ const addauthorizedPerson = async (req, res) => {
 };
 
 const validateNomineeAge = async (req, res) => {
-
-  const birthdate = req.body.nomineeDOB;
-
-  const currentDate = moment();
-
-  const ageInYears = currentDate.diff(birthdate, "years");
-
-  console.log('ageInYears-->', ageInYears)
-
-  if (ageInYears <= 18) {
-    return sendErrorResponse(
-      req,
-      res,
-      400,
-      "Nomine Must be Greater than 18 Age",
-      []
-    );
-  } else {
+  if (req?.body?.nomineeDOB) {
     
-    return sendSuccessResponse(req, res, 200, "Nominee Age Accepted", []);
+    const birthdate = req.body.nomineeDOB;
 
+    const currentDate = moment();
+
+    const ageInYears = currentDate.diff(birthdate, "years");
+
+    console.log("ageInYears-->", ageInYears);
+
+    if (ageInYears <= 18) {
+      return sendErrorResponse(
+        req,
+        res,
+        400,
+        "Nomine Must be Greater than 18 Age",
+        []
+      );
+    } else {
+      return sendSuccessResponse(req, res, 200, "Nominee Age Accepted", []);
+    }
+  }
+  if (req?.body?.guardianDOB) {
+
+    const birthdate = req.body.guardianDOB;
+
+    const currentDate = moment();
+
+    const ageInYears = currentDate.diff(birthdate, "years");
+
+    console.log("ageInYears-->", ageInYears);
+
+    if (ageInYears <= 18) {
+      return sendErrorResponse(
+        req,
+        res,
+        400,
+        "Guardian Must be Greater than 18 Age",
+        []
+      );
+    } else {
+      return sendSuccessResponse(req, res, 200, "Guardian Age Accepted", []);
+    }
   }
 };
 
