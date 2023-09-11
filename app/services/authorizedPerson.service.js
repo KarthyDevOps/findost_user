@@ -236,7 +236,7 @@ const authorizedPersonSendMailIdService = async (params) => {
     if (sendMail.status) {
       return {
         status: true,
-        statusCode: statusCodes?.HTTP_ACCEPTED,
+        statusCode: statusCodes?.HTTP_OK,
         message: messages?.mailSent,
         data: [],
       };
