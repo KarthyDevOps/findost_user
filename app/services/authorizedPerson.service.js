@@ -332,7 +332,7 @@ const getauthorizedPersonProfileService = async (params) => {
  
   if (currentTime.isBefore(morningStart)) {
 
-    data.showtime = "Good Morning"
+    data.showtime = "Good Evening"
  
   } else if (currentTime.isBefore(afternoonStart)) {
 
