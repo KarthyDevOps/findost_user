@@ -475,6 +475,32 @@ catch (error) {
 
 const authorizedPersonResetPasswordService = async (params) => {
   try {
+
+    if (params?.password !== params?.confirmPassword) {
+      return {
+        status: false,
+        statusCode: statusCodes?.HTTP_BAD_REQUEST,
+        message: statusMessage.passwordMismatch,
+        data: [],
+      };
+    }
+
+    if(params.currentPassword) {
+      console.log('params-->', params)
+      const authorizedPerson = await authorizedPersons.findOne({
+        email: params.email,
+      });
+      const isMatch = await bcrypt.compare(params?.currentPassword, authorizedPerson.password);
+      if (!isMatch) {
+        return {
+          status: false,
+          statusCode: statusCodes?.HTTP_BAD_REQUEST,
+          message: statusMessage.invalidPwd,
+          data: [],
+        };
+      }
+    }
+   
     let password = await bcrypt.hash(params.password.toString(), 10);
     var query = { $set: {password : password} };
     //update authorizedPerson details into authorizedPersons table

@@ -285,8 +285,10 @@ const authorizedPersonResetPassword = async (req, res) => {
   const params = req.body;
   params.authorizedPersonId =
     req?.query?.authorizedPersonId || req.user._id.toString();
+
   params.updatedBy = req?.user?._id?.toString();
   params.lastUpdatedBy = req?.user?.userType;
+  params.email = req?.user?.email
   const result = await authorizedPersonResetPasswordService(params);
   if (!result.status) {
     return sendErrorResponse(
