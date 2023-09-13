@@ -319,32 +319,6 @@ const getauthorizedPersonProfileService = async (params) => {
     $or: [{ _id: params?.id }, { _id: params?.authorizedPersonId }],
     isDeleted: false,
   });
-
-  data = JSON.parse(JSON.stringify(data))
-
-  const currentTime = moment();
-
-  const morningStart = moment("06:00:00", "HH:mm:ss");
-  
-  const afternoonStart = moment("12:00:00", "HH:mm:ss");
-
- 
- 
-  if (currentTime.isBefore(morningStart)) {
-
-    data.showtime = "Good Evening"
- 
-  } else if (currentTime.isBefore(afternoonStart)) {
-
-    data.showtime = "Good Morning"
-
-  } else {
-    data.showtime = "Good Afternoon"
-  }
-  
-console.log('showtime-->', data.showtime)
-  
-
   if (data) {
     return {
       status: true,

@@ -214,7 +214,31 @@ const getauthorizedPersonProfile = async (req, res) => {
   params.id = req.query.id || req.query._id
   params.authorizedPersonId = req?.query?.authorizedPersonId  // || req.user._id.toString();
   console.log("enter");
-  const result = await getauthorizedPersonProfileService(params);
+
+  let result = await getauthorizedPersonProfileService(params);
+
+  result = JSON.parse(JSON.stringify(result));
+
+  let showtime;
+
+  let currentHour = moment(new Date()).tz("Asia/kolkata").format("HH");
+
+  if (currentHour >= 4 && currentHour < 12) {
+    showtime = "Good Morning";
+  } else if (currentHour >= 12 && currentHour < 16) {
+    showtime = "Good Afternoon";
+  } else if (currentHour >= 16 && currentHour < 20) {
+    showtime = "Good Evening";
+  } else if (
+    (currentHour >= 20 && currentHour < 24) ||
+    (currentHour >= 0 && currentHour < 4)
+  ) {
+    showtime = "Good Night";
+  }
+console.log("showtime", showtime);
+
+result.data.showtime = showtime;
+
   if (!result.status) {
     return sendErrorResponse(
       req,
