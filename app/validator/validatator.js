@@ -201,7 +201,7 @@ const forgotPasswordLoginIdSchema = (req, res, next) => {
 const addAuthorizedPersonSchema = (req, res, next) => {
   const schema = joi.object({
     name: joi.string().required(),
-    password: joi.string().required(),
+    password: joi.string().allow(null).allow(""),
     fatherName: joi.string().required(),
     motherName: joi.string().required(),
     gender: joi.string().required(),
