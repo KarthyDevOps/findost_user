@@ -1,5 +1,4 @@
-const {
-  convert_JSON_to_file,
+const { convert_JSON_to_file,
   getauthorizedPersonDetailsByEmail_or_MobileNumber,
   getauthorizedPersonDetailsById,
   getauthorizedPersonList,
@@ -13,11 +12,14 @@ const { messages } = require("../response/customMessages");
 const { statusCodes } = require("../response/httpStatusCodes");
 const bcrypt = require("bcryptjs");
 const { statusMessage } = require("../response/httpStatusMessages");
-//const { authorizedPersonsAddress } = require("../models/authorizedPerson-address");
+
 const moment = require("moment-timezone");
 const jwt = require("jsonwebtoken");
 const { InternalServices } = require("../apiServices");
-//authorizedPerson profile related api's
+
+const crypto = require('crypto');
+
+
 
 const authorizedPersonLoginService = async (params) => {
   //get authorizedPerson details by given email or mobileNumber
@@ -25,19 +27,17 @@ const authorizedPersonLoginService = async (params) => {
     $or: [
       { email: params?.email },
       { mobileNumber: params?.mobileNumber },
-      { authorizedPersonId: params?.authorizedPersonId },
-      // { _id: mongoose.Types.ObjectId(params?.authorizedPersonId) },
+      { authorizedPersonId: params?.authorizedPersonId }
     ],
   });  
   if (data) {
     const authorizedPerson = data;
-    //send OTP to given mobile number for verification
+   
     const otp = await sendOTP_to_mobileNumber(authorizedPerson);
     console.log(otp.toString());
-    //hash the generated otp by bcypt
     authorizedPerson.otp = await bcrypt.hash(otp.toString(), 4);
 
-    //store authorizedPerson details into authorizedPersons table
+ 
     await authorizedPersons.findByIdAndUpdate({
       _id:data._id
     },{otp:authorizedPerson.otp});
@@ -266,6 +266,7 @@ const addauthorizedPersonService = async (req, params) => {
       { email: params?.email },
       { mobileNumber: params?.mobileNumber },
     ],
+    isDeleted:false
   });
 
   if (data) {
@@ -276,9 +277,11 @@ const addauthorizedPersonService = async (req, params) => {
       data: [],
     };
   }
-  const password = params?.password;
+
+  let genratePassword = crypto.randomInt(100000, 1000000);
+
   //encrypt given original password by bcrypt
-  params.password = await bcrypt.hash(password.toString(), 10);
+  params.password = await bcrypt.hash(genratePassword.toString(), 10);
 
   console.log('first', params.business?.segmentSelection)
 
@@ -287,13 +290,24 @@ const addauthorizedPersonService = async (req, params) => {
     let data = params.business?.segmentSelection.reduce((a,b)=>{
          return a + parseInt(b.segmentCharge);
     },0)
-    params.paymentDetails = {}
+    params.paymentDetails = {
+
+    }
     params.paymentDetails.segmentTotalCharge = data
 
   }
   //migrating authorizedPerson to authorizedPersons and store authorizedPerson details into authorizedPersons table
+
   const authorizedPerson = await new authorizedPersons(params);
+
   const details = await authorizedPerson.save();
+
+  await InternalServices.sendEmail({
+    to: params?.email,
+    subject : "FINDOC || YOUR PASSWORD",
+    url : String(genratePassword)
+  });
+
   let passData = {
     type:"AP_CREATED_NOTIFICATION",
     userId : details.authorizedPersonId,
@@ -302,7 +316,9 @@ const addauthorizedPersonService = async (req, params) => {
       authorizedPersonId:details.authorizedPersonId
     }
   }
+
   await InternalServices.postAPCreationNotification(passData)
+
   return {
     status: true,
     statusCode: statusCodes?.HTTP_OK,

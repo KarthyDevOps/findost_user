@@ -15,10 +15,10 @@ const {
   authorizedPersonSendLoginIdService,
   authorizedPersonSendMailIdService,
   authorizedPersonResetPasswordService,
-  validateCouponService
+  validateCouponService,
 } = require("../services/authorizedPerson.service");
 
-const moment = require('moment');
+const moment = require("moment");
 
 //authorizedPerson profile related api's
 
@@ -46,7 +46,7 @@ const authorizedPersonLogin = async (req, res) => {
 const authorizedPersonMailLoginById = async (req, res) => {
   const params = req.body;
   const result = await authorizedPersonSendMailIdService(params);
-  console.log('result111--->', result)
+  console.log("result111--->", result);
   if (!result.status) {
     return sendErrorResponse(
       req,
@@ -68,7 +68,7 @@ const authorizedPersonMailLoginById = async (req, res) => {
 const authorizedPersonLoginById = async (req, res) => {
   const params = req.body;
   const result = await authorizedPersonSendLoginIdService(params);
-  console.log('result111--->', result)
+  console.log("result111--->", result);
   if (!result.status) {
     return sendErrorResponse(
       req,
@@ -86,8 +86,6 @@ const authorizedPersonLoginById = async (req, res) => {
     result?.data
   );
 };
-
-
 
 const authorizedPersonverifyOTP = async (req, res) => {
   const params = req.body;
@@ -131,15 +129,8 @@ const authorizedPersonSendLoginId = async (req, res) => {
   );
 };
 
-
 const addauthorizedPerson = async (req, res) => {
   const params = req.body;
-  params.createdBy =
-    req?.user?._id?.toString() ||
-    new mongoose.Types.ObjectId("64631448ebfae840423f4d16");
-  params.updatedBy =
-    req?.user?._id?.toString() ||
-    new mongoose.Types.ObjectId("64631448ebfae840423f4d16");
   params.lastUpdatedBy = req?.user?.userType;
   const result = await addauthorizedPersonService(req, params);
   if (!result.status) {
@@ -161,9 +152,7 @@ const addauthorizedPerson = async (req, res) => {
 };
 
 const validateNomineeAge = async (req, res) => {
-  
   if (req?.body?.nomineeDOB) {
-
     const birthdate = req.body.nomineeDOB;
 
     const currentDate = moment();
@@ -185,7 +174,6 @@ const validateNomineeAge = async (req, res) => {
     }
   }
   if (req?.body?.guardianDOB) {
-
     const birthdate = req.body.guardianDOB;
 
     const currentDate = moment();
@@ -211,8 +199,8 @@ const validateNomineeAge = async (req, res) => {
 const getauthorizedPersonProfile = async (req, res) => {
   console.log("data");
   let params = {};
-  params.id = req.query.id || req.query._id
-  params.authorizedPersonId = req?.query?.authorizedPersonId  // || req.user._id.toString();
+  params.id = req.query.id || req.query._id;
+  params.authorizedPersonId = req?.query?.authorizedPersonId; // || req.user._id.toString();
   console.log("enter");
 
   let result = await getauthorizedPersonProfileService(params);
@@ -235,9 +223,9 @@ const getauthorizedPersonProfile = async (req, res) => {
   ) {
     showtime = "Good Night";
   }
-console.log("showtime", showtime);
+  console.log("showtime", showtime);
 
-result.data.showtime = showtime;
+  result.data.showtime = showtime;
 
   if (!result.status) {
     return sendErrorResponse(
@@ -259,7 +247,7 @@ result.data.showtime = showtime;
 
 const updateauthorizedPersonProfile = async (req, res) => {
   const params = req.body;
- // params.id = req?.query?.id;
+  // params.id = req?.query?.id;
   params.authorizedPersonId = req?.query?.id || req.user._id.toString();
   params.updatedBy = req?.user?._id?.toString();
   params.lastUpdatedBy = req?.user?.userType;
@@ -335,7 +323,7 @@ const authorizedPersonResetPassword = async (req, res) => {
 
   params.updatedBy = req?.user?._id?.toString();
   params.lastUpdatedBy = req?.user?.userType;
-  params.email = req?.user?.email
+  params.email = req?.user?.email;
   const result = await authorizedPersonResetPasswordService(params);
   if (!result.status) {
     return sendErrorResponse(
@@ -354,7 +342,6 @@ const authorizedPersonResetPassword = async (req, res) => {
     result?.data
   );
 };
-
 
 const validateCoupon = async (req, res) => {
   const params = req.body;
@@ -390,5 +377,5 @@ module.exports = {
   deleteauthorizedPerson,
   validateNomineeAge,
   authorizedPersonResetPassword,
-  validateCoupon
+  validateCoupon,
 };

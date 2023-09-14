@@ -437,13 +437,11 @@ const authorizedPersonsSchema = new mongoose.Schema(
     mobileNumber: {
       type: String,
       required: true,
-      unique: true,
       trim: true,
     },
     email: {
       type: String,
-      required: false,
-      unique: true,
+      required: true,
       trim: true,
     },
     nationality: {
@@ -515,11 +513,11 @@ const authorizedPersonsSchema = new mongoose.Schema(
     token: String,
     createdBy: {
       type: Schema.Types.ObjectId,
-      required: true,
+      required: false,
     },
     updatedBy: {
       type: Schema.Types.ObjectId,
-      required: true,
+      required: false,
     },
   },
   {
