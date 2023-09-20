@@ -274,6 +274,7 @@ const addauthorizedPersonService = async (req, params) => {
 
   let genratePassword = await generateRandomPassword(8)
 
+  
   console.log('genratePassword-->', genratePassword)
 
 
@@ -298,9 +299,14 @@ const addauthorizedPersonService = async (req, params) => {
 
   const authorizedPerson = await new authorizedPersons(params);
 
-  const details = await authorizedPerson.save();
+  let details = await authorizedPerson.save();
 
-  await InternalServices.sendEmail({
+  genratePassword = JSON.parse(JSON.stringify(genratePassword))
+
+  genratePassword.authorizedPersonId = details.authorizedPersonId
+
+
+   InternalServices.sendEmail({
     to: params?.email,
     subject : "FINDOC || YOUR PASSWORD",
     url : String(genratePassword)
@@ -315,7 +321,7 @@ const addauthorizedPersonService = async (req, params) => {
     }
   }
 
-  await InternalServices.postAPCreationNotification(passData)
+   InternalServices.postAPCreationNotification(passData)
 
   return {
     status: true,
