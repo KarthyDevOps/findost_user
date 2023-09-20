@@ -1,12 +1,5 @@
-const { convert_JSON_to_file,
-  getauthorizedPersonDetailsByEmail_or_MobileNumber,
-  getauthorizedPersonDetailsById,
-  getauthorizedPersonList,
-  pageMetaService,
-  sendOTP_to_mobileNumber,
+const {  pageMetaService, sendOTP_to_mobileNumber } = require("../helpers");
 
-  authorizedPersonbyId,
-} = require("../helpers");
 const { authorizedPersons } = require("../models/authorizedPersons");
 const { messages } = require("../response/customMessages");
 const { statusCodes } = require("../response/httpStatusCodes");
@@ -17,7 +10,8 @@ const moment = require("moment-timezone");
 const jwt = require("jsonwebtoken");
 const { InternalServices } = require("../apiServices");
 
-const crypto = require('crypto');
+
+const generateRandomPassword = require("../helpers/generatePassword");
 
 
 
@@ -278,9 +272,13 @@ const addauthorizedPersonService = async (req, params) => {
     };
   }
 
-  let genratePassword = crypto.randomInt(100000, 1000000);
+  let genratePassword = await generateRandomPassword(8)
+
+  console.log('genratePassword-->', genratePassword)
+
 
   //encrypt given original password by bcrypt
+
   params.password = await bcrypt.hash(genratePassword.toString(), 10);
 
   console.log('first', params.business?.segmentSelection)
@@ -323,7 +321,7 @@ const addauthorizedPersonService = async (req, params) => {
     status: true,
     statusCode: statusCodes?.HTTP_OK,
     message: messages?.authorizedPersonAdded,
-    data: { _id: details._id },
+    data: { _id: details },
   };
 };
 
