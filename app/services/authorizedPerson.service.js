@@ -327,7 +327,7 @@ const addauthorizedPersonService = async (req, params) => {
     status: true,
     statusCode: statusCodes?.HTTP_OK,
     message: messages?.authorizedPersonAdded,
-    data: { _id: details },
+    data:details,
   };
 };
 
