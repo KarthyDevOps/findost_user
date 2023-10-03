@@ -295,7 +295,7 @@ const addauthorizedPersonService = async (req, params) => {
       params.paymentDetails = {
       }
     }
-    params.paymentDetails.segmentTotalCharge = data
+    params.paymentDetails.segmentTotalCharge = data + ((data * 18) /100)
 
   }
   //migrating authorizedPerson to authorizedPersons and store authorizedPerson details into authorizedPersons table

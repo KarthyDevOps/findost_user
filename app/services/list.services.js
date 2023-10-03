@@ -16,7 +16,7 @@ const clientFamilyList = async (params) => {
         filter.$or = [
           { clientId: params?.search },
           { clientName: { $regex: `${params?.search}`, $options: "i" } },
-          { email: { $regex: `${params?.search}`, $options: "i" } },
+          { "familyMember.email": { $regex: `${params?.search}`, $options: "i" } },
         ];
       }
       console.log('filter--->', filter)
@@ -38,7 +38,7 @@ const clientFamilyList = async (params) => {
             filter.$or = [
                 { clientId: params?.search },
                 { clientName: { $regex: `${params?.search}`, $options: "i" } },
-                { email: { $regex: `${params?.search}`, $options: "i" } },
+                { "familyMember.email": { $regex: `${params?.search}`, $options: "i" } },
             ];
         }
         
