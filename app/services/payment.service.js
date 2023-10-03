@@ -29,6 +29,11 @@ const orderCreateService = async (req, params) => {
   }
   else
   {
+
+    const apDetails = await authorizedPersons.findOne(
+      { _id: params.authorizedPersonId }
+    );
+
     let obj = {
       orderId: order.id,
       orderAmount: +order.amount,
@@ -43,6 +48,7 @@ const orderCreateService = async (req, params) => {
           orderId: order.id,
           couponCode : params.couponCode || "",
           isCouponApplied : params.isCouponApplied || false,
+          segmentTotalCharge  : apDetails.paymentDetails.segmentTotalCharge || 0
         },
       },
     };
@@ -100,6 +106,11 @@ const paymentverifyService = async (req, params) => {
       paymentInfo;
     let paymentOrderId = body?.payload?.payment?.entity?.order_id;
     if (body?.payload?.payment?.entity?.status == "captured") {
+
+      const apDetails = await authorizedPersons.findOne(
+        { "paymentDetails.orderId": paymentOrderId }
+      );
+
       paymentStatus = PAYMENT_STATUS.COMPLETED;
       paymentId = body.payload.payment.entity.id;
       paymentMode = body?.payload?.payment?.entity?.method;
@@ -128,6 +139,10 @@ const paymentverifyService = async (req, params) => {
           },
       };
     }
+    if(apDetails && apDetails.paymentDetails)
+    {
+      query.paymentDetails = {...apDetails.paymentDetails,...query.paymentDetails}
+    }
     if (body?.payload?.payment?.entity?.status == "failed") {
       paymentStatus = PAYMENT_STATUS.FAILURE;
       paymentId = body?.payload?.payment?.entity?.id || null;
@@ -137,6 +152,10 @@ const paymentverifyService = async (req, params) => {
             paymentId: paymentId,
           },
       };
+      if(apDetails && apDetails.paymentDetails)
+      {
+        query.paymentDetails = {...apDetails.paymentDetails,...query.paymentDetails}
+      }
     }
     console.log(query,'query',paymentOrderId)
     

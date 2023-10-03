@@ -289,8 +289,11 @@ const addauthorizedPersonService = async (req, params) => {
     let data = params.business?.segmentSelection.reduce((a,b)=>{
          return a + parseInt(b.segmentCharge);
     },0)
-    params.paymentDetails = {
-
+    
+    if(!params.paymentDetails)
+    {
+      params.paymentDetails = {
+      }
     }
     params.paymentDetails.segmentTotalCharge = data
 
