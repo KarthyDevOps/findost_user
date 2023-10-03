@@ -463,6 +463,7 @@ const uploadImageService = async (req) => {
   const s3URL = getSignedURL(name);
   const data = {
     key: name,
+    url: name,
     // location: location,
     fileName: fileName,
     s3URL: s3URL,
