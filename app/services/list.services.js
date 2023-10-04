@@ -67,6 +67,11 @@ const clientFamilyList = async (params) => {
       return { status: false, data: [] };
     }
   };
+  if (data && data.length) {
+    return { status: true, data: data };
+  } else {
+    return { status: false, data: [] };
+  }
 
 }
 

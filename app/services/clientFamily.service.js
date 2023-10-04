@@ -166,9 +166,11 @@ const deleteClientFamilyService = async (params) => {
 const clientFamilyListService = async (params) => {
   params.all = true;
   const allList = await clientFamilyList(params);
-  console.log('allList-->', allList)
+  //console.log('allList-->', allList)
   params.all = params.returnAll ==true ? true : false;
+  //console.log('params-->', params)
   const result = await clientFamilyList(params);
+ // console.log('result-->', allList?.data)
   const pageMeta = await pageMetaService(params, allList?.data?.length || 0);
   return {
     status: true,
