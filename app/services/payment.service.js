@@ -69,6 +69,7 @@ const orderCreateService = async (req, params) => {
 const paymentverifyService = async (req, params) => {
   let body = req.body;
   let headers = req.headers;
+  let query ={}
   console.log("body", JSON.stringify(body, null, 2));
   console.log("headers", JSON.stringify(headers, null, 2));
   const shasum = crypto.createHmac("sha256", process.env.RAZORPAY_KEY_SECRET);
@@ -126,7 +127,7 @@ const paymentverifyService = async (req, params) => {
         paymentInfo = { bank: body?.payload?.payment?.entity?.bank };
       }
 
-      var query = {
+      query = {
         paymentDetails: {
           paymentStatus: paymentStatus,
           paymentMode: paymentMode,
