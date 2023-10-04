@@ -134,16 +134,18 @@ const paymentverifyService = async (req, params) => {
           paymentId: paymentId,
         },
       };
+
+      if (apDetails && apDetails.paymentDetails) {
+        console.log('apDetails.paymentDetails--------',apDetails.paymentDetails)
+        query.paymentDetails = {
+          ...apDetails.paymentDetails,
+          ...query.paymentDetails,
+        };
+      }
+      query.paymentDetails.paymentStatus =  PAYMENT_STATUS.COMPLETED;
     }
-    if (apDetails && apDetails.paymentDetails) {
-      console.log('apDetails.paymentDetails--------',apDetails.paymentDetails)
-      query.paymentDetails = {
-        ...apDetails.paymentDetails,
-        ...query.paymentDetails,
-      };
-    }
-    query.paymentDetails.paymentStatus = paymentStatus;
-    console.log('apDetails.paymentDetails--------',query.paymentDetails)
+    
+    console.log('query.paymentDetails-------',query.paymentDetails)
     if (body?.payload?.payment?.entity?.status == "failed") {
       paymentStatus = PAYMENT_STATUS.FAILURE;
       paymentId = body?.payload?.payment?.entity?.id || null;
