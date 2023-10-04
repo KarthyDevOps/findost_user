@@ -33,7 +33,7 @@ const orderCreateService = async (req, params) => {
   } else {
     const apDetails = await authorizedPersons.findOne({
       _id: params.authorizedPersonId,
-    });
+    }).lean();
 
     let obj = {
       orderId: order.id,
