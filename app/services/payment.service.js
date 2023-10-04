@@ -1,6 +1,11 @@
 const { statusCodes } = require("../response/httpStatusCodes");
 const { authorizedPersons } = require("../models/authorizedPersons");
-const { PAYMENT_STATUS, ORDER_STATUS, PAYMENT_ENTITY, REFUND_ENTITY } = require("../constants");
+const {
+  PAYMENT_STATUS,
+  ORDER_STATUS,
+  PAYMENT_ENTITY,
+  REFUND_ENTITY,
+} = require("../constants");
 const { messages } = require("../response/customMessages");
 
 const Razorpay = require("razorpay");
@@ -16,23 +21,19 @@ const orderCreateService = async (req, params) => {
     currency: ORDER_STATUS.currency,
     receipt: crypto.randomBytes(10).toString("hex"),
   };
-  console.log(options,'options')
-  let order = await instance.orders.create(options)
-  if(order.error)
-  {
+  console.log(options, "options");
+  let order = await instance.orders.create(options);
+  if (order.error) {
     return {
       status: false,
       statusCode: statusCodes?.HTTP_OK,
       messages: "Something Went Wrong! Unable to create razorpay Order!",
       data: [],
     };
-  }
-  else
-  {
-
-    const apDetails = await authorizedPersons.findOne(
-      { _id: params.authorizedPersonId }
-    );
+  } else {
+    const apDetails = await authorizedPersons.findOne({
+      _id: params.authorizedPersonId,
+    });
 
     let obj = {
       orderId: order.id,
@@ -46,13 +47,13 @@ const orderCreateService = async (req, params) => {
           paymentStatus: "PENDING",
           totalAmount: Number(order.amount) / 100,
           orderId: order.id,
-          couponCode : params.couponCode || "",
-          isCouponApplied : params.isCouponApplied || false,
-          segmentTotalCharge  : apDetails.paymentDetails.segmentTotalCharge || 0
+          couponCode: params.couponCode || "",
+          isCouponApplied: params.isCouponApplied || false,
+          segmentTotalCharge: apDetails.paymentDetails.segmentTotalCharge || 0,
         },
       },
     };
-    console.log('success');
+    console.log("success");
     const result = await authorizedPersons.updateOne(
       { _id: params.authorizedPersonId },
       query
@@ -64,19 +65,17 @@ const orderCreateService = async (req, params) => {
       data: obj,
     };
   }
-  
 };
 const paymentverifyService = async (req, params) => {
   let body = req.body;
   let headers = req.headers;
-  console.log('body',JSON.stringify(body,null,2))
-  console.log('headers',JSON.stringify(headers,null,2))
+  console.log("body", JSON.stringify(body, null, 2));
+  console.log("headers", JSON.stringify(headers, null, 2));
   const shasum = crypto.createHmac("sha256", process.env.RAZORPAY_KEY_SECRET);
   shasum.update(JSON.stringify(body));
   const digest = shasum.digest("hex");
-  console.log('digest',JSON.stringify(digest,null,2))
-  if (digest !== headers["x-razorpay-signature"])
-  {
+  console.log("digest", JSON.stringify(digest, null, 2));
+  if (digest !== headers["x-razorpay-signature"]) {
     return {
       status: false,
       statusCode: statusCodes?.HTTP_FORBIDDEN,
@@ -84,32 +83,27 @@ const paymentverifyService = async (req, params) => {
       data: null,
     };
   }
-   
-    
-   
-  if (![...PAYMENT_ENTITY, ...REFUND_ENTITY]?.includes(body.event))
-  {
+
+  if (![...PAYMENT_ENTITY, ...REFUND_ENTITY]?.includes(body.event)) {
     return {
       status: false,
       statusCode: statusCodes?.HTTP_FORBIDDEN,
       message: "payment failed",
       data: null,
     };
-  
   }
-   
-   
+
   if (PAYMENT_ENTITY?.includes(body.event)) {
     let paymentStatus = PAYMENT_STATUS.PENDING,
       paymentId,
       paymentMode,
       paymentInfo;
     let paymentOrderId = body?.payload?.payment?.entity?.order_id;
+    const apDetails = await authorizedPersons.findOne({
+      "paymentDetails.orderId": paymentOrderId,
+    });
     if (body?.payload?.payment?.entity?.status == "captured") {
-
-      const apDetails = await authorizedPersons.findOne(
-        { "paymentDetails.orderId": paymentOrderId }
-      );
+     
 
       paymentStatus = PAYMENT_STATUS.COMPLETED;
       paymentId = body.payload.payment.entity.id;
@@ -131,36 +125,39 @@ const paymentverifyService = async (req, params) => {
       }
 
       var query = {
-          paymentDetails: {
-            paymentStatus: paymentStatus,
-            paymentMode: paymentMode,
-            paymentInfo: paymentInfo,
-            paymentId: paymentId,
-          },
+        paymentDetails: {
+          paymentStatus: paymentStatus,
+          paymentMode: paymentMode,
+          paymentInfo: paymentInfo,
+          paymentId: paymentId,
+        },
       };
     }
-    if(apDetails && apDetails.paymentDetails)
-    {
-      query.paymentDetails = {...apDetails.paymentDetails,...query.paymentDetails}
-   
+    if (apDetails && apDetails.paymentDetails) {
+      query.paymentDetails = {
+        ...apDetails.paymentDetails,
+        ...query.paymentDetails,
+      };
     }
-    query.paymentDetails.paymentStatus =paymentStatus
+    query.paymentDetails.paymentStatus = paymentStatus;
     if (body?.payload?.payment?.entity?.status == "failed") {
       paymentStatus = PAYMENT_STATUS.FAILURE;
       paymentId = body?.payload?.payment?.entity?.id || null;
       var query = {
-          paymentDetails: {
-            paymentStatus: paymentStatus,
-            paymentId: paymentId,
-          },
+        paymentDetails: {
+          paymentStatus: paymentStatus,
+          paymentId: paymentId,
+        },
       };
-      if(apDetails && apDetails.paymentDetails)
-      {
-        query.paymentDetails = {...apDetails.paymentDetails,...query.paymentDetails}
+      if (apDetails && apDetails.paymentDetails) {
+        query.paymentDetails = {
+          ...apDetails.paymentDetails,
+          ...query.paymentDetails,
+        };
       }
     }
-    console.log(query,'query',paymentOrderId)
-    
+    console.log(query, "query", paymentOrderId);
+
     const resp = await authorizedPersons.findOneAndUpdate(
       { "paymentDetails.orderId": paymentOrderId },
       query
@@ -179,18 +176,18 @@ const checkPaymentStatusService = async (req, params) => {
   const data = await authorizedPersons.findOne({
     $or: [
       { authorizedPersonId: params?.authorizedPersonId },
-      { _id: params?.authorizedPersonId }
+      { _id: params?.authorizedPersonId },
     ],
   });
   return {
     status: true,
     statusCode: statusCodes?.HTTP_OK,
     message: messages?.success,
-    data: { data : data },
+    data: { data: data },
   };
 };
 module.exports = {
   orderCreateService,
   paymentverifyService,
-  checkPaymentStatusService
+  checkPaymentStatusService,
 };
