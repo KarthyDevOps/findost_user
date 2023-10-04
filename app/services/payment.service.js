@@ -142,8 +142,9 @@ const paymentverifyService = async (req, params) => {
     if(apDetails && apDetails.paymentDetails)
     {
       query.paymentDetails = {...apDetails.paymentDetails,...query.paymentDetails}
-      query.paymentDetails.paymentStatus =paymentStatus
+   
     }
+    query.paymentDetails.paymentStatus =paymentStatus
     if (body?.payload?.payment?.entity?.status == "failed") {
       paymentStatus = PAYMENT_STATUS.FAILURE;
       paymentId = body?.payload?.payment?.entity?.id || null;
