@@ -98,6 +98,8 @@ const paymentverifyService = async (req, params) => {
       paymentId,
       paymentMode,
       paymentInfo;
+
+      console.log('body?.payload',body?.payload)
     let paymentOrderId = body?.payload?.payment?.entity?.order_id;
     const apDetails = await authorizedPersons.findOne({
       "paymentDetails.orderId": paymentOrderId,
@@ -134,12 +136,14 @@ const paymentverifyService = async (req, params) => {
       };
     }
     if (apDetails && apDetails.paymentDetails) {
+      console.log('apDetails.paymentDetails--------',apDetails.paymentDetails)
       query.paymentDetails = {
         ...apDetails.paymentDetails,
         ...query.paymentDetails,
       };
     }
     query.paymentDetails.paymentStatus = paymentStatus;
+    console.log('apDetails.paymentDetails--------',query.paymentDetails)
     if (body?.payload?.payment?.entity?.status == "failed") {
       paymentStatus = PAYMENT_STATUS.FAILURE;
       paymentId = body?.payload?.payment?.entity?.id || null;
@@ -157,7 +161,7 @@ const paymentverifyService = async (req, params) => {
       }
     }
     console.log(query, "query", paymentOrderId);
-
+    console.log('query-----------------------',query)
     const resp = await authorizedPersons.findOneAndUpdate(
       { "paymentDetails.orderId": paymentOrderId },
       query
