@@ -44,7 +44,7 @@ const orderCreateService = async (req, params) => {
       $set: {
         paymentDetails: {
           paymentStatus: "PENDING",
-          totalAmount: order.amount,
+          totalAmount: Number(order.amount) / 100,
           orderId: order.id,
           couponCode : params.couponCode || "",
           isCouponApplied : params.isCouponApplied || false,
