@@ -150,7 +150,7 @@ const paymentverifyService = async (req, params) => {
     if (body?.payload?.payment?.entity?.status == "failed") {
       paymentStatus = PAYMENT_STATUS.FAILURE;
       paymentId = body?.payload?.payment?.entity?.id || null;
-      var query = {
+       query = {
         paymentDetails: {
           paymentStatus: paymentStatus,
           paymentId: paymentId,
