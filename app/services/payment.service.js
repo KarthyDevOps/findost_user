@@ -103,7 +103,7 @@ const paymentverifyService = async (req, params) => {
     let paymentOrderId = body?.payload?.payment?.entity?.order_id;
     const apDetails = await authorizedPersons.findOne({
       "paymentDetails.orderId": paymentOrderId,
-    });
+    }).lean();
     if (body?.payload?.payment?.entity?.status == "captured") {
      
 
