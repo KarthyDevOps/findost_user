@@ -298,6 +298,21 @@ const addauthorizedPersonService = async (req, params) => {
     params.paymentDetails.segmentTotalCharge = data + ((data * 18) /100)
 
   }
+
+ if (!params.settings) {
+   params.settings = {
+     isDarkTheme: false,
+     isEnableBioMetricLogin: false,
+     isMyNotificationSettings: false,
+     isInsurenceNotification: false,
+     isMutualFundsNotification: false,
+     isEquityNotification: false,
+     isSIPNotification: false,
+     isIPONotification: false,
+     isLoanNotification: false,
+   };
+ }
+
   //migrating authorizedPerson to authorizedPersons and store authorizedPerson details into authorizedPersons table
 
   const authorizedPerson = await new authorizedPersons(params);

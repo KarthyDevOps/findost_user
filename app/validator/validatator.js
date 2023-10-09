@@ -267,15 +267,15 @@ const addAuthorizedPersonSchema = (req, res, next) => {
     //   totalcharges : joi.string().required()
     // }),
     settings: joi.object({
-      isDarkTheme: joi.string().required(),
-      isEnableBioMetricLogin: joi.string().required(),
-      isMyNotificationSettings: joi.string().required(),
-      isInsurenceNotification: joi.string().required(),
-      isMutualFundsNotification: joi.string().required(),
-      isEquityNotification: joi.string().required(),
-      isSIPNotification: joi.string().required(),
-      isIPONotification: joi.string().required(),
-      isLoanNotification: joi.string().required()
+      isDarkTheme: joi.boolean().required(),
+      isEnableBioMetricLogin: joi.boolean().required(),
+      isMyNotificationSettings: joi.boolean().required(),
+      isInsurenceNotification: joi.boolean().required(),
+      isMutualFundsNotification: joi.boolean().required(),
+      isEquityNotification: joi.boolean().required(),
+      isSIPNotification: joi.boolean().required(),
+      isIPONotification: joi.boolean().required(),
+      isLoanNotification: joi.boolean().required()
 
     }),
 
