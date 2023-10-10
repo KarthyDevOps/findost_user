@@ -577,6 +577,11 @@ authorizedPersonsSchema.virtual('bankDetails.uploadChequeLeaflet.urlS3').get(fun
   return this.bankDetails?.uploadChequeLeaflet?.url ? getImageURL(this.bankDetails?.uploadChequeLeaflet?.url) : null;
 })
 
+authorizedPersonsSchema.virtual('profileURLS3').get(function () {
+  return this.profileURL ? getImageURL(this.profileURL) : null;
+})
+
+
 
 
 const authorizedPersons = mongoose.model(
