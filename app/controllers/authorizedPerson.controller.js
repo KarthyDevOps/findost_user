@@ -1,4 +1,5 @@
-const mongoose = require("mongoose");
+
+const excelJs = require('exceljs')
 const {
   sendErrorResponse,
   sendSuccessResponse,
@@ -273,6 +274,97 @@ const updateauthorizedPersonProfile = async (req, res) => {
 const authorizedPersonList = async (req, res) => {
   const params = req?.query;
   const result = await authorizedPersonListService(params);
+  let professionalDocument,educationQualificationDocument,residentialAddressProof,officeAddressProof,proofOfNameChange;
+
+  if (String(req.query.isExport) == "true" &&  result?.data?.list) {
+    for (let item of result?.data?.list) {
+      if (item.document.professionalDocument.documentPath) {
+        professionalDocument = {
+          type: item.document.professionalDocument.type,
+          url: item.document.professionalDocument.documentPath.urlS3,
+        };
+      } else professionalDocument == null;
+      if (item.document.educationQualificationDocument.documentPath) {
+        educationQualificationDocument = {
+          type: item.document.educationQualificationDocument.type,
+          url: item.document.educationQualificationDocument.urlS3,
+        };
+      } else educationQualificationDocument == null;
+      if (item.document.residentialAddressProof.documentPath) {
+        residentialAddressProof = {
+          type: item.document.residentialAddressProof.type,
+          url: item.document.residentialAddressProof.documentPath.urlS3,
+        };
+      } else residentialAddressProof == null;
+      if (item.document.officeAddressProof.documentPath) {
+        officeAddressProof = {
+          type: item.document.officeAddressProof.type,
+          url: item.document.officeAddressProof.documentPath.urlS3,
+        };
+      } else officeAddressProof == null;
+      if (item.document.proofOfNameChange.documentPath) {
+        proofOfNameChange = {
+          type: item.document.proofOfNameChange.type,
+          url: item.document.proofOfNameChange.documentPath.urlS3,
+        };
+      } else proofOfNameChange == null;
+
+      item.professionalDocument = professionalDocument;
+     item.educationQualificationDocument =  educationQualificationDocument,
+     item.residentialAddressProof = residentialAddressProof,
+     item.officeAddressProof =  officeAddressProof,
+     item.proofOfNameChange =  proofOfNameChange
+    }
+
+    let workbook = new excelJs.Workbook();
+    let worksheet = workbook.addWorksheet("Sheet1");
+
+    worksheet.columns = [
+      { header: "name", key: "name", width: 15 },
+      { header: "fatherName", key: "fatherName", width: 25 },
+      { header: "motherName", key: "motherName", width: 25 },
+      { header: "gender", key: "gender", width: 25 },
+      { header: "mobileNumber", key: "mobileNumber", width: 25 },
+      { header: "email", key: "email", width: 25 },
+      { header: "nationality", key: "nationality", width: 25 },
+      { header: "tradeMember", key: "tradeMember", width: 15 },
+      { header: "website", key: "website", width: 25 },
+      { header: "occupationType", key: "occupationType", width: 25 },
+      { header: "role", key: "role", width: 25 },
+      { header: "capitalMarketingExperience", key: "capitalMarketingExperience", width: 25 },
+      { header: "isBrokerExperirnce", key: "isBrokerExperirnce", width: 25 },
+      { header: "brokerDetails", key: "brokerDetails", width: 25 },
+      { header: "address", key: "address", width: 25 },
+      { header: "document", key: "document", width: 25 },
+      { header: "business", key: "business", width: 25 },
+      { header: "bankDetails", key: "bankDetails", width: 25 },
+      { header: "nomineeDetails", key: "nomineeDetails", width: 25 },
+      { header: "paymentDetails", key: "paymentDetails", width: 25 },
+      { header: "inPersonVerification", key: "inPersonVerification", width: 25 },
+      { header: "authorizedPersonId", key: "authorizedPersonId", width: 15 },
+      { header: "professionalDocument", key: "professionalDocument", width: 40 },
+      { header: "educationQualificationDocument", key: "educationQualificationDocument", width: 40 },
+      { header: "residentialAddressProof", key: "residentialAddressProof", width: 40 },
+      { header: "officeAddressProof", key: "officeAddressProof", width: 40 },
+      { header: "proofOfNameChange", key: "proofOfNameChange", width: 40 },
+    ];
+    let workData = result?.data?.list || [];
+  //  console.log(workData);
+    // if (workData?.length) workData = workData?.map(w => ({ ...w, fullName: w?.userDetails?.fullName || "" }))
+    worksheet.addRows(result?.data?.list);
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    );
+    res.setHeader(
+      "Content-Disposition",
+      "attachment; filename=" +
+        `Sales Statistics-${moment().format("YYYY-MM-DD-hh-mm-ss")}.xlsx`
+    );
+
+    await workbook.xlsx.write(res);
+    return res.status(statusCodes.HTTP_OK).end();
+  }
   if (!result.status) {
     return sendErrorResponse(
       req,
