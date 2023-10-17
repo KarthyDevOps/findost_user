@@ -325,10 +325,10 @@ const addauthorizedPersonService = async (req, params) => {
 
 
    InternalServices.sendEmail({
-    to: params?.email,
-    subject : "FINDOC || YOUR PASSWORD",
-    url : String(genratePassword)
-  });
+     to: params?.email,
+     subject: "FINDOC || YOUR PASSWORD",
+     url: `Your Password is ${String(genratePassword)}`,
+   });
 
   let passData = {
     type:"AP_CREATED_NOTIFICATION",
