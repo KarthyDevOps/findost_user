@@ -4,6 +4,7 @@ const { sendErrorResponse } = require("../response/response");
 const { statusCodes } = require("../response/httpStatusCodes");
 const { messages } = require("../response/customMessages");
 const { authorizedPersons } = require("../models/authorizedPersons");
+const { BOUSERS } = require("../models/BOUsers");
 
 
 const verifyToken = (type = ["ADMIN"]) =>
