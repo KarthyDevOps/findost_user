@@ -1,6 +1,8 @@
 const {  pageMetaService, sendOTP_to_mobileNumber } = require("../helpers");
 
 const { authorizedPersons } = require("../models/authorizedPersons");
+const {BOUSERS} = require("../models/BOUsers");
+
 const { messages } = require("../response/customMessages");
 const { statusCodes } = require("../response/httpStatusCodes");
 const bcrypt = require("bcryptjs");
@@ -117,79 +119,45 @@ const authorizedPersonVerifyOTPService = async (params) => {
 
 const authorizedPersonSendLoginIdService = async (params) => {
   // get admin details by email
-  const data = await authorizedPersons.findOne({
-    $or: [
-      { email: params?.email },
-      { mobileNumber: params?.mobileNumber },
-      { authorizedPersonId: params?.authorizedPersonId },
-      // { _id: mongoose.Types.ObjectId(params?.authorizedPersonId) },
-    ],
-  });
-  console.log("result", data);
-  if (data) {
-    //   console.log('result-->', result)
-    if (!data.isActive) {
-      console.log("result 11-->", result);
-      return {
-        status: false,
-        statusCode: statusCodes?.HTTP_BAD_REQUEST,
-        message: statusMessage.notActive,
-      };
+  let resp = await InternalServices.korpAuthentication(params);
+  if(resp && resp.access_token)
+  {
+    console.log('11')
+    params.token = resp.access_token
+   // let profileData = await InternalServices.korpClientProfile(params);
+    let isExist = await BOUSERS.findOne({
+      BOUserId : params.authorizedPersonId
+    })
+    if(isExist)
+    {
+      console.log('1')
+      await BOUSERS.updateOne({
+        BOUserId : params.authorizedPersonId
+      }, {
+        token: params.token
+      });
     }
-    if (data.isDeleted) {
-      return {
-        status: false,
-        statusCode: statusCodes?.HTTP_BAD_REQUEST,
-        message: "User not found",
-      };
+    else
+    {
+      console.log('2')
+      await BOUSERS.create({
+        BOUserId : params.authorizedPersonId,
+        password : params.password,
+        token : params.token
+      })
     }
-     const authorizedPerson = data;
-    //compare given password and stored password by user
-    const isMatch = await bcrypt.compare(
-      params?.password,
-      authorizedPerson.password
-    );
-    if (!isMatch) {
-      return {
-        status: false,
-        statusCode: statusCodes?.HTTP_BAD_REQUEST,
-        message: statusMessage.invalidAPpwd,
-        data: [],
-      };
-    }
-    //generate token with user details
-    // const token = await authorizedPerson.generateAuthToken(data);
-
-    const token = jwt.sign(
-      {
-        _id: authorizedPerson._id ? authorizedPerson._id.toString() : "",
-        name: authorizedPerson.name ? authorizedPerson.name.toString() : "",
-        email: authorizedPerson.email ? authorizedPerson.email.toString() : "",
-        mobileNumber: authorizedPerson.mobileNumber
-          ? authorizedPerson.mobileNumber.toString()
-          : "",
-        profileURL: authorizedPerson.profileURL
-          ? authorizedPerson.profileURL.toString()
-          : "",
-      },
-      process.env.JWT_authorizedPerson_SECRET,
-
-      { expiresIn: process.env.TOKEN_EXPIRATION }
-    );
-    // authorizedPerson.token = token;
-    await authorizedPersons.findByIdAndUpdate({
-      _id: authorizedPerson._id
-    }, {
-      token: token
-    });
-    authorizedPerson.token = token;
     return {
       status: true,
       statusCode: statusCodes?.HTTP_OK,
       message: messages?.loginSuccessful,
-      data: authorizedPerson,
+      data: {
+        token : resp.access_token
+      },
     };
-  } else {
+
+  }
+  else
+  {
     return {
       status: false,
       statusCode: statusCodes?.HTTP_BAD_REQUEST,

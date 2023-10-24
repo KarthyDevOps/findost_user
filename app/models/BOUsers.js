@@ -12,14 +12,22 @@ const BOUserSchema = new mongoose.Schema(
     BOUserId: {
       type: String,
     },
-    firstName: {
+    password: {
       type: String,
       required: true,
+    },
+    token: {
+      type: String,
+      required: true,
+    },
+    firstName: {
+      type: String,
+      required: false,
       trim: true,
     },
     lastName: {
       type: String,
-      required: true,
+      required: false,
       trim: true,
     },
     mobileNumber: {
@@ -29,13 +37,10 @@ const BOUserSchema = new mongoose.Schema(
     },
     email: {
       type: String,
-      required: true,
+      required: false,
       trim: true,
     },
-    password: {
-      type: String,
-      required: true,
-    },
+  
     profileURL: {
       type: String,
       required: false,
@@ -66,17 +71,6 @@ const BOUserSchema = new mongoose.Schema(
     },
   }
 );
-
-BOUserSchema.pre("save", async function (next) {
-  var doc = this;
-  let counter = await Sequence.findOneAndUpdate(
-    { type: "BOUSERS" },
-    { $inc: { count: 1 } }
-  );
-  console.log('counter-->', counter)
-  doc.BOUserId = (counter.count + 1).toString().padStart(6, "0").toString();
-  next();
-});
 
 
 

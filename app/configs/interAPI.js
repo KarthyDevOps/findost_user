@@ -22,6 +22,18 @@ module.exports = {
             contentType: "application/json",
         },
     },
-
-    
+    korpAuthentication: {
+        method: "POST",
+        url: process.env.FINANCE_URL + "/finance/v1/korp/authentication",
+        headers: {
+            contentType: "application/json",
+        },
+    },
+    korpClientProfile: {
+        method: "GET",
+        url: process.env.FINANCE_URL + '/finance/v1/korp/clientProfile',
+        headers: {
+            contentType: "application/json",
+        },
+    },
 }

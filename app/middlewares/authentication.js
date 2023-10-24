@@ -9,7 +9,6 @@ const { authorizedPersons } = require("../models/authorizedPersons");
 const verifyToken = (type = ["ADMIN"]) =>
 async function (req, res, next) {
   try {
-     
       if (
         req.headers["x-access-token"] ||
         req.headers["authorization"] ||
@@ -38,12 +37,24 @@ async function (req, res, next) {
             console.log("userData-->",userData)
           } catch (error) {
             if (type.includes("AP")) {
-              decode = jwt.verify(token, process.env.JWT_authorizedPerson_SECRET);
-              userData = await authorizedPersons.findOne({
-                _id: decode._id,
-                // token: token,
-              });
-              userType = "AP";
+              let isExist = BOUSERS.findOne({
+                token :token
+              })
+              if(isExist)
+              {
+                userData ={
+                  data :{
+                    korpAccessToken:token,
+                    isActive:true,
+                    ...isExist
+                  }
+                }
+                userType = "AP";
+              }
+              else
+              {
+                userData =null
+              }
             }
           }
           if (userData) {
