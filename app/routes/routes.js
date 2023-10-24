@@ -77,6 +77,13 @@ const routes = {
       delete: "/v1/registerSetting/delete",
       list: "/v1/registerSetting/list",
     },
+    BOUSERS: {
+      add: "/v1/BOUSERS/add",
+      get: "/v1/BOUSERS/get",
+      update: "/v1/BOUSERS/update",
+      delete: "/v1/BOUSERS/delete",
+      list: "/v1/BOUSERS/list",
+    },
   },
 };
 

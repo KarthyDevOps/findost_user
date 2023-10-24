@@ -91,6 +91,8 @@ const {
   deleteregisterSetting,
   registerSettingList,
 } = require("../controllers/registerSetting.controller");
+
+const {createBOusers,updateBOusers,deleteBOusers,BOusersList,getBOusers} = require("../controllers/BOUser.controller")
 const { errHandle } = require("../helpers/index");
 const { routes } = require("../routes/routes");
 const router = Router();
@@ -349,4 +351,13 @@ router.get(
   routes.v1.razorPay.checkPaymentStatus,
   errHandle(checkPaymentStatus)
 );
+
+
+//BOUSERS Management
+router.get(routes.v1.BOUSERS.list,errHandle(BOusersList));
+router.post(routes.v1.BOUSERS.add,errHandle(createBOusers));
+router.get(routes.v1.BOUSERS.get,errHandle(getBOusers));
+router.put(routes.v1.BOUSERS.update,errHandle(updateBOusers));
+router.delete(routes.v1.BOUSERS.delete,errHandle(deleteBOusers));
+
 module.exports = router;
