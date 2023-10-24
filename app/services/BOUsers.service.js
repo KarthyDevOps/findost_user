@@ -22,10 +22,17 @@ const createBOUsersService = async (params) => {
 
 
 const getBOUsersService = async (params) => {
-  var payload = {
-    _id: params?.id,
-    isDeleted: false,
-  };
+  if (params.token) {
+    var payload = {
+      token: params?.token,
+      isDeleted: false,
+    };
+  } else {
+    var payload = {
+      _id: params?.id,
+      isDeleted: false,
+    };
+  }
   console.log('payload-->', payload)
   const resp = await BOUSERS.findOne(payload);
   return {

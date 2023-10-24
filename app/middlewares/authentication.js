@@ -47,6 +47,7 @@ async function (req, res, next) {
                   data :{
                     korpAccessToken:token,
                     isActive:true,
+                    apId : isExist.BOUserId,
                     ...isExist
                   }
                 }

@@ -195,17 +195,29 @@ router.get(
 );
 router.delete(
   routes.v1.authorizedPerson.delete,
-  [verifyToken(["AP", , "ADMIN"]), verifyAdminRole("apManagement", "DELETE"), updateAuthorizedPersonProfileSchema],
+  [
+    verifyToken(["AP", , "ADMIN"]),
+    verifyAdminRole("apManagement", "DELETE"),
+    updateAuthorizedPersonProfileSchema,
+  ],
   errHandle(deleteauthorizedPerson)
 );
 router.put(
   routes.v1.authorizedPerson.updateProfile,
-  [verifyToken(["ADMIN", "AP"]), verifyAdminRole("apManagement", "UPDATE"), updateAuthorizedPersonProfileSchema],
+  [
+    verifyToken(["ADMIN", "AP"]),
+    verifyAdminRole("apManagement", "UPDATE"),
+    updateAuthorizedPersonProfileSchema,
+  ],
   errHandle(updateauthorizedPersonProfile)
 );
 router.get(
   routes.v1.authorizedPerson.list,
-  [verifyToken(["ADMIN"]),  verifyAdminRole("apManagement", "VIEW"),authorizedPersonListSchema],
+  [
+    verifyToken(["ADMIN"]),
+    verifyAdminRole("apManagement", "VIEW"),
+    authorizedPersonListSchema,
+  ],
   errHandle(authorizedPersonList)
 );
 router.post(
@@ -278,7 +290,7 @@ router.get(
 router.get(
   routes.v1.clientFamily.list,
   [
-    verifyToken(["AP", "ADMIN"]), 
+    verifyToken(["AP", "ADMIN"]),
     verifyAdminRole("clientFamilyManagement", "VIEW"),
     clientFamilyListSchema,
   ],
@@ -341,7 +353,6 @@ router.delete(
 router.post(routes.v1.aws.uploadImage, errHandle(uploadImage));
 router.post(routes.v1.aws.getImageBlob, errHandle(getImageBlob));
 
-
 //get sequence id
 router.get(routes.v1.sequence.sequenceId, errHandle(getSequenceId));
 // razorpay
@@ -352,12 +363,11 @@ router.get(
   errHandle(checkPaymentStatus)
 );
 
-
 //BOUSERS Management
-router.get(routes.v1.BOUSERS.list,errHandle(BOusersList));
-router.post(routes.v1.BOUSERS.add,errHandle(createBOusers));
-router.get(routes.v1.BOUSERS.get,errHandle(getBOusers));
-router.put(routes.v1.BOUSERS.update,errHandle(updateBOusers));
-router.delete(routes.v1.BOUSERS.delete,errHandle(deleteBOusers));
+router.get(routes.v1.BOUSERS.list, errHandle(BOusersList));
+router.post(routes.v1.BOUSERS.add, errHandle(createBOusers));
+router.get(routes.v1.BOUSERS.get, errHandle(getBOusers));
+router.put(routes.v1.BOUSERS.update, errHandle(updateBOusers));
+router.delete(routes.v1.BOUSERS.delete, errHandle(deleteBOusers));
 
 module.exports = router;
