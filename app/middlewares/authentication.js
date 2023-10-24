@@ -38,12 +38,13 @@ async function (req, res, next) {
             console.log("userData-->",userData)
           } catch (error) {
             if (type.includes("AP")) {
-              let isExist = BOUSERS.findOne({
-                token :token
+              let isExist = await BOUSERS.findOne({
+                token : token
               })
+              console.log('BOUSER token response--->', isExist)
               if(isExist)
               {
-                userData ={
+                userData = {
                   data :{
                     korpAccessToken:token,
                     isActive:true,
@@ -61,7 +62,7 @@ async function (req, res, next) {
           }
           if (userData) {
           
-            if (!userData?.isActive) {
+            if (!userData?.data?.isActive) {
               return sendErrorResponse(
                 req,
                 res,
@@ -70,11 +71,12 @@ async function (req, res, next) {
                 []
                 );
               } else {
-                req.user = userData;
+                req.user = userData?.data;
                 req.user.userType = userType;
                 next();
           }
         } else {
+          console.log('first 2')
           return sendErrorResponse(
             req,
             res,
@@ -84,6 +86,7 @@ async function (req, res, next) {
           );
         }
       } else {
+        console.log('first 3')
         return sendErrorResponse(
           req,
           res,
