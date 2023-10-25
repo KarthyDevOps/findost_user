@@ -6,77 +6,70 @@ const { messages } = require("../response/customMessages");
 const { authorizedPersons } = require("../models/authorizedPersons");
 const { BOUSERS } = require("../models/BOUsers");
 
-
 const verifyToken = (type = ["ADMIN"]) =>
-async function (req, res, next) {
-  try {
+  async function (req, res, next) {
+    try {
       if (
         req.headers["x-access-token"] ||
         req.headers["authorization"] ||
         req.headers["Authorization"]
-        ) {
-          let token =
+      ) {
+        let token =
           req.headers["x-access-token"] ||
           req.headers["authorization"] ||
           req.headers["Authorization"];
-          token = token.replace("Bearer ", "");
-          let decode, user;
-          var userData = null;
-          let userType = null;
-          try {
-            let id;
-            decode = jwt.verify(token, process.env.JWT_ADMIN_SECRET);
-            if (decode) {
-              id = decode?.id || decode?._id;
-            }
-            userData = await Admin.findOne({
-              _id:id,
-              //token: token,
+        token = token.replace("Bearer ", "");
+        let decode, user;
+        var userData = null;
+        let userType = null;
+        try {
+          let id;
+          decode = jwt.verify(token, process.env.JWT_ADMIN_SECRET);
+          if (decode) {
+            id = decode?.id || decode?._id;
+          }
+          userData = await Admin.findOne({
+            _id: id,
+            //token: token,
+          });
+          console.log("data -->", decode);
+          userType = "ADMIN";
+          console.log("userData-->", userData);
+        } catch (error) {
+          if (type.includes("AP")) {
+            let isExist = await BOUSERS.findOne({
+              token: token,
             });
-            console.log("data -->",decode)
-            userType = "ADMIN";
-            console.log("userData-->",userData)
-          } catch (error) {
-            if (type.includes("AP")) {
-              let isExist = await BOUSERS.findOne({
-                token : token
-              })
-              console.log('BOUSER token response--->', isExist)
-              if(isExist)
-              {
-                userData = {
-                  data :{
-                    korpAccessToken:token,
-                    isActive:true,
-                    apId : isExist.BOUserId,
-                    ...isExist
-                  }
-                }
-                userType = "AP";
-              }
-              else
-              {
-                userData =null
-              }
+            console.log("BOUSER token response--->", isExist);
+            if (isExist) {
+              userData = {
+                korpAccessToken: token,
+                isActive: true,
+                apId: isExist.BOUserId,
+                ...isExist,
+              };
+              userType = "AP";
+            } else {
+              userData = null;
             }
           }
-          if (userData) {
-          
-            if (!userData?.data?.isActive) {
-              return sendErrorResponse(
-                req,
-                res,
-                statusCodes.HTTP_UNAUTHORIZED,
-                messages.adminInActive,
-                []
-                );
-              } else {
-                req.user = userData?.data;
-                req.user.userType = userType;
-                next();
+        }
+        if (userData) {
+          if (!userData?.isActive) {
+            return sendErrorResponse(
+              req,
+              res,
+              statusCodes.HTTP_UNAUTHORIZED,
+              messages.adminInActive,
+              []
+            );
+          } else {
+            req.user = userData;
+            req.user.userType = userType;
+            next();
           }
         } else {
-          console.log('first 2')
+          console.log("first 2");
           return sendErrorResponse(
             req,
             res,
@@ -86,7 +79,7 @@ async function (req, res, next) {
           );
         }
       } else {
-        console.log('first 3')
+        console.log("first 3");
         return sendErrorResponse(
           req,
           res,
@@ -108,7 +101,9 @@ async function (req, res, next) {
   };
 const verifyAdminRole = (roles, action) =>
   async function (req, res, next) {
+    console.log("isPermissionDenied", req.user);
     let isPermissionDenied = true;
+
     if (req.user && req.user.permissions) {
       if (req.user.permissions[roles]) {
         if (
@@ -119,6 +114,7 @@ const verifyAdminRole = (roles, action) =>
         }
       }
     }
+
     if (req.user.userType == "AP") {
       isPermissionDenied = false;
     }
@@ -134,5 +130,5 @@ const verifyAdminRole = (roles, action) =>
       next();
     }
   };
-  
-module.exports = { verifyAdminRole,verifyToken };
+
+module.exports = { verifyAdminRole, verifyToken };
