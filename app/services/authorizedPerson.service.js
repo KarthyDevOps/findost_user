@@ -292,11 +292,11 @@ const addauthorizedPersonService = async (req, params) => {
   genratePassword.authorizedPersonId = details.authorizedPersonId
 
 
-   InternalServices.sendEmail({
-     to: params?.email,
-     subject: "FINDOC || YOUR PASSWORD",
-     url: `Your Password is ${String(genratePassword)}`,
-   });
+  //  InternalServices.sendEmail({
+  //    to: params?.email,
+  //    subject: "FINDOC || YOUR PASSWORD",
+  //    url: `Your Password is ${String(genratePassword)}`,
+  //  });
 
   let passData = {
     type:"AP_CREATED_NOTIFICATION",
