@@ -151,7 +151,8 @@ const authorizedPersonSendLoginIdService = async (params) => {
       statusCode: statusCodes?.HTTP_OK,
       message: messages?.loginSuccessful,
       data: {
-        token : resp.access_token
+        token : resp.access_token,
+        details : resp 
       },
     };
 
