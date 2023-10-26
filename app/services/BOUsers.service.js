@@ -8,6 +8,21 @@ const { pageMetaService } = require("../helpers/index");
 const { getBOUsersList } = require("./list.services");
 
 const createBOUsersService = async (params) => {
+
+  if (!params.settings) {
+    params.settings = {
+      isDarkTheme: false,
+      isEnableBioMetricLogin: false,
+      isMyNotificationSettings: false,
+      isInsurenceNotification: false,
+      isMutualFundsNotification: false,
+      isEquityNotification: false,
+      isSIPNotification: false,
+      isIPONotification: false,
+      isLoanNotification: false,
+    };
+  }
+  
   var newvalues = params;
   const resp = await BOUSERS.create(newvalues);
   return {

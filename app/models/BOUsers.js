@@ -7,6 +7,48 @@ const { getImageURL } = require("../utils/s3Utils");
 const mongooseLeanVirtuals = require("mongoose-lean-virtuals");
 const mongooseLeanGetters = require("mongoose-lean-getters");
 
+const settingsSchema = new mongoose.Schema(
+  {
+    isDarkTheme: {
+      type: Boolean,
+      default: false,
+    },
+    isEnableBioMetricLogin: {
+      type: Boolean,
+      default: false,
+    },
+    isMyNotificationSettings: {
+      type: Boolean,
+      default: false,
+    },
+    isInsurenceNotification: {
+      type: Boolean,
+      default: false,
+    },
+    isMutualFundsNotification: {
+      type: Boolean,
+      default: false,
+    },
+    isEquityNotification: {
+      type: Boolean,
+      default: false,
+    },
+    isSIPNotification: {
+      type: Boolean,
+      default: false,
+    },
+    isIPONotification: {
+      type: Boolean,
+      default: false,
+    },
+    isLoanNotification: {
+      type: Boolean,
+      default: false,
+    },
+  }
+)
+
+
 const BOUserSchema = new mongoose.Schema(
   {
     BOUserId: {
@@ -40,6 +82,7 @@ const BOUserSchema = new mongoose.Schema(
       required: false,
       trim: true,
     },
+    settings: settingsSchema,
   
     profileURL: {
       type: String,
