@@ -75,14 +75,13 @@ const getBOUsersService = async (params) => {
   ) {
     showtime = "Good Night";
   }
-  console.log("showtime", showtime);
-
-  resp = JSON.parse(JSON.stringify(resp))
+if (resp) {
+  resp = JSON.parse(JSON.stringify(resp));
 
   resp.showtime = showtime;
 
-  console.log('resp', resp)
- 
+  console.log("resp", resp);
+}
 
   return {
     status: true,
