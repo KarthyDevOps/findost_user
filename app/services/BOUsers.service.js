@@ -3,6 +3,8 @@ const { statusMessage } = require("../response/httpStatusMessages");
 const { messages } = require("../response/customMessages");
 const { BOUSERS } = require("../models/BOUsers");
 
+const moment = require("moment-timezone")
+
 const { pageMetaService } = require("../helpers/index");
 
 const { getBOUsersList } = require("./list.services");
@@ -25,6 +27,8 @@ const createBOUsersService = async (params) => {
   
   var newvalues = params;
   const resp = await BOUSERS.create(newvalues);
+
+  
   return {
     status: true,
     statusCode: statusCodes?.HTTP_OK,
@@ -49,7 +53,37 @@ const getBOUsersService = async (params) => {
     };
   }
   console.log('payload-->', payload)
-  const resp = await BOUSERS.findOne(payload);
+
+  let resp = await BOUSERS.findOne(payload);
+  console.log('first', resp)
+
+
+
+  let showtime;
+
+  let currentHour = moment(new Date()).tz("Asia/kolkata").format("HH");
+
+  if (currentHour >= 4 && currentHour < 12) {
+    showtime = "Good Morning";
+  } else if (currentHour >= 12 && currentHour < 16) {
+    showtime = "Good Afternoon";
+  } else if (currentHour >= 16 && currentHour < 20) {
+    showtime = "Good Evening";
+  } else if (
+    (currentHour >= 20 && currentHour < 24) ||
+    (currentHour >= 0 && currentHour < 4)
+  ) {
+    showtime = "Good Night";
+  }
+  console.log("showtime", showtime);
+
+  resp = JSON.parse(JSON.stringify(resp))
+
+  resp.showtime = showtime;
+
+  console.log('resp', resp)
+ 
+
   return {
     status: true,
     statusCode: statusCodes?.HTTP_OK,
