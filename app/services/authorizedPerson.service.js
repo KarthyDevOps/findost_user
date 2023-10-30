@@ -141,10 +141,21 @@ const authorizedPersonSendLoginIdService = async (params) => {
     {
       console.log('2')
       await BOUSERS.create({
-        BOUserId : params.authorizedPersonId,
-        password : params.password,
-        token : params.token
-      })
+        BOUserId: params.authorizedPersonId,
+        password: params.password,
+        token: params.token,
+        settings: {
+          isDarkTheme: false,
+          isEnableBioMetricLogin: false,
+          isMyNotificationSettings: false,
+          isInsurenceNotification: false,
+          isMutualFundsNotification: false,
+          isEquityNotification: false,
+          isSIPNotification: false,
+          isIPONotification: false,
+          isLoanNotification: false,
+        },
+      });
     }
     return {
       status: true,

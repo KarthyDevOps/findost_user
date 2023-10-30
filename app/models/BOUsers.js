@@ -82,6 +82,11 @@ const BOUserSchema = new mongoose.Schema(
       required: false,
       trim: true,
     },
+    certifications: {
+      type: Array,
+      required: false,
+      trim: true,
+    },
     settings: settingsSchema,
   
     profileURL: {
@@ -123,6 +128,14 @@ BOUserSchema.plugin(mongooseLeanGetters);
 BOUserSchema.virtual("profileURLS3").get(function () {
   return this.profileURL ? getImageURL(this.profileURL) : null;
 });
+
+BOUserSchema.virtual("LinkS3").get(
+  function () {
+    for (let item of this.certifications) {
+      return item?.link  ? getImageURL(item?.link) : null;
+    }
+  }
+);
 
 const BOUSERS = mongoose.model("BOUSERS", BOUserSchema);
 
