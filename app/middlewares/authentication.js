@@ -37,8 +37,13 @@ const verifyToken = (type = ["ADMIN"]) =>
           console.log("userData-->", userData);
         } catch (error) {
           if (type.includes("AP")) {
+            let id;
+            decode = jwt.verify(token, process.env.JWT_authorizedPerson_SECRET);
+            if (decode) {
+              id = decode?.APId || decode?._id;
+            }
             let isExist = await BOUSERS.findOne({
-              token: token,
+              BOUserId: id,
             });
             console.log("BOUSER token response--->", isExist);
             if (isExist) {

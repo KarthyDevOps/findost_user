@@ -128,6 +128,7 @@ const authorizedPersonSendLoginIdService = async (params) => {
     let isExist = await BOUSERS.findOne({
       BOUserId : params.authorizedPersonId
     })
+    
     if(isExist)
     {
       console.log('1')
@@ -157,12 +158,20 @@ const authorizedPersonSendLoginIdService = async (params) => {
         },
       });
     }
+    const JWTtoken = jwt.sign(
+      {
+        APId: params.authorizedPersonId,
+        token: params.token
+      },
+      process.env.JWT_authorizedPerson_SECRET,
+      { expiresIn: process.env.TOKEN_EXPIRATION }
+    );
     return {
       status: true,
       statusCode: statusCodes?.HTTP_OK,
       message: messages?.loginSuccessful,
       data: {
-        token : resp.access_token,
+        token : JWTtoken,
         details : resp 
       },
     };

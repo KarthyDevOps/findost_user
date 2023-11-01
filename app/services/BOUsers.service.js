@@ -43,7 +43,7 @@ const createBOUsersService = async (params) => {
 const getBOUsersService = async (params) => {
   if (params.token) {
     var payload = {
-      token: params?.token,
+      $or: [ { token: params?.token }, { BOUserId: params?.token } ],
       isDeleted: false,
     };
   } else {
