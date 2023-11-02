@@ -48,7 +48,7 @@ const verifyToken = (type = ["ADMIN"]) =>
             console.log("BOUSER token response--->", isExist);
             if (isExist) {
               userData = {
-                korpAccessToken: token,
+                korpAccessToken: isExist.token,
                 isActive: true,
                 apId: isExist.BOUserId,
                 ...isExist,
