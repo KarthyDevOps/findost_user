@@ -167,7 +167,7 @@ const authorizedPersonSendLoginIdService = async (params) => {
       process.env.JWT_authorizedPerson_SECRET,
       { expiresIn: process.env.TOKEN_EXPIRATION }
     );
-    const result = await APsession.updateOne(
+    const result = await APsession.updateMany(
       { APId: params.authorizedPersonId },
       { status: "INACTIVE",loggedOutAt:new Date()}
     );
