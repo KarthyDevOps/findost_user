@@ -2,6 +2,7 @@ const {  pageMetaService, sendOTP_to_mobileNumber } = require("../helpers");
 
 const { authorizedPersons } = require("../models/authorizedPersons");
 const {BOUSERS} = require("../models/BOUsers");
+const {APsession} = require("../models/APsessions");
 
 const { messages } = require("../response/customMessages");
 const { statusCodes } = require("../response/httpStatusCodes");
@@ -165,6 +166,17 @@ const authorizedPersonSendLoginIdService = async (params) => {
       },
       process.env.JWT_authorizedPerson_SECRET,
       { expiresIn: process.env.TOKEN_EXPIRATION }
+    );
+    const result = await APsession.updateOne(
+      { APId: params.authorizedPersonId },
+      { status: "INACTIVE",loggedOutAt:new Date()}
+    );
+    APsession.create(
+      { 
+        APId: params.authorizedPersonId,
+        status: "ACTIVE",
+        loggedInAt:new Date()
+      },
     );
     return {
       status: true,

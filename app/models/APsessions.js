@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 const APsessionSchema = new mongoose.Schema(
   {
     APId: {
-      type: Schema.Types.ObjectId,
+      type: String,
       required: true,
     },
     loggedInAt: {
