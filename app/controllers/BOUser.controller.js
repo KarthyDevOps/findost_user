@@ -40,6 +40,7 @@ const createBOusers = async (req, res) => {
 const getBOusers = async (req, res) => {
   const params = req.body;
   params.id = req?.query?.id;
+  params.apId = req?.query?.apId;
   if(req.query.token) params.token = req?.query?.token
   const result = await getBOUsersService(params);
   if (!result.status) {

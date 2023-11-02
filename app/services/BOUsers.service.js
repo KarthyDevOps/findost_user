@@ -46,11 +46,18 @@ const getBOUsersService = async (params) => {
       $or: [ { token: params?.token }, { BOUserId: params?.token } ],
       isDeleted: false,
     };
-  } else {
+  } else if(params.apId) {
     var payload = {
-      $or: [ { _id: params?.id }, { BOUserId: params?.id } ],
+      BOUserId: params?.apId,
       isDeleted: false,
     };
+  }
+  else
+  {
+    var payload = {
+      _id: params?.id,
+      isDeleted: false,
+    }
   }
   console.log('payload-->', payload)
 
