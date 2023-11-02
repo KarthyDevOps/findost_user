@@ -92,6 +92,11 @@ const {
   registerSettingList,
 } = require("../controllers/registerSetting.controller");
 
+const {
+  loginCount,
+  loginActivityReport
+} = require("../controllers/session.controlller");
+
 const {createBOusers,updateBOusers,deleteBOusers,BOusersList,getBOusers} = require("../controllers/BOUser.controller")
 const { errHandle } = require("../helpers/index");
 const { routes } = require("../routes/routes");
@@ -110,6 +115,18 @@ router.post(
   [resetPasswordSchema, verifyToken(["ADMIN"])],
   errHandle(resetPassword)
 );
+router.get(
+  routes.v1.admin.loginCount,
+  [ verifyToken(["ADMIN"])],
+  errHandle(loginCount)
+);
+router.get(
+  routes.v1.admin.loginActivityReport,
+  [ verifyToken(["ADMIN"])],
+  errHandle(loginActivityReport)
+);
+
+
 router.post(routes.v1.admin.addProfile, [addAdminSchema], errHandle(addAdmin));
 router.get(
   routes.v1.admin.getProfile,

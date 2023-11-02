@@ -125,6 +125,7 @@ const authorizedPersonSendLoginIdService = async (params) => {
   {
     console.log('11')
     params.token = resp.access_token
+   
    // let profileData = await InternalServices.korpClientProfile(params);
     let isExist = await BOUSERS.findOne({
       BOUserId : params.authorizedPersonId
@@ -167,6 +168,7 @@ const authorizedPersonSendLoginIdService = async (params) => {
       process.env.JWT_authorizedPerson_SECRET,
       { expiresIn: process.env.TOKEN_EXPIRATION }
     );
+    resp.access_token = JWTtoken
     const result = await APsession.updateMany(
       { APId: params.authorizedPersonId },
       { status: "INACTIVE",loggedOutAt:new Date()}
