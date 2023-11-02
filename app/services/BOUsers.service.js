@@ -48,7 +48,7 @@ const getBOUsersService = async (params) => {
     };
   } else {
     var payload = {
-      _id: params?.id,
+      $or: [ { _id: params?.id }, { BOUserId: params?.id } ],
       isDeleted: false,
     };
   }

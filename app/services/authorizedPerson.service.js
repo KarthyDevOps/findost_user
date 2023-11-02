@@ -172,7 +172,7 @@ const authorizedPersonSendLoginIdService = async (params) => {
       message: messages?.loginSuccessful,
       data: {
         token : JWTtoken,
-        details : resp 
+        details : {...resp,APId: params.authorizedPersonId} 
       },
     };
 
