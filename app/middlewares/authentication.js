@@ -5,6 +5,7 @@ const { statusCodes } = require("../response/httpStatusCodes");
 const { messages } = require("../response/customMessages");
 const { authorizedPersons } = require("../models/authorizedPersons");
 const { BOUSERS } = require("../models/BOUsers");
+const { APsession } = require("../models/APsessions");
 
 const verifyToken = (type = ["ADMIN"]) =>
   async function (req, res, next) {
@@ -52,6 +53,7 @@ const verifyToken = (type = ["ADMIN"]) =>
                 isActive: true,
                 apId: isExist.BOUserId,
                 ...isExist,
+                sessionId : decode?.sessionId
               };
               userType = "AP";
             } else {
@@ -106,9 +108,7 @@ const verifyToken = (type = ["ADMIN"]) =>
   };
 const verifyAdminRole = (roles, action) =>
   async function (req, res, next) {
-    console.log("isPermissionDenied", req.user);
     let isPermissionDenied = true;
-
     if (req.user && req.user.permissions) {
       if (req.user.permissions[roles]) {
         if (
@@ -119,7 +119,6 @@ const verifyAdminRole = (roles, action) =>
         }
       }
     }
-
     if (req.user.userType == "AP") {
       isPermissionDenied = false;
     }
@@ -128,7 +127,7 @@ const verifyAdminRole = (roles, action) =>
         req,
         res,
         statusCodes.HTTP_UNAUTHORIZED,
-        messages.accessDenied,
+        messages.tokenInvalid,
         []
       );
     } else {
@@ -136,4 +135,26 @@ const verifyAdminRole = (roles, action) =>
     }
   };
 
-module.exports = { verifyAdminRole, verifyToken };
+const validateSession = async (req, res, next) => {
+  if(req.user.userType == "AP")
+  {
+    let sessionId = req.user.sessionId;
+    let sessionFindResult = await APsession.findById(sessionId);
+    if (!sessionFindResult || sessionFindResult.status == "INACTIVE") {
+      return sendErrorResponse(
+        req,
+        res,
+        statusCodes.HTTP_UNAUTHORIZED,
+        messages.accessDenied,
+        []
+      );
+    }
+    next()
+  }
+  else
+  {
+    next();
+  }
+ 
+};
+module.exports = { verifyAdminRole, verifyToken,validateSession };

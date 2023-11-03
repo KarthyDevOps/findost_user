@@ -160,26 +160,28 @@ const authorizedPersonSendLoginIdService = async (params) => {
         },
       });
     }
-    const JWTtoken = jwt.sign(
-      {
-        APId: params.authorizedPersonId,
-        token: params.token
-      },
-      process.env.JWT_authorizedPerson_SECRET,
-      { expiresIn: process.env.TOKEN_EXPIRATION }
-    );
-    resp.access_token = JWTtoken
+    
     const result = await APsession.updateMany(
       { APId: params.authorizedPersonId },
       { status: "INACTIVE",loggedOutAt:new Date()}
     );
-    APsession.create(
+    let sessionResp =await APsession.create(
       { 
         APId: params.authorizedPersonId,
         status: "ACTIVE",
         loggedInAt:new Date()
       },
     );
+    const JWTtoken = jwt.sign(
+      {
+        APId: params.authorizedPersonId,
+        token: params.token,
+        sessionId : sessionResp._id
+      },
+      process.env.JWT_authorizedPerson_SECRET,
+      { expiresIn: process.env.TOKEN_EXPIRATION }
+    );
+    resp.access_token = JWTtoken
     return {
       status: true,
       statusCode: statusCodes?.HTTP_OK,
