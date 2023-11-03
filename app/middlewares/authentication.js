@@ -33,9 +33,7 @@ const verifyToken = (type = ["ADMIN"]) =>
             _id: id,
             //token: token,
           });
-          console.log("data -->", decode);
-          userType = "ADMIN";
-          console.log("userData-->", userData);
+       
         } catch (error) {
           if (type.includes("AP")) {
             let id;
@@ -53,7 +51,7 @@ const verifyToken = (type = ["ADMIN"]) =>
                 isActive: true,
                 apId: isExist.BOUserId,
                 ...isExist,
-                sessionId : decode?.sessionId
+                sessionId: decode?.sessionId,
               };
               userType = "AP";
             } else {
@@ -76,7 +74,6 @@ const verifyToken = (type = ["ADMIN"]) =>
             next();
           }
         } else {
-          console.log("first 2");
           return sendErrorResponse(
             req,
             res,
@@ -86,7 +83,6 @@ const verifyToken = (type = ["ADMIN"]) =>
           );
         }
       } else {
-        console.log("first 3");
         return sendErrorResponse(
           req,
           res,
@@ -136,8 +132,7 @@ const verifyAdminRole = (roles, action) =>
   };
 
 const validateSession = async (req, res, next) => {
-  if(req.user.userType == "AP")
-  {
+  if (req.user.userType == "AP") {
     let sessionId = req.user.sessionId;
     let sessionFindResult = await APsession.findById(sessionId);
     if (!sessionFindResult || sessionFindResult.status == "INACTIVE") {
@@ -149,12 +144,9 @@ const validateSession = async (req, res, next) => {
         []
       );
     }
-    next()
-  }
-  else
-  {
+    next();
+  } else {
     next();
   }
- 
 };
-module.exports = { verifyAdminRole, verifyToken,validateSession };
+module.exports = { verifyAdminRole, verifyToken, validateSession };
