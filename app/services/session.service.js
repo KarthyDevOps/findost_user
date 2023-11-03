@@ -8,44 +8,7 @@ const dateList = (type, params) => {
     let report = {};
     console.log(type);
     if (type == "WEEK") {
-        // const currentDate = moment();
-
-        // // Get the number of weeks in the current month
-        // const weeksInMonth = currentDate.clone().endOf('month').week();
-        // console.log('weeksInMonth',weeksInMonth)
-        // // Initialize the start date for the first week
-        // let startDate = currentDate.clone().startOf('month');
-        
-        // // Loop through the weeks and calculate the start and end dates
-        // for (let weekNumber = 1; weekNumber <= weeksInMonth; weekNumber++) {
-        //   // Calculate the end date for the current week
-        //   const endDate = startDate.clone().endOf('week');
-        
-        //   console.log(`Week ${weekNumber}:`);
-        //   console.log('Start Date:', startDate.format('YYYY-MM-DD'));
-        //   console.log('End Date:', endDate.format('YYYY-MM-DD'));
-        //   console.log('-----------------------');
-        //  let d ='week '+weekNumber
-        //   report[d] = {
-        //     text: d,
-        //     date: {
-        //       start: moment(startDate).format("YYYY-MM-DDT00:00:00.000"),
-        //       end: moment(endDate).format("YYYY-MM-DDT23:59:59.000"),
-        //     },
-        //     resp: {},
-        //   };
-
-        //   // Move to the next week
-        //   startDate = endDate.clone().add(1, 'day');
-        // }
-
-
-
-
-
-
         const currentMonth = moment();
-
         // Create an array to store the weeks
         const weeks = [];
         
@@ -142,7 +105,7 @@ const loginCountService = async (params) => {
     status: true,
     statusCode: statusCodes?.HTTP_OK,
     message: messages?.success,
-    data: countResp?.[0]?.count || 0
+    data: countResp.length || 0
   };
 };
 const loginActivityReportService = async (params) => {
@@ -167,16 +130,15 @@ const loginActivityReportService = async (params) => {
       },
       {
         $group: {
-          _id: null,
-          uniqueValues: { $addToSet: "$APId" } ,
+          _id: '$APId',
+         // uniqueValues: { $addToSet: "$APId" } ,
           count: { $sum: 1 },
         },
       },
     ];
     
     let countData = await APsession.aggregate(aggregateQuery);
-   
-    result[d].resp.count = countData?.[0]?.count || 0;
+    result[d].resp.count = countData.length || 0;
   };
   await Promise.all(Object.keys(result).map(getData));
 
