@@ -283,12 +283,20 @@ const addauthorizedPersonService = async (req, params) => {
     isDeleted:false
   });
 
-  if (data) {
+  if (params.mobileNumber == data.mobileNumber) {
     return {
       status: false,
       statusCode: statusCodes?.HTTP_BAD_REQUEST,
-      message: messages?.authorizedPersonExists,
-      data: [],
+      message: messages?.apMobileExist,
+      data:{},
+    };
+  }
+  if (params.email == data.email) {
+    return {
+      status: false,
+      statusCode: statusCodes?.HTTP_BAD_REQUEST,
+      message: messages?.apEmailExist,
+      data: {},
     };
   }
 
@@ -359,7 +367,7 @@ const addauthorizedPersonService = async (req, params) => {
     }
   }
 
-   InternalServices.postAPCreationNotification(passData)
+  // InternalServices.postAPCreationNotification(passData)
 
   return {
     status: true,
