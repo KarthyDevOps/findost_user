@@ -2,6 +2,7 @@ const {  pageMetaService, sendOTP_to_mobileNumber } = require("../helpers");
 
 const { authorizedPersons } = require("../models/authorizedPersons");
 const {BOUSERS} = require("../models/BOUsers");
+const {APsession} = require("../models/APsessions");
 
 const { messages } = require("../response/customMessages");
 const { statusCodes } = require("../response/httpStatusCodes");
@@ -124,10 +125,12 @@ const authorizedPersonSendLoginIdService = async (params) => {
   {
     console.log('11')
     params.token = resp.access_token
+   
    // let profileData = await InternalServices.korpClientProfile(params);
     let isExist = await BOUSERS.findOne({
       BOUserId : params.authorizedPersonId
     })
+    
     if(isExist)
     {
       console.log('1')
@@ -157,13 +160,35 @@ const authorizedPersonSendLoginIdService = async (params) => {
         },
       });
     }
+    
+    const result = await APsession.updateMany(
+      { APId: params.authorizedPersonId },
+      { status: "INACTIVE",loggedOutAt:new Date()}
+    );
+    let sessionResp =await APsession.create(
+      { 
+        APId: params.authorizedPersonId,
+        status: "ACTIVE",
+        loggedInAt:new Date()
+      },
+    );
+    const JWTtoken = jwt.sign(
+      {
+        APId: params.authorizedPersonId,
+        token: params.token,
+        sessionId : sessionResp._id
+      },
+      process.env.JWT_authorizedPerson_SECRET,
+      { expiresIn: process.env.TOKEN_EXPIRATION }
+    );
+    resp.access_token = JWTtoken
     return {
       status: true,
       statusCode: statusCodes?.HTTP_OK,
       message: messages?.loginSuccessful,
       data: {
-        token : resp.access_token,
-        details : resp 
+        token : JWTtoken,
+        details : {...resp,APId: params.authorizedPersonId} 
       },
     };
 
