@@ -74,11 +74,29 @@ const korpClientProfile = async (data) => {
   }
 };
 
+
+const korpClientProfileSuperAdminToken = async (data) => {
+  try {
+    console.log("The following is the data", data);
+    let urlPayload = JSON.parse(JSON.stringify(InternalAPIs.korpClientProfileSuperAdminToken));
+    const queryString = `?clientCode=${data.authorizedPersonId || ""}`;
+    urlPayload.url = urlPayload.url + queryString;
+    //urlPayload.headers.Authorization = `Bearer ${data.token || ""}`;
+    console.log("urlPayload --", urlPayload);
+    let response = await Rest.callApi(urlPayload);
+    return response.data;
+  } catch (err) {
+    console.log(">>>>>>", err);
+    throw new Error(err);
+  }
+};
+
 module.exports = {
   sendEmail,
   forgetEmail,
   postAPCreationNotification,
   korpAuthentication,
-  korpClientProfile
+  korpClientProfile,
+  korpClientProfileSuperAdminToken
 
 };

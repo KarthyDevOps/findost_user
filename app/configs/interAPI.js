@@ -36,4 +36,12 @@ module.exports = {
             contentType: "application/json",
         },
     },
+    korpClientProfileSuperAdminToken: {
+        method: "GET",
+        url: process.env.FINANCE_URL + '/finance/v1/korp/korpClientProfileSuperAdminToken',
+        headers: {
+            contentType: "application/json",
+        },
+    },
+    
 }
