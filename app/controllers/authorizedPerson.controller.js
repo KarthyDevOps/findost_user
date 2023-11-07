@@ -132,6 +132,7 @@ const authorizedPersonSendLoginId = async (req, res) => {
 
 const addauthorizedPerson = async (req, res) => {
   const params = req.body;
+  console.log("params--->",params)
   params.lastUpdatedBy = req?.user?.userType;
   const result = await addauthorizedPersonService(req, params);
   if (!result.status) {
