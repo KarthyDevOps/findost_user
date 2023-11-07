@@ -275,7 +275,7 @@ const authorizedPersonSendMailIdService = async (params) => {
 
 const addauthorizedPersonService = async (req, params) => {
   //verify the given person already exist or not
-  const data = await authorizedPersons.findOne({
+  let data = await authorizedPersons.findOne({
     $or: [
       { email: params?.email },
       { mobileNumber: params?.mobileNumber },
@@ -283,12 +283,14 @@ const addauthorizedPersonService = async (req, params) => {
     isDeleted:false
   });
 
+
+if (data) {
   if (params.mobileNumber == data.mobileNumber) {
     return {
       status: false,
       statusCode: statusCodes?.HTTP_BAD_REQUEST,
       message: messages?.apMobileExist,
-      data:{},
+      data: {},
     };
   }
   if (params.email == data.email) {
@@ -299,6 +301,7 @@ const addauthorizedPersonService = async (req, params) => {
       data: {},
     };
   }
+}
 
   let genratePassword = await generateRandomPassword(8)
 
@@ -344,6 +347,7 @@ const addauthorizedPersonService = async (req, params) => {
   //migrating authorizedPerson to authorizedPersons and store authorizedPerson details into authorizedPersons table
 
   const authorizedPerson = await new authorizedPersons(params);
+
 
   let details = await authorizedPerson.save();
 
