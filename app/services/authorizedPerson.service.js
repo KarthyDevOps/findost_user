@@ -142,8 +142,9 @@ const authorizedPersonSendLoginIdService = async (params) => {
     }
     else
     {
-      console.log('2')
-      await BOUSERS.create({
+      //get data from korp
+      let profileResp = await InternalServices.korpClientProfileSuperAdminToken({authorizedPersonId:params.authorizedPersonId})
+      let createData ={
         BOUserId: params.authorizedPersonId,
         password: params.password,
         token: params.token,
@@ -158,7 +159,21 @@ const authorizedPersonSendLoginIdService = async (params) => {
           isIPONotification: false,
           isLoanNotification: false,
         },
-      });
+        mobileNumber :'',
+        email :'',
+        branchCode :'',
+        subBranchCode :'',
+        dob :'',
+      }
+      if(profileResp && profileResp.MasterData && profileResp.MasterData[0])
+      {
+        createData.mobileNumber = profileResp.MasterData[0].MobileNo || ""
+        createData.email = profileResp.MasterData[0].EmailId|| ""
+        createData.branchCode = profileResp.MasterData[0].Branch|| ""
+        createData.subBranchCode = profileResp.MasterData[0].SubBranch|| ""
+        createData.dob = profileResp.MasterData[0].DateOfBirth|| ""
+      }
+      await BOUSERS.create(createData);
     }
     
     const result = await APsession.updateMany(

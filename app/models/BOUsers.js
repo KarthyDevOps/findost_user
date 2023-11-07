@@ -82,6 +82,21 @@ const BOUserSchema = new mongoose.Schema(
       required: false,
       trim: true,
     },
+    branchCode: {
+      type: String,
+      required: false,
+      trim: true,
+    },
+    subBranchCode: {
+      type: String,
+      required: false,
+      trim: true,
+    },
+    dob: {
+      type: String,
+      required: false,
+      trim: true,
+    },
     certifications: {
       type: Array,
       required: false,
