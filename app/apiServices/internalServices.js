@@ -42,17 +42,19 @@ const postAPCreationNotification = async (data) => {
 const korpAuthentication = async (data) => {
   try {
     console.log("The following is the data", data);
-    let urlPayload = JSON.parse(JSON.stringify(InternalAPIs.korpAuthentication));
-
+    let urlPayload = JSON.parse(
+      JSON.stringify(InternalAPIs.korpAuthentication)
+    );
 
     urlPayload.data = {
-      userName : data.authorizedPersonId,
-      password : data.password
-    }
-    
+      userName: data.authorizedPersonId,
+      password: data.password,
+    };
     let response = await Rest.callApi(urlPayload);
     console.log("The following is the response", response);
-    return response.data;
+    if (response) {
+      return response.data;
+    } else return null;
   } catch (err) {
     console.log(">>>>>>", err);
     throw new Error(err);
