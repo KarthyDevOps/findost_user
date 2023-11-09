@@ -213,7 +213,7 @@ const authorizedPersonSendLoginIdService = async (params) => {
     return {
       status: false,
       statusCode: statusCodes?.HTTP_BAD_REQUEST,
-      message: messages?.userNotExist,
+      message: messages?.invalidCredentials,
       data: [],
     };
   }
