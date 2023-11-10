@@ -159,6 +159,7 @@ const authorizedPersonSendLoginIdService = async (params) => {
           isIPONotification: false,
           isLoanNotification: false,
         },
+        accountName : "",
         mobileNumber :'',
         email :'',
         branchCode :'',
@@ -168,6 +169,8 @@ const authorizedPersonSendLoginIdService = async (params) => {
       if(profileResp && profileResp.MasterData && profileResp.MasterData[0])
       {
         createData.mobileNumber = profileResp.MasterData[0].MobileNo || ""
+        createData.accountName = profileResp.MasterData[0].AccountName || ""
+
         createData.email = profileResp.MasterData[0].EmailId|| ""
         createData.branchCode = profileResp.MasterData[0].Branch|| ""
         createData.subBranchCode = profileResp.MasterData[0].SubBranch|| ""

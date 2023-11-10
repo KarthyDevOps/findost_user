@@ -62,16 +62,11 @@ const BOUserSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    firstName: {
+    accountName: {
       type: String,
-      required: false,
-      trim: true,
+      required: true,
     },
-    lastName: {
-      type: String,
-      required: false,
-      trim: true,
-    },
+    
     mobileNumber: {
       type: String,
       required: false,
