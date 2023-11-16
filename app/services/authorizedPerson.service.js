@@ -371,7 +371,7 @@ if (data) {
     }
   }
 
-  // InternalServices.postAPCreationNotification(passData)
+   InternalServices.postAPCreationNotification(passData)
 
   return {
     status: true,
