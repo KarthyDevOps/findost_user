@@ -8,6 +8,7 @@ const moment = require("moment-timezone")
 const { pageMetaService } = require("../helpers/index");
 
 const { getBOUsersList } = require("./list.services");
+const { getImageURL } = require("../utils/s3Utils");
 
 const createBOUsersService = async (params) => {
 
@@ -59,10 +60,18 @@ const getBOUsersService = async (params) => {
       isDeleted: false,
     }
   }
-  console.log('payload-->', payload)
+  console.log('payload--> 123', payload)
 
   let resp = await BOUSERS.findOne(payload);
-  console.log('first', resp)
+
+  for(let item of resp.certifications){
+
+    if(item){
+
+      item.linkS3 =  getImageURL(item.link)
+    }
+
+  }
 
 
 
@@ -83,6 +92,7 @@ const getBOUsersService = async (params) => {
     showtime = "Good Night";
   }
 if (resp) {
+
   resp = JSON.parse(JSON.stringify(resp));
 
   resp.showtime = showtime;
