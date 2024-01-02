@@ -392,7 +392,7 @@ const getauthorizedPersonProfileService = async (params) => {
     $or: [{ _id: params?.id }, { _id: params?.authorizedPersonId }],
     isDeleted: false,
   });
-  if(!data.profileURL)
+  if(data && !data.profileURL)
   {
     data.profileURL = null
   }
