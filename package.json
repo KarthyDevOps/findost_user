@@ -7,6 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npm i && nodemon index.js DEV",
     "dev": "nodemon index.js LOCAL",
+    "preprod": "npm i && node index.js PREPROD",
     "prod": "nodemon index.js PROD"
   },
   "repository": {
@@ -18,21 +19,21 @@
   "license": "ISC",
   "dependencies": {
     "aws-sdk": "^2.1390.0",
-    "axios": "^0.27.2",
+    "axios": "^1.6.4",
     "bcryptjs": "^2.4.3",
     "blob-to-base64": "^1.0.2",
     "body-parser": "^1.20.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
-    "exceljs": "^4.4.0",
+        "exceljs": "^4.4.0",
     "express": "^4.18.1",
     "express-fileupload": "^1.4.0",
     "file64": "^1.0.2",
-    "gulp": "^4.0.2",
+    "gulp": "^3.9.1",
     "joi": "^17.6.0",
     "json2csv": "^5.0.7",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.2",
     "moment-timezone": "^0.5.34",
     "mongoose": "^7.2.3",
     "mongoose-lean-getters": "^1.1.0",
@@ -43,7 +44,7 @@
     "path": "^0.12.7",
     "process": "^0.11.10",
     "randomstring": "^1.3.0",
-    "razorpay": "^2.8.6",
+    "razorpay": "^2.9.2",
     "swagger-ui-express": "^4.4.0"
   }
 }
