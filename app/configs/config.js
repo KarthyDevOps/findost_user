@@ -45,7 +45,7 @@ module.exports = function (env) {
     S3_IMAGES_PATH : "images",
     S3_DOCUMENTS_PATH : "documents",
     S3_MEDIA_PATH: "media",  
-    S3_REGION:ap-south-1,   
+    S3_REGION : "ap-south-1",   
     AWS_S3_HOST : "https://findost-project-development.s3.ap-south-1.amazonaws.com",
     USER_URL : "http://preprod-findost-1423761427.ap-south-1.elb.amazonaws.com:2277",
     COMMUNICATION_URL : "http://preprod-findost-1423761427.ap-south-1.elb.amazonaws.com:2275",
