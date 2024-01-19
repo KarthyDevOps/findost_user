@@ -29,7 +29,7 @@ module.exports = function (env) {
 
   const PREPROD_CONSTANTS = {
     PORT: 2277,
-    MONGO_URI:"mongodb+srv://findoc_user:nQKMemhPm0N4maIJ@cluster0.kr4lh0f.mongodb.net/findoc_users",
+    MONGO_URI:"mongodb://Developer:Dev$1234@findoc-preprod-docdb-2024-01-17-13-34-25.cluster-chi2e68wccik.ap-south-1.docdb.amazonaws.com:27017/findoc_user",
     NODE_ENV: "development",
     SERVICE_NAME: "Findost-USER-Service",
     200: "success",
