@@ -1,10 +1,10 @@
 const express = require("express");
 const expressFileUpload = require("express-fileupload");
-
+var { createTunnel } = require("tunnel-ssh");
 
 const process = require("process");
 const dotenv = require("dotenv");
-dotenv.config()
+dotenv.config();
 const path = require("path");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -16,15 +16,14 @@ const swaggerDocument = require("./app/swagger/swagger.json");
 const app = express();
 const { instantiateAWSS3 } = require("./app/externalServices/awsService.js");
 
-
 //swagger setup
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 // Load environment variable
 require("dotenv").config({ path: path.join(process.cwd(), `.env`) });
 const args = process.argv.slice(2)[0];
 process.env.CONFIG_ARG = args;
-let CONFIG = require('./app/configs/config')(args)
-process.env = { ...process.env,...CONFIG}
+let CONFIG = require("./app/configs/config")(args);
+process.env = { ...process.env, ...CONFIG };
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -36,7 +35,7 @@ app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Headers", "*");
   next();
 });
-//File Uploading middleware 
+//File Uploading middleware
 app.use(
   expressFileUpload({
     safeFileNames: true,
@@ -59,11 +58,19 @@ app.use((req, res, next) => {
   next();
 });
 
-//DB connection
-const connectToMongo = async () => {
-  await mongoose.connect(process.env.MONGO_URI);
-  console.log("Connected to MongoDB Sucessfully!!");
-};
+
+ 
+  //DB connection
+  const connectToMongo = async () => {
+    await mongoose.connect(process.env.MONGO_URI);
+    console.log("Connected to MongoDB Sucessfully!!");
+  };
+
+  connectToMongo();
+
+  // await mongoose.connect(process.env.MONGO_URI);
+  // console.log("Connected to MongoDB Sucessfully!!");
+
 
 connectToMongo();
 //initiative aws s3 bucket
