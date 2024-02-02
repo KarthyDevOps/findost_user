@@ -26,6 +26,11 @@ process.env.CONFIG_ARG = args;
 let CONFIG = require('./app/configs/config')(args)
 process.env = { ...process.env,...CONFIG}
 
+
+console.log("configs--->", process.env);
+console.log("Ars", args);
+
+
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -59,13 +64,35 @@ app.use((req, res, next) => {
   next();
 });
 
-//DB connection
-const connectToMongo = async () => {
-  await mongoose.connect(process.env.MONGO_URL);
-  console.log("Connected to MongoDB Sucessfully!!");
+if (args === "PREPROD") {
+  let mongoDBOptions = {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    ssl: true,
+    sslValidate: false,
+  };
+}
+
+let mongoDBOptions = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
 };
 
-connectToMongo();
+console.log("MOngo DB options ", mongoDBOptions);
+// Connect to database
+mongoose
+  .connect(process.env.MONGO_URI, mongoDBOptions)
+  .then((res) => {
+    console.log("Database connected");
+  })
+  .catch((err) => {
+    console.log("Database connection error", err);
+  });
+mongoose.connection.on("error", function (err) {
+  console.error("MongoDB connection error: " + err);
+  process.exit(-1);
+});
+
 //initiative aws s3 bucket
 instantiateAWSS3();
 
