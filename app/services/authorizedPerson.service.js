@@ -481,7 +481,10 @@ const authorizedPersonListService = async (params) => {
     page = Number(page);
     let limit = params?.limit || 10;
     limit = Number(limit);
-
+    if(params.isExport == "true" || params.isExport == true )
+    {
+      limit = Number(1000000);
+    }
     if (params?.all) {
       let data = await authorizedPersons.find({
         isDeleted: false
