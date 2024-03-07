@@ -279,34 +279,34 @@ const authorizedPersonList = async (req, res) => {
 
   if (String(req.query.isExport) == "true" &&  result?.data?.list) {
     for (let item of result?.data?.list) {
-      if (item.document.professionalDocument.documentPath) {
+      if (item?.document?.professionalDocument?.documentPath) {
         professionalDocument = {
-          type: item.document.professionalDocument.type,
-          url: item.document.professionalDocument.documentPath.urlS3,
+          type: item?.document?.professionalDocument?.type,
+          url: item?.document?.professionalDocument?.documentPath?.urlS3,
         };
       } else professionalDocument == null;
-      if (item.document.educationQualificationDocument.documentPath) {
+      if (item?.document?.educationQualificationDocument?.documentPath) {
         educationQualificationDocument = {
-          type: item.document.educationQualificationDocument.type,
-          url: item.document.educationQualificationDocument.urlS3,
+          type: item?.document?.educationQualificationDocument?.type,
+          url: item?.document?.educationQualificationDocument?.urlS3,
         };
       } else educationQualificationDocument == null;
-      if (item.document.residentialAddressProof.documentPath) {
+      if (item?.document?.residentialAddressProof?.documentPath) {
         residentialAddressProof = {
-          type: item.document.residentialAddressProof.type,
-          url: item.document.residentialAddressProof.documentPath.urlS3,
+          type: item?.document?.residentialAddressProof?.type,
+          url: item?.document?.residentialAddressProof?.documentPath?.urlS3,
         };
       } else residentialAddressProof == null;
-      if (item.document.officeAddressProof.documentPath) {
+      if (item?.document?.officeAddressProof?.documentPath) {
         officeAddressProof = {
-          type: item.document.officeAddressProof.type,
-          url: item.document.officeAddressProof.documentPath.urlS3,
+          type: item?.document?.officeAddressProof?.type,
+          url: item?.document?.officeAddressProof?.documentPath?.urlS3,
         };
       } else officeAddressProof == null;
-      if (item.document.proofOfNameChange.documentPath) {
+      if (item?.document?.proofOfNameChange?.documentPath) {
         proofOfNameChange = {
-          type: item.document.proofOfNameChange.type,
-          url: item.document.proofOfNameChange.documentPath.urlS3,
+          type: item?.document?.proofOfNameChange?.type,
+          url: item?.document?.proofOfNameChange?.documentPath?.urlS3,
         };
       } else proofOfNameChange == null;
 
