@@ -197,7 +197,7 @@ const authorizedPersonSendLoginIdService = async (params) => {
         sessionId : sessionResp._id
       },
       process.env.JWT_authorizedPerson_SECRET,
-      { expiresIn: process.env.TOKEN_EXPIRATION }
+     // { expiresIn: process.env.TOKEN_EXPIRATION }
     );
     resp.access_token = JWTtoken
     return {
