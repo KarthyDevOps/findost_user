@@ -1,0 +1,38 @@
+#Findost-user configmap yaml
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: findoc-user-configmap
+data:
+  SERVICE_NAME: "findost-User-Service"
+  MONGO_URL: "mongodb://devops:Dev$1234@findoc-preprod-docdb-2024-01-17-13-34-25.cluster-chi2e68wccik.ap-south-1.docdb.amazonaws.com:27017/findoc_user"
+  env: "development"
+  PORT: "2277"
+  SEND_EMAIL: "/v1/sendMail"
+  JWT_ADMIN_SECRET: "1234_admin_findost"
+  JWT_authorizedPerson_SECRET: "1234_authorizedPerson_findost"
+  TOKEN_EXPIRATION: "24h"
+  COMMUNICATION: "http://doodlebluelive.com:2275/communication"
+  FE_URL: "http://doodlebluelive.com:2273/auth/resetpassword?token="
+  ADMIN_RESET_PATH: "/admin/resetPassword/"
+  gupshup_api_key: "FINDOSTki1oide65rpq9y5ysufrndmukhdaeqpn"
+  AWS_BUCKET: "findoc-development"
+  AWS_ACCESS_KEY: "AKIARS5OYL26JGKUYGRR"
+  AWS_SECRET_KEY: "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"
+  S3_IMAGES_PATH: "images"
+  S3_DOCUMENTS_PATH: "documents"
+  S3_MEDIA_PATH: "media"
+  S3_REGION: "ap-south-1"
+  AWS_S3_HOST: "https://findost-project-development.s3.ap-south-1.amazonaws.com"
+  GET_USER_BY_ID: "/user/api/v1/admin/getAdmin?id="
+  GET_AP_BY_ID: "/user/api/v1/authorizedPerson/getProfileById?id="
+  USER_URL: "http://doodlebluelive.com:2277"
+  COMMUNICATION_URL: "http://doodlebluelive.com:2275"
+  CMS_URL: "http://doodlebluelive.com:2274"
+  FINANCE_URL: "http://doodlebluelive.com:2276"
+  ADMIN_NOTIFICATION: "/communication/v1/admin-notification-management/create"
+  RAZORPAY_KEY_ID: "rzp_test_ZyARZmZbxZsgjs"
+  RAZORPAY_KEY_SECRET: "yKP2tFDv2FmLmH1kh2XrJeKF"
+  AP_REGISTER_DISCOUNT_COUPON: "ABCDEFG"
+  AP_REGISTER_DISCOUNT_COUPON_PERCENTAGE: "20"

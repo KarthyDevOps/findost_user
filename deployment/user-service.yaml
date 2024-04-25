@@ -1,0 +1,13 @@
+#Service-yaml
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: findoc-user
+spec:
+  type: NodePort
+  selector:
+    app: findoc-user
+  ports:
+  - port: 2277
+    targetPort: 2277

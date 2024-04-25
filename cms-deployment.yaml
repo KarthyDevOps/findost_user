@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: findoc-cms
+spec:
+  selector:
+    matchLabels:
+      app: findoc-cms
+  template:
+    metadata:
+      labels:
+        app: findoc-cms
+    spec:
+      containers:
+      - name: findoc-cms
+        image: 471112580006.dkr.ecr.ap-south-1.amazonaws.com/findost_cms
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 2274
+        envFrom:
+        - configMapRef:
+            name: findoc_cms_configmap
