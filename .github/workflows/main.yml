@@ -1,18 +1,19 @@
-name: Docker Image CI
+name: findoc User CI
 
 on:
   push:
-    branches: [ pre-production ]
+    branches: [pre-production]
   pull_request:
-    branches: ["pre-production"]
+    branches: [pre-production]
 
 env:
-  IMAGE_NAME: user-dep
-
+  IMAGE_NAME: findost-user
+  ECR_REPOSITORY: ${{ secrets.AWS_ECR_REPO }}
+  IMAGE_TAG: ${{ github.run_number }}
+  
 jobs:
   build:
     runs-on: ubuntu-latest
-
 
     steps:
       - name: Checkout repository
@@ -23,29 +24,34 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{secrets.AWS_REGION}}
+          aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Login to Amazon ECR
         id: login-pf-aws-ecr
         uses: aws-actions/amazon-ecr-login@v1
-      
+        
       - name: Build and push
         env:
           ECR_REGISTRY: ${{ steps.login-pf-aws-ecr.outputs.registry }}
-          ECR_REPOSITORY: ${{ secrets.AWS_ECR_REPO }}
-          IMAGE_TAG: latest
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f ./deployment/Dockerfile .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:${IMAGE_TAG} -f ./deployment/Dockerfile .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:${IMAGE_TAG}
+
       - name: Update deployment.yaml
-        run: | 
-          sed -i "s|KarthyDevops/cms-dep.*|KarthyDevops/${{env.IMAGE_NAME}}:${{github.run_number}}|g" deployment/user-deployment.yaml
-          cat deployment/user-deployment.yaml
-      - name: commit changes
+        env:
+          ECR_REGISTRY: ${{ steps.login-pf-aws-ecr.outputs.registry }}
         run: |
-          git config --global user.mail "karthy.shunmugam@gmail.com"
+          echo "ECR_REPOSITORY: $ECR_REPOSITORY"
+          sed -i.bak "s|$ECR_REGISTRY/$ECR_REPOSITORY.*|$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG|g" deployment/user-deployment.yaml
+
+          cat deployment/user-deployment.yaml
+
+      - name: Commit changes
+        run: |
+          git config --global user.email "karthy.shunmugam@gmail.com"
           git config --global user.name "KarthyDevops"
           git add .
           git commit -m "Update deployment.yaml with new Docker image [skip ci]"
+          git push origin HEAD:${{ github.ref }}
         env:
           GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
