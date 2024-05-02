@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: findoc-user
-        image: 471112580006.dkr.ecr.ap-south-1.amazonaws.com/findost_user
+        image: 471112580006.dkr.ecr.ap-south-1.amazonaws.com/findost_user:2
         resources:
           limits:
             memory: "128Mi"
